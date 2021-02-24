@@ -18,7 +18,7 @@
 		9AEA1D2125E5DE5500C329C8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D1E25E5DE5500C329C8 /* LoginViewController.swift */; };
 		9AEA1D2225E5DE5500C329C8 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D1F25E5DE5500C329C8 /* MainViewController.swift */; };
 		9AEA1D2325E5DE5500C329C8 /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D2025E5DE5500C329C8 /* ForgotPasswordViewController.swift */; };
-		9AEA1D2725E5DE6000C329C8 /* Storyboard+Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D2525E5DE6000C329C8 /* Storyboard+Utility.swift */; };
+		9AEA1D2725E5DE6000C329C8 /* Storyboard+Utility .swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D2525E5DE6000C329C8 /* Storyboard+Utility .swift */; };
 		9AEA1D2825E5DE6000C329C8 /* ViewController+Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D2625E5DE6000C329C8 /* ViewController+Utility.swift */; };
 		9AEA1D2B25E5DE6800C329C8 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D2A25E5DE6800C329C8 /* User.swift */; };
 		9AEA1D2F25E5DE7200C329C8 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D2D25E5DE7200C329C8 /* UserService.swift */; };
@@ -33,18 +33,18 @@
 		9AEA1D0825E5DAC400C329C8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9AEA1D0B25E5DAC400C329C8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9AEA1D0D25E5DAC400C329C8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9AEA1D1525E5DE3800C329C8 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = "../../Firebase-iOS-boilerplate/Files/Storyboards/Main.storyboard"; sourceTree = "<group>"; };
-		9AEA1D1825E5DE3D00C329C8 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Login.storyboard; path = "../../Firebase-iOS-boilerplate/Files/Storyboards/Login.storyboard"; sourceTree = "<group>"; };
-		9AEA1D1B25E5DE4F00C329C8 /* CreateUserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CreateUserViewController.swift; path = "../../Firebase-iOS-boilerplate/Files/Controllers/CreateUserViewController.swift"; sourceTree = "<group>"; };
-		9AEA1D1E25E5DE5500C329C8 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewController.swift; path = "../../Firebase-iOS-boilerplate/Files/Controllers/LoginViewController.swift"; sourceTree = "<group>"; };
-		9AEA1D1F25E5DE5500C329C8 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainViewController.swift; path = "../../Firebase-iOS-boilerplate/Files/Controllers/MainViewController.swift"; sourceTree = "<group>"; };
-		9AEA1D2025E5DE5500C329C8 /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ForgotPasswordViewController.swift; path = "../../Firebase-iOS-boilerplate/Files/Controllers/ForgotPasswordViewController.swift"; sourceTree = "<group>"; };
-		9AEA1D2525E5DE6000C329C8 /* Storyboard+Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Storyboard+Utility.swift"; path = "../../Firebase-iOS-boilerplate/Files/Extensions/Storyboard+Utility.swift"; sourceTree = "<group>"; };
-		9AEA1D2625E5DE6000C329C8 /* ViewController+Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "ViewController+Utility.swift"; path = "../../Firebase-iOS-boilerplate/Files/Extensions/ViewController+Utility.swift"; sourceTree = "<group>"; };
-		9AEA1D2A25E5DE6800C329C8 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = User.swift; path = "../../Firebase-iOS-boilerplate/Files/Models/User.swift"; sourceTree = "<group>"; };
-		9AEA1D2D25E5DE7200C329C8 /* UserService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserService.swift; path = "../../Firebase-iOS-boilerplate/Files/Services/UserService.swift"; sourceTree = "<group>"; };
-		9AEA1D2E25E5DE7200C329C8 /* AuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuthService.swift; path = "../../Firebase-iOS-boilerplate/Files/Services/AuthService.swift"; sourceTree = "<group>"; };
-		9AEA1D3525E5DF5100C329C8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../GoogleService-Info.plist"; sourceTree = "<group>"; };
+		9AEA1D1525E5DE3800C329C8 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		9AEA1D1825E5DE3D00C329C8 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
+		9AEA1D1B25E5DE4F00C329C8 /* CreateUserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateUserViewController.swift; sourceTree = "<group>"; };
+		9AEA1D1E25E5DE5500C329C8 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		9AEA1D1F25E5DE5500C329C8 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		9AEA1D2025E5DE5500C329C8 /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
+		9AEA1D2525E5DE6000C329C8 /* Storyboard+Utility .swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Storyboard+Utility .swift"; sourceTree = "<group>"; };
+		9AEA1D2625E5DE6000C329C8 /* ViewController+Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ViewController+Utility.swift"; sourceTree = "<group>"; };
+		9AEA1D2A25E5DE6800C329C8 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		9AEA1D2D25E5DE7200C329C8 /* UserService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
+		9AEA1D2E25E5DE7200C329C8 /* AuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		9AEA1D3525E5DF5100C329C8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B2CD616A923D87988BE08962 /* Pods-Meditapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Meditapp.release.xcconfig"; path = "Target Support Files/Pods-Meditapp/Pods-Meditapp.release.xcconfig"; sourceTree = "<group>"; };
 		BEE27369E814AADE44D03C86 /* Pods-Meditapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Meditapp.debug.xcconfig"; path = "Target Support Files/Pods-Meditapp/Pods-Meditapp.debug.xcconfig"; sourceTree = "<group>"; };
 		FC3A95EE12470508254ED4D5 /* Pods_Meditapp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Meditapp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -97,7 +97,7 @@
 				9AEA1D1E25E5DE5500C329C8 /* LoginViewController.swift */,
 				9AEA1D1F25E5DE5500C329C8 /* MainViewController.swift */,
 				9AEA1D1B25E5DE4F00C329C8 /* CreateUserViewController.swift */,
-				9AEA1D2525E5DE6000C329C8 /* Storyboard+Utility.swift */,
+				9AEA1D2525E5DE6000C329C8 /* Storyboard+Utility .swift */,
 				9AEA1D2625E5DE6000C329C8 /* ViewController+Utility.swift */,
 				9AEA1D2A25E5DE6800C329C8 /* User.swift */,
 				9AEA1D1525E5DE3800C329C8 /* Main.storyboard */,
@@ -242,7 +242,7 @@
 				9AEA1D0025E5DAC000C329C8 /* AppDelegate.swift in Sources */,
 				9AEA1D3025E5DE7200C329C8 /* AuthService.swift in Sources */,
 				9AEA1D2825E5DE6000C329C8 /* ViewController+Utility.swift in Sources */,
-				9AEA1D2725E5DE6000C329C8 /* Storyboard+Utility.swift in Sources */,
+				9AEA1D2725E5DE6000C329C8 /* Storyboard+Utility .swift in Sources */,
 				9AEA1D2F25E5DE7200C329C8 /* UserService.swift in Sources */,
 				9AEA1D2225E5DE5500C329C8 /* MainViewController.swift in Sources */,
 				9AEA1D2125E5DE5500C329C8 /* LoginViewController.swift in Sources */,
