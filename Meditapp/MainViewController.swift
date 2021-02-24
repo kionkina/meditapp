@@ -17,7 +17,6 @@ class MainViewController: UIViewController {
     @IBOutlet weak var usernameLabel: UILabel!
     
     override func viewDidLoad() {
-        print("IN MAIN VIEW RIP")
         super.viewDidLoad()
         
         nameLabel.text = "\(User.current.firstName) \(User.current.lastName)"

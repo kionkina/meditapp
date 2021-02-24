@@ -14,7 +14,6 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var createAccountButton: UIButton!
     
     override func viewDidLoad() {
-        print("in LOGIN")
         super.viewDidLoad()
         configureView()
     }
@@ -24,7 +23,6 @@ class LoginViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        print("HERE 4")
         if let identifier = segue.identifier {
             if identifier == "createUser" {
 //                dismissKeyboard()
@@ -81,11 +79,9 @@ class LoginViewController: UIViewController {
 
 extension LoginViewController{
     func configureView(){
-        print("in CONFIGURE VIEW")
         applyKeyboardPush()
         applyKeyboardDismisser()
         logInButton.layer.cornerRadius = 10
         createAccountButton.layer.cornerRadius = 10
-        print("still here")
     }
 }
