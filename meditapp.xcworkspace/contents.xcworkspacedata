@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "container:Meditapp.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:Meditapp.xcodeproj">
    </FileRef>
    <FileRef
