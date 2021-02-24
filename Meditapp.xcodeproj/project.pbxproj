@@ -1,0 +1,450 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		60D61B693E64EB1965C57E2B /* Pods_Meditapp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC3A95EE12470508254ED4D5 /* Pods_Meditapp.framework */; };
+		9AEA1D0025E5DAC000C329C8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1CFF25E5DAC000C329C8 /* AppDelegate.swift */; };
+		9AEA1D0225E5DAC000C329C8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D0125E5DAC000C329C8 /* SceneDelegate.swift */; };
+		9AEA1D0425E5DAC000C329C8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D0325E5DAC000C329C8 /* ViewController.swift */; };
+		9AEA1D0925E5DAC400C329C8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AEA1D0825E5DAC400C329C8 /* Assets.xcassets */; };
+		9AEA1D0C25E5DAC400C329C8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9AEA1D0A25E5DAC400C329C8 /* LaunchScreen.storyboard */; };
+		9AEA1D1625E5DE3800C329C8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9AEA1D1525E5DE3800C329C8 /* Main.storyboard */; };
+		9AEA1D1925E5DE3E00C329C8 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9AEA1D1825E5DE3D00C329C8 /* Login.storyboard */; };
+		9AEA1D1C25E5DE4F00C329C8 /* CreateUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D1B25E5DE4F00C329C8 /* CreateUserViewController.swift */; };
+		9AEA1D2125E5DE5500C329C8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D1E25E5DE5500C329C8 /* LoginViewController.swift */; };
+		9AEA1D2225E5DE5500C329C8 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D1F25E5DE5500C329C8 /* MainViewController.swift */; };
+		9AEA1D2325E5DE5500C329C8 /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D2025E5DE5500C329C8 /* ForgotPasswordViewController.swift */; };
+		9AEA1D2725E5DE6000C329C8 /* Storyboard+Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D2525E5DE6000C329C8 /* Storyboard+Utility.swift */; };
+		9AEA1D2825E5DE6000C329C8 /* ViewController+Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D2625E5DE6000C329C8 /* ViewController+Utility.swift */; };
+		9AEA1D2B25E5DE6800C329C8 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D2A25E5DE6800C329C8 /* User.swift */; };
+		9AEA1D2F25E5DE7200C329C8 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D2D25E5DE7200C329C8 /* UserService.swift */; };
+		9AEA1D3025E5DE7200C329C8 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D2E25E5DE7200C329C8 /* AuthService.swift */; };
+		9AEA1D3625E5DF5100C329C8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9AEA1D3525E5DF5100C329C8 /* GoogleService-Info.plist */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		9AEA1CFC25E5DAC000C329C8 /* Meditapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Meditapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9AEA1CFF25E5DAC000C329C8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		9AEA1D0125E5DAC000C329C8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		9AEA1D0325E5DAC000C329C8 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		9AEA1D0825E5DAC400C329C8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9AEA1D0B25E5DAC400C329C8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		9AEA1D0D25E5DAC400C329C8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9AEA1D1525E5DE3800C329C8 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = "../../Firebase-iOS-boilerplate/Files/Storyboards/Main.storyboard"; sourceTree = "<group>"; };
+		9AEA1D1825E5DE3D00C329C8 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Login.storyboard; path = "../../Firebase-iOS-boilerplate/Files/Storyboards/Login.storyboard"; sourceTree = "<group>"; };
+		9AEA1D1B25E5DE4F00C329C8 /* CreateUserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CreateUserViewController.swift; path = "../../Firebase-iOS-boilerplate/Files/Controllers/CreateUserViewController.swift"; sourceTree = "<group>"; };
+		9AEA1D1E25E5DE5500C329C8 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewController.swift; path = "../../Firebase-iOS-boilerplate/Files/Controllers/LoginViewController.swift"; sourceTree = "<group>"; };
+		9AEA1D1F25E5DE5500C329C8 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainViewController.swift; path = "../../Firebase-iOS-boilerplate/Files/Controllers/MainViewController.swift"; sourceTree = "<group>"; };
+		9AEA1D2025E5DE5500C329C8 /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ForgotPasswordViewController.swift; path = "../../Firebase-iOS-boilerplate/Files/Controllers/ForgotPasswordViewController.swift"; sourceTree = "<group>"; };
+		9AEA1D2525E5DE6000C329C8 /* Storyboard+Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Storyboard+Utility.swift"; path = "../../Firebase-iOS-boilerplate/Files/Extensions/Storyboard+Utility.swift"; sourceTree = "<group>"; };
+		9AEA1D2625E5DE6000C329C8 /* ViewController+Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "ViewController+Utility.swift"; path = "../../Firebase-iOS-boilerplate/Files/Extensions/ViewController+Utility.swift"; sourceTree = "<group>"; };
+		9AEA1D2A25E5DE6800C329C8 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = User.swift; path = "../../Firebase-iOS-boilerplate/Files/Models/User.swift"; sourceTree = "<group>"; };
+		9AEA1D2D25E5DE7200C329C8 /* UserService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserService.swift; path = "../../Firebase-iOS-boilerplate/Files/Services/UserService.swift"; sourceTree = "<group>"; };
+		9AEA1D2E25E5DE7200C329C8 /* AuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuthService.swift; path = "../../Firebase-iOS-boilerplate/Files/Services/AuthService.swift"; sourceTree = "<group>"; };
+		9AEA1D3525E5DF5100C329C8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B2CD616A923D87988BE08962 /* Pods-Meditapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Meditapp.release.xcconfig"; path = "Target Support Files/Pods-Meditapp/Pods-Meditapp.release.xcconfig"; sourceTree = "<group>"; };
+		BEE27369E814AADE44D03C86 /* Pods-Meditapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Meditapp.debug.xcconfig"; path = "Target Support Files/Pods-Meditapp/Pods-Meditapp.debug.xcconfig"; sourceTree = "<group>"; };
+		FC3A95EE12470508254ED4D5 /* Pods_Meditapp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Meditapp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9AEA1CF925E5DABF00C329C8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				60D61B693E64EB1965C57E2B /* Pods_Meditapp.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		82E79FF1E6DD832BBC1D75F5 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				BEE27369E814AADE44D03C86 /* Pods-Meditapp.debug.xcconfig */,
+				B2CD616A923D87988BE08962 /* Pods-Meditapp.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = SOURCE_ROOT;
+		};
+		9AEA1CF325E5DABF00C329C8 = {
+			isa = PBXGroup;
+			children = (
+				9AEA1CFE25E5DAC000C329C8 /* Meditapp */,
+				9AEA1CFD25E5DAC000C329C8 /* Products */,
+				82E79FF1E6DD832BBC1D75F5 /* Pods */,
+				DBB559D127D8298BA1DC9A58 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		9AEA1CFD25E5DAC000C329C8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9AEA1CFC25E5DAC000C329C8 /* Meditapp.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9AEA1CFE25E5DAC000C329C8 /* Meditapp */ = {
+			isa = PBXGroup;
+			children = (
+				9AEA1CFF25E5DAC000C329C8 /* AppDelegate.swift */,
+				9AEA1D0125E5DAC000C329C8 /* SceneDelegate.swift */,
+				9AEA1D2025E5DE5500C329C8 /* ForgotPasswordViewController.swift */,
+				9AEA1D1E25E5DE5500C329C8 /* LoginViewController.swift */,
+				9AEA1D1F25E5DE5500C329C8 /* MainViewController.swift */,
+				9AEA1D1B25E5DE4F00C329C8 /* CreateUserViewController.swift */,
+				9AEA1D2525E5DE6000C329C8 /* Storyboard+Utility.swift */,
+				9AEA1D2625E5DE6000C329C8 /* ViewController+Utility.swift */,
+				9AEA1D2A25E5DE6800C329C8 /* User.swift */,
+				9AEA1D1525E5DE3800C329C8 /* Main.storyboard */,
+				9AEA1D1825E5DE3D00C329C8 /* Login.storyboard */,
+				9AEA1D0325E5DAC000C329C8 /* ViewController.swift */,
+				9AEA1D2E25E5DE7200C329C8 /* AuthService.swift */,
+				9AEA1D2D25E5DE7200C329C8 /* UserService.swift */,
+				9AEA1D0825E5DAC400C329C8 /* Assets.xcassets */,
+				9AEA1D0A25E5DAC400C329C8 /* LaunchScreen.storyboard */,
+				9AEA1D0D25E5DAC400C329C8 /* Info.plist */,
+				9AEA1D3525E5DF5100C329C8 /* GoogleService-Info.plist */,
+			);
+			path = Meditapp;
+			sourceTree = "<group>";
+		};
+		DBB559D127D8298BA1DC9A58 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FC3A95EE12470508254ED4D5 /* Pods_Meditapp.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9AEA1CFB25E5DABF00C329C8 /* Meditapp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9AEA1D1025E5DAC400C329C8 /* Build configuration list for PBXNativeTarget "Meditapp" */;
+			buildPhases = (
+				23DAD5D3353627B6932EC9A2 /* [CP] Check Pods Manifest.lock */,
+				9AEA1CF825E5DABF00C329C8 /* Sources */,
+				9AEA1CF925E5DABF00C329C8 /* Frameworks */,
+				9AEA1CFA25E5DABF00C329C8 /* Resources */,
+				DA6F8C4033BB6C160FA51E01 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Meditapp;
+			productName = Meditapp;
+			productReference = 9AEA1CFC25E5DAC000C329C8 /* Meditapp.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9AEA1CF425E5DABF00C329C8 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1240;
+				LastUpgradeCheck = 1240;
+				TargetAttributes = {
+					9AEA1CFB25E5DABF00C329C8 = {
+						CreatedOnToolsVersion = 12.4;
+					};
+				};
+			};
+			buildConfigurationList = 9AEA1CF725E5DABF00C329C8 /* Build configuration list for PBXProject "Meditapp" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9AEA1CF325E5DABF00C329C8;
+			productRefGroup = 9AEA1CFD25E5DAC000C329C8 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9AEA1CFB25E5DABF00C329C8 /* Meditapp */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9AEA1CFA25E5DABF00C329C8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9AEA1D1925E5DE3E00C329C8 /* Login.storyboard in Resources */,
+				9AEA1D1625E5DE3800C329C8 /* Main.storyboard in Resources */,
+				9AEA1D3625E5DF5100C329C8 /* GoogleService-Info.plist in Resources */,
+				9AEA1D0C25E5DAC400C329C8 /* LaunchScreen.storyboard in Resources */,
+				9AEA1D0925E5DAC400C329C8 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		23DAD5D3353627B6932EC9A2 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Meditapp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DA6F8C4033BB6C160FA51E01 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Meditapp/Pods-Meditapp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Meditapp/Pods-Meditapp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Meditapp/Pods-Meditapp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9AEA1CF825E5DABF00C329C8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9AEA1D0425E5DAC000C329C8 /* ViewController.swift in Sources */,
+				9AEA1D2325E5DE5500C329C8 /* ForgotPasswordViewController.swift in Sources */,
+				9AEA1D0025E5DAC000C329C8 /* AppDelegate.swift in Sources */,
+				9AEA1D3025E5DE7200C329C8 /* AuthService.swift in Sources */,
+				9AEA1D2825E5DE6000C329C8 /* ViewController+Utility.swift in Sources */,
+				9AEA1D2725E5DE6000C329C8 /* Storyboard+Utility.swift in Sources */,
+				9AEA1D0225E5DAC000C329C8 /* SceneDelegate.swift in Sources */,
+				9AEA1D2F25E5DE7200C329C8 /* UserService.swift in Sources */,
+				9AEA1D2225E5DE5500C329C8 /* MainViewController.swift in Sources */,
+				9AEA1D2125E5DE5500C329C8 /* LoginViewController.swift in Sources */,
+				9AEA1D2B25E5DE6800C329C8 /* User.swift in Sources */,
+				9AEA1D1C25E5DE4F00C329C8 /* CreateUserViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		9AEA1D0A25E5DAC400C329C8 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9AEA1D0B25E5DAC400C329C8 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		9AEA1D0E25E5DAC400C329C8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		9AEA1D0F25E5DAC400C329C8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9AEA1D1125E5DAC400C329C8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BEE27369E814AADE44D03C86 /* Pods-Meditapp.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = Meditapp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = capstone.Meditapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9AEA1D1225E5DAC400C329C8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B2CD616A923D87988BE08962 /* Pods-Meditapp.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = Meditapp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = capstone.Meditapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9AEA1CF725E5DABF00C329C8 /* Build configuration list for PBXProject "Meditapp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9AEA1D0E25E5DAC400C329C8 /* Debug */,
+				9AEA1D0F25E5DAC400C329C8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9AEA1D1025E5DAC400C329C8 /* Build configuration list for PBXNativeTarget "Meditapp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9AEA1D1125E5DAC400C329C8 /* Debug */,
+				9AEA1D1225E5DAC400C329C8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9AEA1CF425E5DABF00C329C8 /* Project object */;
+}
