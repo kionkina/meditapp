@@ -1,6 +1,0 @@
-framework module Pods_Meditapp {
-  umbrella header "Pods-Meditapp-umbrella.h"
-
-  export *
-  module * { export * }
-}
