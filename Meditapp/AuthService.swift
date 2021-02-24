@@ -23,6 +23,9 @@ struct AuthService {
     
     // Creates an authenticated user on Firebase
     static func createUser(controller : UIViewController, email: String, password: String, completion: @escaping (FIRUser?) -> Void){
+        print("in create user")
+        print("email:")
+        print(email)
         Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
             if let error = error {
                 signUpErrors(error: error, controller: controller)

@@ -44,6 +44,7 @@ class CreateUserViewController: UIViewController {
             !username.isEmpty,
             !firstName.isEmpty,
             !lastName.isEmpty
+        
             else {
                 print("Required fields are not all filled!")
                 return
