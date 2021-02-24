@@ -16,7 +16,8 @@ typealias FIRUser = FirebaseAuth.User
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    var window: UIWindow?
+    var window: UIWindow? = UIWindow(frame: UIScreen.main.bounds)
+    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
@@ -40,15 +41,21 @@ extension AppDelegate {
             
             
             User.setCurrent(user)
-            
-            initialViewController = UIStoryboard.initialViewController(for: .main)
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            initialViewController = storyboard.instantiateViewController(withIdentifier: "MainViewController")
         }
         else {
             print("MADE IT TO ELSE STATEMENT")
-            initialViewController = UIStoryboard.initialViewController(for: .login)
+            let storyboard = UIStoryboard(name: "Login", bundle: nil)
+            // Look into using UINavigationController
+            initialViewController = storyboard.instantiateViewController(withIdentifier:"LoginViewController")
         }
         
+        print("HERE 3")
+        print(initialViewController) // <UINavigationController: 0x7fa5c3825000>
         window?.rootViewController = initialViewController
+        
+        print(window?.rootViewController) // nil !! -- fixed
         window?.makeKeyAndVisible()
     }
 }
