@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="84c-LI-r4K">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Pwg-Fy-D7M">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
@@ -7,56 +7,56 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Tab Bar Controller-->
-        <scene sceneID="o3d-T7-tzb">
-            <objects>
-                <tabBarController id="84c-LI-r4K" sceneMemberID="viewController">
-                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="18x-oa-gAQ">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </tabBar>
-                    <connections>
-                        <segue destination="Sh1-xN-WgL" kind="relationship" relationship="viewControllers" id="J3b-G5-bES"/>
-                        <segue destination="Ga0-TT-4BI" kind="relationship" relationship="viewControllers" id="8eh-Zk-2gX"/>
-                    </connections>
-                </tabBarController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="e6u-qi-d98" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-2497" y="-259"/>
-        </scene>
         <!--Item 1-->
-        <scene sceneID="lec-0v-MbU">
+        <scene sceneID="lVO-0d-w6j">
             <objects>
-                <viewController id="Sh1-xN-WgL" customClass="MainViewController" customModule="Meditapp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="23V-cu-c6f" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="ddI-aG-Dhg"/>
-                        <viewControllerLayoutGuide type="bottom" id="8eO-EO-QcH"/>
+                        <viewControllerLayoutGuide type="top" id="wEa-yz-yVg"/>
+                        <viewControllerLayoutGuide type="bottom" id="Guh-qv-kxN"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="HFn-1L-Vxu">
+                    <view key="view" contentMode="scaleToFill" id="Hvm-9M-V3c">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w6m-c1-T6S">
-                                <rect key="frame" x="147" y="128" width="80" height="41"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Welcome!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cF8-Yg-Fw9">
+                                <rect key="frame" x="140" y="171" width="95" height="27"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item 1" id="X2X-jO-eRp"/>
+                    <tabBarItem key="tabBarItem" title="Item 1" id="ccc-og-8vJ"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ZJf-oF-RPl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5Pg-i1-FV0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2730" y="531"/>
+            <point key="canvasLocation" x="-721" y="318"/>
         </scene>
-        <!--Profile-->
+        <!--Tab Bar Controller-->
+        <scene sceneID="VQb-OF-aNQ">
+            <objects>
+                <tabBarController id="Pwg-Fy-D7M" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="b4i-V8-6HY">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="23V-cu-c6f" kind="relationship" relationship="viewControllers" id="UoT-dz-TlB"/>
+                        <segue destination="Ga0-TT-4BI" kind="relationship" relationship="viewControllers" id="9rj-M9-Wyw"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3Zg-mi-cX0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-346" y="-484"/>
+        </scene>
+        <!--Item-->
         <scene sceneID="d52-lg-Jwa">
             <objects>
-                <viewController storyboardIdentifier="MainViewController" id="Ga0-TT-4BI" customClass="MainViewController" customModule="Meditapp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MainViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ga0-TT-4BI" customClass="MainViewController" customModule="Meditapp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="7YS-5m-X6f"/>
                         <viewControllerLayoutGuide type="bottom" id="nOm-tU-Z1k"/>
@@ -139,8 +139,7 @@
                             <constraint firstItem="Vji-tN-1ni" firstAttribute="leading" secondItem="m03-uq-8Ar" secondAttribute="leadingMargin" constant="30" id="mkt-Co-S1B"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Profile" id="5W9-XD-F7a"/>
-                    <navigationItem key="navigationItem" id="hLz-Ba-7L5"/>
+                    <tabBarItem key="tabBarItem" title="Item" id="cyD-GQ-zjE"/>
                     <connections>
                         <outlet property="nameLabel" destination="qwu-dC-urs" id="Dbi-f1-m8u"/>
                         <outlet property="usernameLabel" destination="NOq-1z-2vY" id="QeI-Xn-fr7"/>
@@ -148,7 +147,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LLf-VD-Mva" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1969" y="530"/>
+            <point key="canvasLocation" x="98" y="318"/>
         </scene>
     </scenes>
     <resources>
