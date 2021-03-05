@@ -18,7 +18,7 @@
 		9AEA1D1925E5DE3E00C329C8 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9AEA1D1825E5DE3D00C329C8 /* Login.storyboard */; };
 		9AEA1D1C25E5DE4F00C329C8 /* CreateUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D1B25E5DE4F00C329C8 /* CreateUserViewController.swift */; };
 		9AEA1D2125E5DE5500C329C8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D1E25E5DE5500C329C8 /* LoginViewController.swift */; };
-		9AEA1D2225E5DE5500C329C8 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D1F25E5DE5500C329C8 /* MainViewController.swift */; };
+		9AEA1D2225E5DE5500C329C8 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D1F25E5DE5500C329C8 /* ProfileViewController.swift */; };
 		9AEA1D2325E5DE5500C329C8 /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D2025E5DE5500C329C8 /* ForgotPasswordViewController.swift */; };
 		9AEA1D2725E5DE6000C329C8 /* Storyboard+Utility .swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D2525E5DE6000C329C8 /* Storyboard+Utility .swift */; };
 		9AEA1D2825E5DE6000C329C8 /* ViewController+Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D2625E5DE6000C329C8 /* ViewController+Utility.swift */; };
@@ -41,7 +41,7 @@
 		9AEA1D1825E5DE3D00C329C8 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		9AEA1D1B25E5DE4F00C329C8 /* CreateUserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateUserViewController.swift; sourceTree = "<group>"; };
 		9AEA1D1E25E5DE5500C329C8 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		9AEA1D1F25E5DE5500C329C8 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		9AEA1D1F25E5DE5500C329C8 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		9AEA1D2025E5DE5500C329C8 /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
 		9AEA1D2525E5DE6000C329C8 /* Storyboard+Utility .swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Storyboard+Utility .swift"; sourceTree = "<group>"; };
 		9AEA1D2625E5DE6000C329C8 /* ViewController+Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ViewController+Utility.swift"; sourceTree = "<group>"; };
@@ -99,7 +99,7 @@
 				9AEA1CFF25E5DAC000C329C8 /* AppDelegate.swift */,
 				9AEA1D2025E5DE5500C329C8 /* ForgotPasswordViewController.swift */,
 				9AEA1D1E25E5DE5500C329C8 /* LoginViewController.swift */,
-				9AEA1D1F25E5DE5500C329C8 /* MainViewController.swift */,
+				9AEA1D1F25E5DE5500C329C8 /* ProfileViewController.swift */,
 				9AEA1D1B25E5DE4F00C329C8 /* CreateUserViewController.swift */,
 				9AEA1D2525E5DE6000C329C8 /* Storyboard+Utility .swift */,
 				9AEA1D2625E5DE6000C329C8 /* ViewController+Utility.swift */,
@@ -252,7 +252,7 @@
 				9AEA1D2725E5DE6000C329C8 /* Storyboard+Utility .swift in Sources */,
 				9AEA1D2F25E5DE7200C329C8 /* UserService.swift in Sources */,
 				03C63C4725EE2A3A00AD7815 /* HomeTableViewController.swift in Sources */,
-				9AEA1D2225E5DE5500C329C8 /* MainViewController.swift in Sources */,
+				9AEA1D2225E5DE5500C329C8 /* ProfileViewController.swift in Sources */,
 				9AEA1D2125E5DE5500C329C8 /* LoginViewController.swift in Sources */,
 				9AEA1D2B25E5DE6800C329C8 /* User.swift in Sources */,
 				9AEA1D1C25E5DE4F00C329C8 /* CreateUserViewController.swift in Sources */,

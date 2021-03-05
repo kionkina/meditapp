@@ -10,10 +10,11 @@
         <!--Tab Bar Controller-->
         <scene sceneID="VQb-OF-aNQ">
             <objects>
-                <tabBarController id="Pwg-Fy-D7M" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="tabController" id="Pwg-Fy-D7M" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="b4i-V8-6HY">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="selectedImageTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
                         <segue destination="xEb-PT-1cq" kind="relationship" relationship="viewControllers" id="Zcf-9t-TY5"/>
@@ -27,7 +28,7 @@
         <!--Meditapp-->
         <scene sceneID="8iO-W9-RNU">
             <objects>
-                <tableViewController id="Jsw-9B-aLM" customClass="HomeTableViewController" customModule="Meditapp" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="homePage" useStoryboardIdentifierAsRestorationIdentifier="YES" clearsSelectionOnViewWillAppear="NO" id="Jsw-9B-aLM" customClass="HomeTableViewController" customModule="Meditapp" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="I6R-8y-7bb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -138,11 +139,11 @@
             </objects>
             <point key="canvasLocation" x="-687.20000000000005" y="992.65367316341838"/>
         </scene>
-        <!--Home-->
+        <!--Navigation Controller-->
         <scene sceneID="dQc-0s-lSW">
             <objects>
                 <navigationController id="xEb-PT-1cq" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Home" id="7DD-ky-zYy"/>
+                    <tabBarItem key="tabBarItem" title="" image="house.fill" catalog="system" id="7DD-ky-zYy"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="9tZ-Ts-bq1">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -159,7 +160,7 @@
         <!--profilePage-->
         <scene sceneID="d52-lg-Jwa">
             <objects>
-                <viewController storyboardIdentifier="MainViewController" title="profilePage" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ga0-TT-4BI" customClass="MainViewController" customModule="Meditapp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ProfileViewController" title="profilePage" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ga0-TT-4BI" customClass="ProfileViewController" customModule="Meditapp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="7YS-5m-X6f"/>
                         <viewControllerLayoutGuide type="bottom" id="nOm-tU-Z1k"/>
@@ -242,7 +243,7 @@
                             <constraint firstItem="Vji-tN-1ni" firstAttribute="leading" secondItem="m03-uq-8Ar" secondAttribute="leadingMargin" constant="30" id="mkt-Co-S1B"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Profile" id="cyD-GQ-zjE"/>
+                    <tabBarItem key="tabBarItem" title="" image="person.fill" catalog="system" id="cyD-GQ-zjE"/>
                     <connections>
                         <outlet property="nameLabel" destination="qwu-dC-urs" id="Dbi-f1-m8u"/>
                         <outlet property="usernameLabel" destination="NOq-1z-2vY" id="QeI-Xn-fr7"/>
@@ -257,6 +258,8 @@
         <image name="backward.fill" catalog="system" width="128" height="79"/>
         <image name="forward.fill" catalog="system" width="128" height="79"/>
         <image name="hand.thumbsup.fill" catalog="system" width="128" height="121"/>
+        <image name="house.fill" catalog="system" width="128" height="106"/>
+        <image name="person.fill" catalog="system" width="128" height="120"/>
         <image name="photo" width="1400" height="1400"/>
         <image name="play.circle" catalog="system" width="128" height="121"/>
         <systemColor name="systemBackgroundColor">
