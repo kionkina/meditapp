@@ -10,6 +10,7 @@ import UIKit
 import FirebaseAuth
 import FirebaseDynamicLinks
 import FirebaseCore
+import FirebaseFirestore
 
 typealias FIRUser = FirebaseAuth.User
 
@@ -21,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
+        let db = Firestore.firestore()
         configureInitialRootViewController(for: window)
         return true
     }

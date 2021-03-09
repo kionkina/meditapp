@@ -6,41 +6,57 @@
 //
 
 import Foundation
-import FirebaseDatabase
+import Firebase
+
 
 struct UserService {
+
     static func create(_ firUser: FIRUser, username: String, firstName: String, lastName: String, completion: @escaping (User?) -> Void) {
         let userAttrs = ["username": username,
                          "firstName": firstName,
                          "lastName": lastName]
+        print("IN USER SERVICE")
+        print("UID: " + firUser.uid)
+
+        let ref = Firestore.firestore().collection("users").document(firUser.uid)
         
-        let ref = Database.database().reference().child("users").child(firUser.uid)
-        ref.setValue(userAttrs) { (error, ref) in
+        
+        
+        ref.setData(userAttrs) { error in
             if let error = error {
                 assertionFailure(error.localizedDescription)
                 return completion(nil)
             }
-            
-            ref.observeSingleEvent(of: .value, with: { (snapshot) in
-                let user = User(snapshot: snapshot)
-                completion(user)
-            })
+            else {
+                
+                ref.addSnapshotListener { documentSnapshot, error in
+                    guard let snapshot = documentSnapshot else {
+                            print("Error fetching document: \(error!)")
+                            return
+                        }
+                    
+                    let user = User(snapshot: snapshot)
+                    completion(user)
+                    
+                    }
+
+            }
         }
     }
     
     static func show(forUID uid: String, completion: @escaping (User?) -> Void) {
-        let ref = Database.database().reference().child("users").child(uid)
+        /*let ref = Database.database().reference().child("users").child(uid)
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
             guard let user = User(snapshot: snapshot) else {
                 return completion(nil)
             }
             
             completion(user)
-        })
+        })*/
     }
     
     static func deleteUser(forUID uid: String, success: @escaping (Bool) -> Void) {
-        let ref = Database.database().reference().child("users")
+        /*let ref = Database.database().reference().child("users")
         let object = [uid : NSNull()]
         ref.updateChildValues(object) { (error, ref) -> Void in
             if let error = error {
@@ -50,5 +66,7 @@ struct UserService {
             return success(true)
         }
         
+    */
     }
 }
+
