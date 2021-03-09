@@ -66,6 +66,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		03A2B2AE25F62016005239B1 /* UserAuth */ = {
+			isa = PBXGroup;
+			children = (
+				9AEA1D2E25E5DE7200C329C8 /* AuthService.swift */,
+				9AEA1D1E25E5DE5500C329C8 /* LoginViewController.swift */,
+				9AEA1D1B25E5DE4F00C329C8 /* CreateUserViewController.swift */,
+				9AEA1D2025E5DE5500C329C8 /* ForgotPasswordViewController.swift */,
+				9AEA1D2D25E5DE7200C329C8 /* UserService.swift */,
+				9AEA1D2A25E5DE6800C329C8 /* User.swift */,
+			);
+			path = UserAuth;
+			sourceTree = "<group>";
+		};
+		03A2B2B125F62249005239B1 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				9AEA1D1525E5DE3800C329C8 /* Main.storyboard */,
+				9AEA1D1825E5DE3D00C329C8 /* Login.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
 		82E79FF1E6DD832BBC1D75F5 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -96,19 +118,13 @@
 		9AEA1CFE25E5DAC000C329C8 /* Meditapp */ = {
 			isa = PBXGroup;
 			children = (
+				03A2B2B125F62249005239B1 /* Storyboards */,
+				03A2B2AE25F62016005239B1 /* UserAuth */,
 				9AEA1CFF25E5DAC000C329C8 /* AppDelegate.swift */,
-				9AEA1D2025E5DE5500C329C8 /* ForgotPasswordViewController.swift */,
-				9AEA1D1E25E5DE5500C329C8 /* LoginViewController.swift */,
 				9AEA1D1F25E5DE5500C329C8 /* ProfileViewController.swift */,
-				9AEA1D1B25E5DE4F00C329C8 /* CreateUserViewController.swift */,
 				9AEA1D2525E5DE6000C329C8 /* Storyboard+Utility .swift */,
 				9AEA1D2625E5DE6000C329C8 /* ViewController+Utility.swift */,
-				9AEA1D2A25E5DE6800C329C8 /* User.swift */,
-				9AEA1D1525E5DE3800C329C8 /* Main.storyboard */,
-				9AEA1D1825E5DE3D00C329C8 /* Login.storyboard */,
 				9AEA1D0325E5DAC000C329C8 /* ViewController.swift */,
-				9AEA1D2E25E5DE7200C329C8 /* AuthService.swift */,
-				9AEA1D2D25E5DE7200C329C8 /* UserService.swift */,
 				9AEA1D0825E5DAC400C329C8 /* Assets.xcassets */,
 				9AEA1D0A25E5DAC400C329C8 /* LaunchScreen.storyboard */,
 				9AEA1D0D25E5DAC400C329C8 /* Info.plist */,
