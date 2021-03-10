@@ -45,14 +45,19 @@ struct UserService {
     }
     
     static func show(forUID uid: String, completion: @escaping (User?) -> Void) {
-        /*let ref = Database.database().reference().child("users").child(uid)
-        ref.observeSingleEvent(of: .value, with: { (snapshot) in
-            guard let user = User(snapshot: snapshot) else {
-                return completion(nil)
-            }
+        
+        let ref = Firestore.firestore().collection("users").document(uid)
+        
+        ref.addSnapshotListener { documentSnapshot, error in
+            guard let snapshot = documentSnapshot else {
+                    print("Error fetching document: \(error!)")
+                    return
+                }
             
+            let user = User(snapshot: snapshot)
             completion(user)
-        })*/
+            
+            }
     }
     
     static func deleteUser(forUID uid: String, success: @escaping (Bool) -> Void) {

@@ -7,7 +7,6 @@
 
 import Foundation
 import UIKit
-import FirebaseDatabase.FIRDataSnapshot
 import FirebaseFirestore
 
 class User : NSObject {
