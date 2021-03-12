@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="kAn-ea-sfi">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
@@ -18,17 +18,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kettle" translatesAutoresizingMaskIntoConstraints="NO" id="7Si-Es-DC3">
-                                <rect key="frame" x="66" y="50" width="243" height="243"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="7Si-Es-DC3" secondAttribute="height" multiplier="1:1" id="o6W-pR-bj0"/>
-                                </constraints>
-                            </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O1O-Ed-unx">
-                                <rect key="frame" x="16" y="331" width="343" height="316"/>
+                                <rect key="frame" x="16" y="379" width="343" height="268"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="y3T-5s-x5D">
-                                        <rect key="frame" x="20" y="20" width="303" height="276"/>
+                                        <rect key="frame" x="20" y="20" width="303" height="228"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bO2-9G-gVO">
                                                 <rect key="frame" x="131" y="0.0" width="41" height="25"/>
@@ -69,10 +63,10 @@
                                                 </connections>
                                             </button>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="bdS-N1-S6m">
-                                                <rect key="frame" x="13.5" y="198" width="276" height="78"/>
+                                                <rect key="frame" x="13.5" y="198" width="276" height="30"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iT2-k9-9Sa">
-                                                        <rect key="frame" x="0.0" y="24" width="107" height="30"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="107" height="30"/>
                                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="30" id="90O-wC-l1Q"/>
@@ -84,7 +78,7 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3EK-xG-Bgt" userLabel="Forgot your passoword?">
-                                                        <rect key="frame" x="119" y="24" width="157" height="30"/>
+                                                        <rect key="frame" x="119" y="0.0" width="157" height="30"/>
                                                         <state key="normal" title="Forgot your password?"/>
                                                         <connections>
                                                             <action selector="forgotPasswordClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ad9-jC-AtM"/>
@@ -114,18 +108,36 @@
                                     <constraint firstItem="y3T-5s-x5D" firstAttribute="centerY" secondItem="O1O-Ed-unx" secondAttribute="centerY" id="hdN-Y5-Pae"/>
                                 </constraints>
                             </view>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="meditation" translatesAutoresizingMaskIntoConstraints="NO" id="7Fs-Qe-UMS">
+                                <rect key="frame" x="23" y="74" width="329" height="186"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="186" id="Jdc-4o-srJ"/>
+                                    <constraint firstAttribute="width" constant="329" id="PoO-2d-fi7"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Meditapp" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ut2-Hx-FRD">
+                                <rect key="frame" x="145" y="300" width="102" height="31"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="31" id="TdD-Xl-iDd"/>
+                                    <constraint firstAttribute="width" constant="102" id="i7w-Tz-Hyy"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HiraginoSans-W6" family="Hiragino Sans" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="7Si-Es-DC3" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="2Nh-O2-FeA"/>
-                            <constraint firstItem="O1O-Ed-unx" firstAttribute="top" secondItem="7Si-Es-DC3" secondAttribute="bottom" constant="38" id="C3u-Vl-GCK"/>
+                            <constraint firstItem="7Fs-Qe-UMS" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="74" id="5E5-20-9zm"/>
+                            <constraint firstItem="7Fs-Qe-UMS" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="7" id="DRF-H7-xQt"/>
+                            <constraint firstItem="Ut2-Hx-FRD" firstAttribute="top" secondItem="7Fs-Qe-UMS" secondAttribute="bottom" constant="40" id="FjF-fZ-Af6"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="7Fs-Qe-UMS" secondAttribute="trailing" constant="7" id="GRL-MH-U0n"/>
+                            <constraint firstItem="Ut2-Hx-FRD" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="145" id="NGO-QD-pTW"/>
                             <constraint firstAttribute="trailingMargin" secondItem="O1O-Ed-unx" secondAttribute="trailing" id="NTp-rg-Dfx"/>
                             <constraint firstAttribute="leadingMargin" secondItem="O1O-Ed-unx" secondAttribute="leading" id="OTE-mW-ORC"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="7Si-Es-DC3" secondAttribute="trailing" constant="50" id="RVa-ky-Sop"/>
                             <constraint firstItem="O1O-Ed-unx" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="TtL-hj-8dF"/>
-                            <constraint firstItem="7Si-Es-DC3" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="50" id="b2F-zP-VaR"/>
+                            <constraint firstItem="Ut2-Hx-FRD" firstAttribute="top" secondItem="7Fs-Qe-UMS" secondAttribute="bottom" constant="40" id="k3X-sS-3yq"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="O1O-Ed-unx" secondAttribute="bottom" constant="20" id="rxd-fj-EIa"/>
-                            <constraint firstItem="7Si-Es-DC3" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="50" id="sEj-bN-dS7"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="iC1-fT-vKu"/>
@@ -423,5 +435,6 @@
     </scenes>
     <resources>
         <image name="kettle" width="75" height="75"/>
+        <image name="meditation" width="800" height="445"/>
     </resources>
 </document>

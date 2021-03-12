@@ -41,7 +41,7 @@ extension AppDelegate {
             
             User.setCurrent(user)
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            initialViewController = storyboard.instantiateViewController(withIdentifier: "MainViewController")
+            initialViewController = storyboard.instantiateViewController(withIdentifier: "tabController")
         }
         else {
             let storyboard = UIStoryboard(name: "Login", bundle: nil)

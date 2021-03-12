@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03C63C4425EE295A00AD7815 /* postCellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C63C4325EE295A00AD7815 /* postCellTableViewCell.swift */; };
+		03C63C4725EE2A3A00AD7815 /* HomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C63C4625EE2A3900AD7815 /* HomeTableViewController.swift */; };
 		60D61B693E64EB1965C57E2B /* Pods_Meditapp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC3A95EE12470508254ED4D5 /* Pods_Meditapp.framework */; };
 		9AEA1D0025E5DAC000C329C8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1CFF25E5DAC000C329C8 /* AppDelegate.swift */; };
 		9AEA1D0425E5DAC000C329C8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D0325E5DAC000C329C8 /* ViewController.swift */; };
@@ -16,7 +18,7 @@
 		9AEA1D1925E5DE3E00C329C8 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9AEA1D1825E5DE3D00C329C8 /* Login.storyboard */; };
 		9AEA1D1C25E5DE4F00C329C8 /* CreateUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D1B25E5DE4F00C329C8 /* CreateUserViewController.swift */; };
 		9AEA1D2125E5DE5500C329C8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D1E25E5DE5500C329C8 /* LoginViewController.swift */; };
-		9AEA1D2225E5DE5500C329C8 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D1F25E5DE5500C329C8 /* MainViewController.swift */; };
+		9AEA1D2225E5DE5500C329C8 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D1F25E5DE5500C329C8 /* ProfileViewController.swift */; };
 		9AEA1D2325E5DE5500C329C8 /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D2025E5DE5500C329C8 /* ForgotPasswordViewController.swift */; };
 		9AEA1D2725E5DE6000C329C8 /* Storyboard+Utility .swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D2525E5DE6000C329C8 /* Storyboard+Utility .swift */; };
 		9AEA1D2825E5DE6000C329C8 /* ViewController+Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D2625E5DE6000C329C8 /* ViewController+Utility.swift */; };
@@ -27,6 +29,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		03C63C4325EE295A00AD7815 /* postCellTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = postCellTableViewCell.swift; sourceTree = "<group>"; };
+		03C63C4625EE2A3900AD7815 /* HomeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewController.swift; sourceTree = "<group>"; };
 		9AEA1CFC25E5DAC000C329C8 /* Meditapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Meditapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AEA1CFF25E5DAC000C329C8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9AEA1D0325E5DAC000C329C8 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -37,7 +41,7 @@
 		9AEA1D1825E5DE3D00C329C8 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		9AEA1D1B25E5DE4F00C329C8 /* CreateUserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateUserViewController.swift; sourceTree = "<group>"; };
 		9AEA1D1E25E5DE5500C329C8 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		9AEA1D1F25E5DE5500C329C8 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		9AEA1D1F25E5DE5500C329C8 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		9AEA1D2025E5DE5500C329C8 /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
 		9AEA1D2525E5DE6000C329C8 /* Storyboard+Utility .swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Storyboard+Utility .swift"; sourceTree = "<group>"; };
 		9AEA1D2625E5DE6000C329C8 /* ViewController+Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ViewController+Utility.swift"; sourceTree = "<group>"; };
@@ -62,6 +66,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		03A2B2AE25F62016005239B1 /* UserAuth */ = {
+			isa = PBXGroup;
+			children = (
+				9AEA1D2E25E5DE7200C329C8 /* AuthService.swift */,
+				9AEA1D1E25E5DE5500C329C8 /* LoginViewController.swift */,
+				9AEA1D1B25E5DE4F00C329C8 /* CreateUserViewController.swift */,
+				9AEA1D2025E5DE5500C329C8 /* ForgotPasswordViewController.swift */,
+				9AEA1D2D25E5DE7200C329C8 /* UserService.swift */,
+				9AEA1D2A25E5DE6800C329C8 /* User.swift */,
+			);
+			path = UserAuth;
+			sourceTree = "<group>";
+		};
+		03A2B2B125F62249005239B1 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				9AEA1D1525E5DE3800C329C8 /* Main.storyboard */,
+				9AEA1D1825E5DE3D00C329C8 /* Login.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
 		82E79FF1E6DD832BBC1D75F5 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -92,23 +118,19 @@
 		9AEA1CFE25E5DAC000C329C8 /* Meditapp */ = {
 			isa = PBXGroup;
 			children = (
+				03A2B2B125F62249005239B1 /* Storyboards */,
+				03A2B2AE25F62016005239B1 /* UserAuth */,
 				9AEA1CFF25E5DAC000C329C8 /* AppDelegate.swift */,
-				9AEA1D2025E5DE5500C329C8 /* ForgotPasswordViewController.swift */,
-				9AEA1D1E25E5DE5500C329C8 /* LoginViewController.swift */,
-				9AEA1D1F25E5DE5500C329C8 /* MainViewController.swift */,
-				9AEA1D1B25E5DE4F00C329C8 /* CreateUserViewController.swift */,
+				9AEA1D1F25E5DE5500C329C8 /* ProfileViewController.swift */,
 				9AEA1D2525E5DE6000C329C8 /* Storyboard+Utility .swift */,
 				9AEA1D2625E5DE6000C329C8 /* ViewController+Utility.swift */,
-				9AEA1D2A25E5DE6800C329C8 /* User.swift */,
-				9AEA1D1525E5DE3800C329C8 /* Main.storyboard */,
-				9AEA1D1825E5DE3D00C329C8 /* Login.storyboard */,
 				9AEA1D0325E5DAC000C329C8 /* ViewController.swift */,
-				9AEA1D2E25E5DE7200C329C8 /* AuthService.swift */,
-				9AEA1D2D25E5DE7200C329C8 /* UserService.swift */,
 				9AEA1D0825E5DAC400C329C8 /* Assets.xcassets */,
 				9AEA1D0A25E5DAC400C329C8 /* LaunchScreen.storyboard */,
 				9AEA1D0D25E5DAC400C329C8 /* Info.plist */,
 				9AEA1D3525E5DF5100C329C8 /* GoogleService-Info.plist */,
+				03C63C4325EE295A00AD7815 /* postCellTableViewCell.swift */,
+				03C63C4625EE2A3900AD7815 /* HomeTableViewController.swift */,
 			);
 			path = Meditapp;
 			sourceTree = "<group>";
@@ -240,11 +262,13 @@
 				9AEA1D0425E5DAC000C329C8 /* ViewController.swift in Sources */,
 				9AEA1D2325E5DE5500C329C8 /* ForgotPasswordViewController.swift in Sources */,
 				9AEA1D0025E5DAC000C329C8 /* AppDelegate.swift in Sources */,
+				03C63C4425EE295A00AD7815 /* postCellTableViewCell.swift in Sources */,
 				9AEA1D3025E5DE7200C329C8 /* AuthService.swift in Sources */,
 				9AEA1D2825E5DE6000C329C8 /* ViewController+Utility.swift in Sources */,
 				9AEA1D2725E5DE6000C329C8 /* Storyboard+Utility .swift in Sources */,
 				9AEA1D2F25E5DE7200C329C8 /* UserService.swift in Sources */,
-				9AEA1D2225E5DE5500C329C8 /* MainViewController.swift in Sources */,
+				03C63C4725EE2A3A00AD7815 /* HomeTableViewController.swift in Sources */,
+				9AEA1D2225E5DE5500C329C8 /* ProfileViewController.swift in Sources */,
 				9AEA1D2125E5DE5500C329C8 /* LoginViewController.swift in Sources */,
 				9AEA1D2B25E5DE6800C329C8 /* User.swift in Sources */,
 				9AEA1D1C25E5DE4F00C329C8 /* CreateUserViewController.swift in Sources */,
