@@ -74,7 +74,6 @@ struct AuthService {
         //TODO: update for recording deletions -- maybe use cloud functions?
         UserService.deleteUser(forUID: User.current.uid, success: { (success) in
             if success {
-                print("LOGGING OUT")
                 logUserOut()
                 user.delete { error in
                     if let error = error {
