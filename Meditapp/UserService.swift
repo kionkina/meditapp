@@ -15,12 +15,8 @@ struct UserService {
         let userAttrs = ["username": username,
                          "firstName": firstName,
                          "lastName": lastName]
-        print("IN USER SERVICE")
-        print("UID: " + firUser.uid)
-
+        
         let ref = Firestore.firestore().collection("users").document(firUser.uid)
-        
-        
         
         ref.setData(userAttrs) { error in
             if let error = error {
