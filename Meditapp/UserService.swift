@@ -61,17 +61,17 @@ struct UserService {
     }
     
     static func deleteUser(forUID uid: String, success: @escaping (Bool) -> Void) {
-        /*let ref = Database.database().reference().child("users")
-        let object = [uid : NSNull()]
-        ref.updateChildValues(object) { (error, ref) -> Void in
-            if let error = error {
-                print("error : \(error.localizedDescription)")
-                return success(false)
-            }
-            return success(true)
-        }
+        let ref = Firestore.firestore().collection("users").document(uid)
         
-    */
+        ref.delete() { err in
+            if let err = err {
+                print("Error removing document: \(err)")
+                return success(false)
+            } else {
+                print("Document successfully removed!")
+                return success(true)
+            }
+        }
     }
 }
 
