@@ -24,18 +24,14 @@ struct UserService {
                 return completion(nil)
             }
             else {
-                
                 ref.addSnapshotListener { documentSnapshot, error in
                     guard let snapshot = documentSnapshot else {
                             print("Error fetching document: \(error!)")
                             return
                         }
-                    
                     let user = User(snapshot: snapshot)
                     completion(user)
-                    
                     }
-
             }
         }
     }
@@ -49,11 +45,9 @@ struct UserService {
                     print("Error fetching document: \(error!)")
                     return
                 }
-            
             let user = User(snapshot: snapshot)
             completion(user)
-            
-            }
+        }
     }
     
     static func deleteUser(forUID uid: String, success: @escaping (Bool) -> Void) {
