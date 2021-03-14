@@ -7,7 +7,7 @@
 
 import Foundation
 import UIKit
-import FirebaseDatabase.FIRDataSnapshot
+import FirebaseFirestore
 
 class User : NSObject {
     
@@ -32,13 +32,13 @@ class User : NSObject {
     }
     
     //User init using Firebase snapshots
-    init?(snapshot: DataSnapshot) {
-        guard let dict = snapshot.value as? [String : Any],
+    init?(snapshot: DocumentSnapshot) {
+        guard let dict = snapshot.data(),
             let firstName = dict["firstName"] as? String,
             let lastName = dict["lastName"] as? String,
             let username = dict["username"] as? String
             else { return nil }
-        self.uid = snapshot.key
+        self.uid = snapshot.documentID
         self.firstName = firstName
         self.lastName = lastName
         self.username = username

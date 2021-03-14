@@ -9,7 +9,7 @@
 import UIKit
 import FirebaseAuth
 
-class MainViewController: UIViewController {
+class ProfileViewController: UIViewController {
 
     var authHandle: AuthStateDidChangeListenerHandle?
     

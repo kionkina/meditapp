@@ -70,6 +70,8 @@ struct AuthService {
     }
     
     static func deleteAccount(user : FIRUser){
+        //Delete in users collection first
+        //TODO: update for recording deletions -- maybe use cloud functions?
         UserService.deleteUser(forUID: User.current.uid, success: { (success) in
             if success {
                 logUserOut()
@@ -92,7 +94,7 @@ struct AuthService {
     static func authListener(viewController view : UIViewController) -> AuthStateDidChangeListenerHandle {
         let authHandle = Auth.auth().addStateDidChangeListener() { (auth, user) in
             guard user == nil else { return }
-            
+            //Line below was causing error-- fixed by resetting login page as intial view controller
             let loginViewController = UIStoryboard.initialViewController(for: .login)
             view.view.window?.rootViewController = loginViewController
             view.view.window?.makeKeyAndVisible()
@@ -137,6 +139,7 @@ struct AuthService {
     }
     
     static func logUserOut(){
+        print("in logUserOut")
         do {
             try Auth.auth().signOut()
         } catch let error as NSError {
