@@ -94,7 +94,7 @@ struct AuthService {
     static func authListener(viewController view : UIViewController) -> AuthStateDidChangeListenerHandle {
         let authHandle = Auth.auth().addStateDidChangeListener() { (auth, user) in
             guard user == nil else { return }
-            
+            //Line below was causing error-- fixed by resetting login page as intial view controller
             let loginViewController = UIStoryboard.initialViewController(for: .login)
             view.view.window?.rootViewController = loginViewController
             view.view.window?.makeKeyAndVisible()
@@ -139,6 +139,7 @@ struct AuthService {
     }
     
     static func logUserOut(){
+        print("in logUserOut")
         do {
             try Auth.auth().signOut()
         } catch let error as NSError {
