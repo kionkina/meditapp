@@ -268,7 +268,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GkS-E1-6OG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-687.20000000000005" y="992.65367316341838"/>
+            <point key="canvasLocation" x="-687" y="1695"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="dQc-0s-lSW">
@@ -281,7 +281,7 @@
                         <color key="barTintColor" red="1" green="0.86714914759999995" blue="0.56842068160000003" alpha="0.84705882349999995" colorSpace="custom" customColorSpace="sRGB"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="Jsw-9B-aLM" kind="relationship" relationship="rootViewController" id="x7q-Zh-kHI"/>
+                        <segue destination="gKr-Rn-TYR" kind="relationship" relationship="rootViewController" id="KDh-Wp-JiS"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UHY-tm-HpL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -383,6 +383,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LLf-VD-Mva" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="98" y="318"/>
+        </scene>
+        <!--Home View Controller-->
+        <scene sceneID="Lug-4h-lby">
+            <objects>
+                <viewController id="gKr-Rn-TYR" customClass="HomeViewController" customModule="Meditapp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Q6a-ky-cPM"/>
+                        <viewControllerLayoutGuide type="bottom" id="5tG-Io-j4N"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="PPb-z9-SwZ" customClass="HomeViewController">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Bbe-sh-A7f"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2DH-r9-hBh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-687" y="1035"/>
         </scene>
     </scenes>
     <resources>

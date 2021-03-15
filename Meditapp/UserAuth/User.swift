@@ -21,6 +21,8 @@ class User : NSObject {
                 "lastName" : lastName,
                 "username" : username]
     }
+    let tags: [String]
+    
     
     //Standard User init()
     init(uid: String, username: String, firstName: String, lastName: String) {
@@ -28,6 +30,7 @@ class User : NSObject {
         self.firstName = firstName
         self.lastName = lastName
         self.username = username
+        self.tags = []
         super.init()
     }
     
@@ -36,12 +39,14 @@ class User : NSObject {
         guard let dict = snapshot.data(),
             let firstName = dict["firstName"] as? String,
             let lastName = dict["lastName"] as? String,
-            let username = dict["username"] as? String
+            let username = dict["username"] as? String,
+            let tags = dict["tags"] as? [String]
             else { return nil }
         self.uid = snapshot.documentID
         self.firstName = firstName
         self.lastName = lastName
         self.username = username
+        self.tags = tags
     }
     
     //UserDefaults
@@ -49,13 +54,15 @@ class User : NSObject {
         guard let uid = aDecoder.decodeObject(forKey: "uid") as? String,
             let firstName = aDecoder.decodeObject(forKey: "firstName") as? String,
             let lastName = aDecoder.decodeObject(forKey: "lastName") as? String,
-            let username = aDecoder.decodeObject(forKey: "username") as? String
+            let username = aDecoder.decodeObject(forKey: "username") as? String,
+            let tags = aDecoder.decodeObject(forKey:"tags") as? [String]
             else { return nil }
         
         self.uid = uid
         self.firstName = firstName
         self.lastName = lastName
         self.username = username
+        self.tags = tags
     }
     
     
@@ -87,5 +94,6 @@ extension User: NSCoding {
         aCoder.encode(firstName, forKey: "firstName")
         aCoder.encode(lastName, forKey: "lastName")
         aCoder.encode(username, forKey: "username")
+        aCoder.encode(tags, forKey: "tags")
     }
 }
