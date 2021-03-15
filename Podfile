@@ -10,7 +10,7 @@ target 'Meditapp' do
 pod 'Firebase', '>= 2.5.0'
 pod 'Firebase/Core' 
 pod 'Firebase/Auth'
-pod 'Firebase/Database'
+pod 'Firebase/Firestore'
 pod 'Firebase/Storage'
 pod 'Firebase/DynamicLinks'
 
