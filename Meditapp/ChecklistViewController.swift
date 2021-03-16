@@ -98,6 +98,7 @@ class ChecklistViewController: UITableViewController {
             if let err = err {
                 print("Error updating document: \(err)")
             } else {
+                User.current.tags = selectedTags
                 print("Document successfully updated")
             }
         }

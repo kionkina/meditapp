@@ -21,7 +21,7 @@ class User : NSObject {
                 "lastName" : lastName,
                 "username" : username]
     }
-    let tags: [String]
+    var tags: [String]
     
     
     //Standard User init()
