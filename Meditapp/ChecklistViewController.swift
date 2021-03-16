@@ -6,25 +6,12 @@
 //
 
 import UIKit
-
-struct ChecklistItem {
-    var text = ""
-      var checked = false
-      
-      var dueDate = Date()
-      var date = "Reminde Me: Off"
-      var shouldRemind = false
-      var itemID = -1
-      
-    mutating func toggleChecked() {
-          checked = !checked
-      }
-}
+import Firebase
 
 class ChecklistViewController: UITableViewController {
-
     
-    var checklist: [ChecklistItem] = []
+    var checklist: [String] = ["morning", "evening", "relaxing", "energizing", "mantra"]
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -32,50 +19,18 @@ class ChecklistViewController: UITableViewController {
         // Do any additional setup after loading the view.
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return checklist.count
-    }
-    
-    override func tableView(_ tableView: UITableView,
-                            cellForRowAt indexPath: IndexPath)
-        -> UITableViewCell {
-            let cell = tableView.dequeueReusableCell(
-                withIdentifier: "ChecklistItem",
-                for: indexPath)
-            let item = checklist[indexPath.row]
-            configureText(for: cell, with: item)
-            configureCheckmark(for: cell, with: item)
-            return cell
-    }
 
-    override func tableView(_ tableView: UITableView,
-                            didSelectRowAt indexPath: IndexPath) {
-        if let cell = tableView.cellForRow(at: indexPath) {
-            let item = checklist[indexPath.row]
-            configureCheckmark(for: cell, with: item)
-        }
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
-    
-    func configureCheckmark(for cell: UITableViewCell,
-                            with item: ChecklistItem) {
-        let label = cell.viewWithTag(1001) as! UILabel
-        if item.checked {
-            label.text = "●"
-        } else {
-            label.text = ""
-        }
-    }
     
     func configureText(for cell: UITableViewCell,
-                        with item: ChecklistItem) {
-         let label = cell.viewWithTag(1000) as! UILabel
-         let detailLabel = cell.viewWithTag(1002) as! UILabel
-         label.text = item.text
-         detailLabel.text = item.date
+                        with item: String) {
+         print("in config text")
+         print(cell)
+        
+        let label = cell.viewWithTag(1000) as! UILabel
+         label.text = item
  //        label.text = "\(item.itemID): \(item.text)"
      }
+    
     
     /*
     // MARK: - Navigation
@@ -86,5 +41,66 @@ class ChecklistViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return checklist.count
+    }
+    
+    override func tableView(_ tableView: UITableView,
+                            cellForRowAt indexPath: IndexPath)
+        -> UITableViewCell {
+            print("CLICKED")
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: "ChecklistItem",
+                for: indexPath)
+            print("cell: ")
+            print(cell)
+            print("indexPath:")
+            print(indexPath)
+            let item = checklist[indexPath.row]
+            print(item)
+            configureText(for: cell, with: item)
 
+            return cell
+    }
+    
+
+    
+    @IBAction func done() {
+        print("done!")
+        
+        var userSelection: [String] = []
+        //unwrap optional
+        if let selectedRows = tableView.indexPathsForSelectedRows {
+            
+            for item: IndexPath in selectedRows {
+                userSelection.append(checklist[item.row])
+                print(checklist[item.row])
+            }
+        }
+        
+        print(userSelection)
+        updateData(selectedTags: userSelection)
+        //send this to db
+        
+        //TODO: check that at least one is selected
+        let initialViewController = UIStoryboard.initialViewController(for: .main)
+        self.view.window?.rootViewController = initialViewController
+        self.view.window?.makeKeyAndVisible()
+    }
+    
+    //TODO: move logic to controller
+    func updateData(selectedTags: [String]){
+        let docRef = Firestore.firestore().collection("users").document(User.current.uid)
+
+        docRef.updateData([
+            "tags": selectedTags
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
+        
+    }
 }
