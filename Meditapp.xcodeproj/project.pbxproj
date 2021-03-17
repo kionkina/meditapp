@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		03C63C4425EE295A00AD7815 /* postCellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C63C4325EE295A00AD7815 /* postCellTableViewCell.swift */; };
 		03C63C4725EE2A3A00AD7815 /* HomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C63C4625EE2A3900AD7815 /* HomeTableViewController.swift */; };
+		3613CA952602BBC30065D1CE /* TagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3613CA912602BBC30065D1CE /* TagsViewController.swift */; };
+		3613CA962602BBC30065D1CE /* RecordingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3613CA922602BBC30065D1CE /* RecordingViewController.swift */; };
+		3613CA972602BBC30065D1CE /* RecordingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3613CA932602BBC30065D1CE /* RecordingCell.swift */; };
+		3613CA982602BBC30065D1CE /* Recording.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3613CA942602BBC30065D1CE /* Recording.swift */; };
 		60D61B693E64EB1965C57E2B /* Pods_Meditapp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC3A95EE12470508254ED4D5 /* Pods_Meditapp.framework */; };
 		9AE03F582602958D00715283 /* SelectTagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE03F572602958D00715283 /* SelectTagsViewController.swift */; };
 		9AE03F5B2602959A00715283 /* QuestionanireController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE03F5A2602959900715283 /* QuestionanireController.swift */; };
@@ -33,6 +37,10 @@
 /* Begin PBXFileReference section */
 		03C63C4325EE295A00AD7815 /* postCellTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = postCellTableViewCell.swift; sourceTree = "<group>"; };
 		03C63C4625EE2A3900AD7815 /* HomeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewController.swift; sourceTree = "<group>"; };
+		3613CA912602BBC30065D1CE /* TagsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsViewController.swift; sourceTree = "<group>"; };
+		3613CA922602BBC30065D1CE /* RecordingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordingViewController.swift; sourceTree = "<group>"; };
+		3613CA932602BBC30065D1CE /* RecordingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordingCell.swift; sourceTree = "<group>"; };
+		3613CA942602BBC30065D1CE /* Recording.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recording.swift; sourceTree = "<group>"; };
 		9AE03F572602958D00715283 /* SelectTagsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectTagsViewController.swift; sourceTree = "<group>"; };
 		9AE03F5A2602959900715283 /* QuestionanireController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionanireController.swift; sourceTree = "<group>"; };
 		9AE03F742602994800715283 /* ChecklistViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChecklistViewController.swift; sourceTree = "<group>"; };
@@ -122,6 +130,10 @@
 		9AEA1CFE25E5DAC000C329C8 /* Meditapp */ = {
 			isa = PBXGroup;
 			children = (
+				3613CA942602BBC30065D1CE /* Recording.swift */,
+				3613CA932602BBC30065D1CE /* RecordingCell.swift */,
+				3613CA922602BBC30065D1CE /* RecordingViewController.swift */,
+				3613CA912602BBC30065D1CE /* TagsViewController.swift */,
 				03A2B2B125F62249005239B1 /* Storyboards */,
 				03A2B2AE25F62016005239B1 /* UserAuth */,
 				9AEA1CFF25E5DAC000C329C8 /* AppDelegate.swift */,
@@ -266,16 +278,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				9AEA1D2325E5DE5500C329C8 /* ForgotPasswordViewController.swift in Sources */,
+				3613CA952602BBC30065D1CE /* TagsViewController.swift in Sources */,
 				9AE03F5B2602959A00715283 /* QuestionanireController.swift in Sources */,
 				9AE03F582602958D00715283 /* SelectTagsViewController.swift in Sources */,
 				9AEA1D0025E5DAC000C329C8 /* AppDelegate.swift in Sources */,
 				03C63C4425EE295A00AD7815 /* postCellTableViewCell.swift in Sources */,
 				9AEA1D3025E5DE7200C329C8 /* AuthService.swift in Sources */,
 				9AEA1D2825E5DE6000C329C8 /* ViewController+Utility.swift in Sources */,
+				3613CA962602BBC30065D1CE /* RecordingViewController.swift in Sources */,
 				9AEA1D2725E5DE6000C329C8 /* Storyboard+Utility .swift in Sources */,
 				9AEA1D2F25E5DE7200C329C8 /* UserService.swift in Sources */,
 				03C63C4725EE2A3A00AD7815 /* HomeTableViewController.swift in Sources */,
 				9AEA1D2225E5DE5500C329C8 /* ProfileViewController.swift in Sources */,
+				3613CA982602BBC30065D1CE /* Recording.swift in Sources */,
+				3613CA972602BBC30065D1CE /* RecordingCell.swift in Sources */,
 				9AEA1D2125E5DE5500C329C8 /* LoginViewController.swift in Sources */,
 				9AEA1D2B25E5DE6800C329C8 /* User.swift in Sources */,
 				9AE03F752602994900715283 /* ChecklistViewController.swift in Sources */,
