@@ -200,7 +200,7 @@
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <state key="normal" title="Button"/>
                                             <connections>
-                                                <segue destination="ct4-kI-yZX" kind="show" id="v76-M4-5Zu"/>
+                                                <segue destination="ct4-kI-yZX" kind="show" identifier="toProfile" id="3Xe-06-on7"/>
                                             </connections>
                                         </button>
                                     </subviews>
@@ -257,6 +257,7 @@
                                     <outlet property="postTitle" destination="zgK-Tr-5pE" id="gje-So-nEq"/>
                                     <outlet property="progressBar" destination="0Bb-Kb-G7n" id="Osx-Fa-5cW"/>
                                     <outlet property="userImage" destination="DfJ-pM-k0Z" id="na1-nK-Sgb"/>
+                                    <outlet property="username" destination="qjr-Lp-deQ" id="bDL-zt-B25"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -281,10 +282,10 @@
             </objects>
             <point key="canvasLocation" x="-687" y="1048"/>
         </scene>
-        <!--User Profile Page Veiw Controller-->
+        <!--User Profile Page View Controller-->
         <scene sceneID="aXI-A7-GNJ">
             <objects>
-                <viewController id="ct4-kI-yZX" customClass="UserProfilePageVeiwController" sceneMemberID="viewController">
+                <viewController id="ct4-kI-yZX" customClass="UserProfilePageViewController" customModule="Meditapp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5jx-ri-CNZ"/>
                         <viewControllerLayoutGuide type="bottom" id="o2c-M2-a6f"/>

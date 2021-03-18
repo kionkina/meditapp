@@ -16,10 +16,15 @@ class HomeTableViewController: UITableViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "toProfile") {
+            let button = sender as! UIButton
+            if let cell = button.superview?.superview as? postCellTableViewCell {
+                print(cell.uid)
             let vc = segue.destination as! UserProfilePageViewController
-            vc.uid = sender.uid
+            vc.uid = cell.uid
+            }
         }
     }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +48,7 @@ class HomeTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! postCellTableViewCell
         cell.configure(with: models[indexPath.row])
+        cell.uid = models[indexPath.row].OwnerID
         
         return cell
     }

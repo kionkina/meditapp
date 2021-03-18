@@ -9,8 +9,6 @@ import UIKit
 
 class postCellTableViewCell: UITableViewCell {
     
-    
-    
     @IBOutlet weak var postTitle: UILabel!
     @IBOutlet weak var postDescription: UILabel!
     @IBOutlet weak var postImage: UIImageView!
@@ -21,6 +19,8 @@ class postCellTableViewCell: UITableViewCell {
     @IBOutlet weak var dislikesCount: UILabel!
     @IBOutlet weak var commentsCount: UILabel!
     @IBOutlet weak var username:UIButton!
+    
+    
     
     @IBAction func playButton(_ sender: UIButton) {
     }
@@ -44,11 +44,11 @@ class postCellTableViewCell: UITableViewCell {
     }
     
     @IBAction func username(_ sender: UIButton) {
-        
     }
     
     
     static let identifier = "postCellTableViewCell"
+    var uid: String = ""
     
     static func nib() -> UINib{
         return UINib(nibName: "postCellTableViewCell", bundle: nil)
@@ -74,7 +74,7 @@ class postCellTableViewCell: UITableViewCell {
         self.postImage.image = UIImage(named: model.postImage)
         self.userImage.image = UIImage(named: model.userImage)
         self.username.setTitle(model.OwnerID, for: .normal)
-        self.username.setValuesForKeys(["uid": model.OwnerID])
+        
     }
 
 }
