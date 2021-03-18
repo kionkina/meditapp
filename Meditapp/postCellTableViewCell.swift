@@ -20,6 +20,7 @@ class postCellTableViewCell: UITableViewCell {
     @IBOutlet weak var likesCount: UILabel!
     @IBOutlet weak var dislikesCount: UILabel!
     @IBOutlet weak var commentsCount: UILabel!
+    @IBOutlet weak var username:UIButton!
     
     @IBAction func playButton(_ sender: UIButton) {
     }
@@ -40,6 +41,10 @@ class postCellTableViewCell: UITableViewCell {
     }
     
     @IBAction func commentButton(_ sender: UIButton) {
+    }
+    
+    @IBAction func username(_ sender: UIButton) {
+        
     }
     
     
@@ -68,6 +73,8 @@ class postCellTableViewCell: UITableViewCell {
         self.postDescription.text = model.postDescription
         self.postImage.image = UIImage(named: model.postImage)
         self.userImage.image = UIImage(named: model.userImage)
+        self.username.setTitle(model.OwnerID, for: .normal)
+        self.username.setValuesForKeys(["uid": model.OwnerID])
     }
 
 }
