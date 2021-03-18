@@ -43,6 +43,8 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print(User.current.uid)
+        
         loadRecordings()
         print(getDirectory())
         navigationItem.largeTitleDisplayMode = .never
@@ -320,7 +322,7 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
         
         uploadTask.resume()
         
-        guard let user = Auth.auth().currentUser else{return}
+//        guard let user = Auth.auth().currentUser else{return}
         
         let recID = UUID().uuidString
         
@@ -328,7 +330,7 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
             "Name" : filename,
             "Timestamp" : Timestamp(date: Date()),
             "RecID" : recID,
-            "OwnerID" : user.uid,
+            "OwnerID" : User.current.uid,
             "Tags" : postTags,
             "Description" : postDesc.text!
 //            "StorageRef" : audioRef
@@ -341,7 +343,7 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
                 print("Document successfully written!")
             }
         }
-        db.collection("Users").document(user.uid).updateData([
+        db.collection("users").document(User.current.uid).updateData([
             "content" : FieldValue.arrayUnion([recID])
         ])
 //        dismiss(animated: true, completion: nil)

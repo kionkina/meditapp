@@ -45,19 +45,10 @@ class TagsViewController: UIViewController, TKCollectionViewDelegate {
     func tagIsBeingAdded(name: String?) {
         // Example: save testCollection.tags to UserDefault
         print("added \(name!)")
-        addButton.isEnabled = true
     }
 
     func tagIsBeingRemoved(name: String?) {
         print("removed \(name!)")
-        if productTagsCollection.tags.count == 0{
-            addButton.isEnabled = false
-        }
-    }
-    
-    @IBAction func cancel(_ sender: Any) {
-        delegate?.TagsViewController(self, didAddTags: productTagsCollection.tags)
-        dismiss(animated: true, completion: nil)
     }
     
     @IBAction func done(_ sender: Any) {
