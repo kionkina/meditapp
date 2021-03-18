@@ -14,7 +14,8 @@ struct UserService {
     static func create(_ firUser: FIRUser, username: String, firstName: String, lastName: String, completion: @escaping (User?) -> Void) {
         let userAttrs = ["username": username,
                          "firstName": firstName,
-                         "lastName": lastName]
+                         "lastName": lastName,
+                         "tags": []] as [String : Any]
         
         let ref = Firestore.firestore().collection("users").document(firUser.uid)
         
@@ -39,7 +40,7 @@ struct UserService {
     static func show(forUID uid: String, completion: @escaping (User?) -> Void) {
         
         let ref = Firestore.firestore().collection("users").document(uid)
-        
+        print("uid: " + uid)
         ref.addSnapshotListener { documentSnapshot, error in
             guard let snapshot = documentSnapshot else {
                     print("Error fetching document: \(error!)")

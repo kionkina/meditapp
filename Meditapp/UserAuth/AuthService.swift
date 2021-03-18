@@ -17,6 +17,7 @@ struct AuthService {
                 loginErrors(error: error, controller: controller)
                 return completion(nil)
             }
+            print("firebase returned a user")
             return completion(user?.user)
         }
     }
