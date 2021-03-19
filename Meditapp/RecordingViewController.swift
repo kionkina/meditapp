@@ -304,10 +304,13 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
         let db = Firestore.firestore()
         //get reference to recordings bucket
         let recordingRef = recordingReference
+        
         let filename = recordings[checkedIndex.row].recordingName
-        let localFile = getDirectory().appendingPathComponent("\(filename).m4a")
         //append to bucket route
         let audioRef = recordingRef.child(filename)
+        
+        let localFile = getDirectory().appendingPathComponent("\(filename).m4a")
+        
         //specify task. on success, we get info that we can reference to in our documents
         let uploadTask = audioRef.putFile(from: localFile, metadata: nil){ (metadata, err) in
             

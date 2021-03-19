@@ -13,14 +13,15 @@ class HomeTableViewController: UITableViewController {
     @IBOutlet var table: UITableView!
     
     var models = [userPost]()
+    var users = [User]()
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "toProfile") {
             let button = sender as! UIButton
             if let cell = button.superview?.superview as? postCellTableViewCell {
                 print(cell.uid)
-            let vc = segue.destination as! UserProfilePageViewController
-            vc.uid = cell.uid
+                let vc = segue.destination as! UserProfilePageViewController
+                vc.uid = cell.uid
             }
         }
     }
