@@ -64,7 +64,8 @@ class postCellTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func configure(with model: userPost){
+
+    func configure(with model: userPost, user:User){
         self.likesCount.text = "\(model.numLikes)"
         self.dislikesCount.text = "\(model.numDislikes)"
         self.commentsCount.text = "\(model.numComments)"
@@ -73,7 +74,7 @@ class postCellTableViewCell: UITableViewCell {
         self.postDescription.text = model.postDescription
         self.postImage.image = UIImage(named: model.postImage)
         self.userImage.image = UIImage(named: model.userImage)
-        self.username.setTitle(model.OwnerID, for: .normal)
+        self.username.setTitle(user.username, for: .normal)
         
     }
 

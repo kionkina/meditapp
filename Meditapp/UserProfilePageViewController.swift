@@ -25,17 +25,7 @@ class UserProfilePageViewController: UIViewController {
         print("in profile! uid: " + uid)
         // Do any additional setup after loading the view.
         
-        let db = Firestore.firestore()
-        let docRef = db.collection("users").document(uid)
-        docRef.getDocument { (document, error) in
-            if let document = document, document.exists {
-                let user = User(snapshot: document)
-                //usernameLabel
-                print("Document data: \(document.data())")
-            } else {
-                print("Document does not exist")
-            }
-        }
+
 
         
         
