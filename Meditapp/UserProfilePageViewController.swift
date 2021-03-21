@@ -9,7 +9,36 @@ import UIKit
 import FirebaseFirestore
 import FirebaseStorage
 
-class UserProfilePageViewController:  UIViewController {
+class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UITableViewDataSource {
+   
+    @IBOutlet var tableView: UITableView!
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! postCellTableViewCell
+        print("in table view")
+        print(indexPath)
+        let recording = recordings[indexPath.row]
+        //if user to current post found in dict
+        //configure the cell
+//        cell.configure(with: recording)
+        if let user = postUser{
+//            cell.configure(with: recording, user: user)
+//            cell.configure(with: recording)
+            //cell.uid = recordings[indexPath.row].OwnerID
+            cell.configure(with: recording, for: user )
+            //cell.postUser = user
+        }
+        
+        return cell
+    }
+    
+    
+    // MARK: - Table view data source
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // #warning Incomplete implementation, return the number of rows
+        return recordings.count
+    }
     
 
 
@@ -19,6 +48,7 @@ class UserProfilePageViewController:  UIViewController {
     }
     
     var postUser: User?
+    var recordings: [Post] = []
     
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var firstNameLabel: UILabel!
@@ -28,6 +58,9 @@ class UserProfilePageViewController:  UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableView.delegate = self
+        tableView.dataSource = self
         
         print("in profile! uid: " + postUser!.uid)
         loadPfp()
@@ -40,10 +73,17 @@ class UserProfilePageViewController:  UIViewController {
         print("in loadrecordings")
         
         print(postUser?.recordings)
-        DBViewController.getRecordings(for: postUser!.recordings) { (docs) in
-            print("doc: ")
-            print(docs)
-        }
+        DBViewController.getRecordings(for: postUser!.recordings) { (doc: DocumentSnapshot) in
+            //Typecast to post model
+                print("doc: " )
+                print(doc)
+            if (doc != nil) {
+                self.recordings.append(Post(snapshot: doc)!)
+                print(self.recordings)
+                self.tableView.reloadData()
+                }
+            //reloadtable
+            }
     }
     
     //TODO : CHECK IF USER HAS IMAGE: BOOL.

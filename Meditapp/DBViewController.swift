@@ -36,20 +36,26 @@ class DBViewController: UIViewController {
     }
 
     //TODO: ask if using references better
-    static func getRecordings(for references: [DocumentReference], success: @escaping ([DocumentSnapshot]) -> Void){
+    static func getRecordings(for references: [DocumentReference], success: @escaping (DocumentSnapshot) -> Void){
         print(references)
         var ret : [DocumentSnapshot] = []
+        
+        let dispatchGroup = DispatchGroup()
         
         for docRef in references {
             docRef.getDocument { (document, error) in
                 if let document = document, document.exists {
                     print("appending docboi")
                     ret.append(document)
+                    success(document)
                 } else {
                     print("Document does not exist")
                 }
             }
+
         }
+        
+
         // TODO: success(ret)
 
     }

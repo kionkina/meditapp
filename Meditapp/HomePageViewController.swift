@@ -6,12 +6,13 @@
 //
 
 import UIKit
+import FirebaseFirestore
 
 class HomePageViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet var tableView: UITableView!
     
-    var recordings = [userPost]()
+    var recordings = [Post]()
     var users = [String: User?]()
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -29,10 +30,11 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         print("loadrecordings")
         print("I am user:",User.current.uid, "and my tags are ",User.current.tags)
         //TODO replace with fetch recordings
-        recordings.append(userPost(postTitle: "Morning Meditation", postDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.", postImage: "sunrise", userImage: "profile_pic_1", numLikes: 4, numDislikes: 1, numComments: 2, OwnerID: "pbUueL7HvfVOCPoCVhTJlZIiXiM2"))
         
-        recordings.append(userPost(postTitle: "Take a break", postDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.", postImage: "photo", userImage: "profile_pic_2", numLikes: 10, numDislikes: 2, numComments: 7, OwnerID: "pbUueL7HvfVOCPoCVhTJlZIiXiM2"))
         
+        recordings.append(Post(Description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.", Name: "Morning Meditation", OwnerID: "pbUueL7HvfVOCPoCVhTJlZIiXiM2", RecID:"123", Tags: ["happy", "sleep"], Timestamp: FirebaseFirestore.Timestamp(seconds: 10, nanoseconds: 20)))
+        
+
 //        tableView.reloadData()
         success()
     }
@@ -94,6 +96,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
 
 }
 
+/* USE POST OBJECT instead
 struct userPost {
     let postTitle: String
     let postDescription: String
@@ -103,7 +106,7 @@ struct userPost {
     let numDislikes: Int
     let numComments: Int
     let OwnerID: String
-}
+}*/
 
 
 

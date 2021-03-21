@@ -16,6 +16,7 @@
 		60D61B693E64EB1965C57E2B /* Pods_Meditapp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC3A95EE12470508254ED4D5 /* Pods_Meditapp.framework */; };
 		9A60A38E2603F26200E93DB1 /* UserProfilePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A60A38D2603F26200E93DB1 /* UserProfilePageViewController.swift */; };
 		9A60A3DA26051CC400E93DB1 /* DBViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A60A3D926051CC400E93DB1 /* DBViewController.swift */; };
+		9A60A4422607E48400E93DB1 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A60A4412607E48400E93DB1 /* Post.swift */; };
 		9AE03F582602958D00715283 /* SelectTagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE03F572602958D00715283 /* SelectTagsViewController.swift */; };
 		9AE03F5B2602959A00715283 /* QuestionanireController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE03F5A2602959900715283 /* QuestionanireController.swift */; };
 		9AE03F752602994900715283 /* ChecklistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE03F742602994800715283 /* ChecklistViewController.swift */; };
@@ -45,6 +46,7 @@
 		3613CB4526067C460065D1CE /* HomePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageViewController.swift; sourceTree = "<group>"; };
 		9A60A38D2603F26200E93DB1 /* UserProfilePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserProfilePageViewController.swift; path = Meditapp/UserProfilePageViewController.swift; sourceTree = SOURCE_ROOT; };
 		9A60A3D926051CC400E93DB1 /* DBViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBViewController.swift; sourceTree = "<group>"; };
+		9A60A4412607E48400E93DB1 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Post.swift; path = Meditapp/Post.swift; sourceTree = SOURCE_ROOT; };
 		9AE03F572602958D00715283 /* SelectTagsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectTagsViewController.swift; sourceTree = "<group>"; };
 		9AE03F5A2602959900715283 /* QuestionanireController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionanireController.swift; sourceTree = "<group>"; };
 		9AE03F742602994800715283 /* ChecklistViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChecklistViewController.swift; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 				9AEA1D2025E5DE5500C329C8 /* ForgotPasswordViewController.swift */,
 				9AEA1D2D25E5DE7200C329C8 /* UserService.swift */,
 				9AEA1D2A25E5DE6800C329C8 /* User.swift */,
+				9A60A4412607E48400E93DB1 /* Post.swift */,
 			);
 			path = UserAuth;
 			sourceTree = "<group>";
@@ -284,6 +287,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9AEA1D2325E5DE5500C329C8 /* ForgotPasswordViewController.swift in Sources */,
+				9A60A4422607E48400E93DB1 /* Post.swift in Sources */,
 				3613CA952602BBC30065D1CE /* TagsViewController.swift in Sources */,
 				9AE03F5B2602959A00715283 /* QuestionanireController.swift in Sources */,
 				9AE03F582602958D00715283 /* SelectTagsViewController.swift in Sources */,

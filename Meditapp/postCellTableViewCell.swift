@@ -52,15 +52,15 @@ class postCellTableViewCell: UITableViewCell {
     }
 
     //removed extra param: , user: User?
-    func configure(with model: userPost, for user: User?){
-        self.likesCount.text = "\(model.numLikes)"
-        self.dislikesCount.text = "\(model.numDislikes)"
-        self.commentsCount.text = "\(model.numComments)"
+    func configure(with model: Post, for user: User?){
+        self.likesCount.text = "\(4)"
+        self.dislikesCount.text = "\(3)"
+        self.commentsCount.text = "\(5)"
         
-        self.postTitle.text = model.postTitle
-        self.postDescription.text = model.postDescription
-        self.postImage.image = UIImage(named: model.postImage)
-        self.userImage.image = UIImage(named: model.userImage)
+        self.postTitle.text = model.Name
+        self.postDescription.text = model.Description
+        self.postImage.image = UIImage(named: "sunrise")
+        self.userImage.image = UIImage(named:"profile_pic_1")
         self.username.setTitle(user!.username, for: .normal)
         self.postUser = user
         
