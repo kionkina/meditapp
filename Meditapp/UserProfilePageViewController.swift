@@ -12,6 +12,10 @@ import FirebaseStorage
 class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UITableViewDataSource {
    
     @IBOutlet var tableView: UITableView!
+    @IBOutlet var username: UILabel!
+    @IBOutlet var firstName: UILabel!
+    @IBOutlet var lastName: UILabel!
+    @IBOutlet var followBotton: UIButton!
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! postCellTableViewCell
@@ -61,6 +65,10 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
         
         tableView.delegate = self
         tableView.dataSource = self
+        
+        firstName.text = postUser?.firstName
+        lastName.text = postUser?.lastName
+        username.text = postUser?.username
         
         print("in profile! uid: " + postUser!.uid)
         loadPfp()

@@ -56,7 +56,5 @@ class DBViewController: UIViewController {
         }
         
 
-        // TODO: success(ret)
-
     }
 }
