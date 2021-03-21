@@ -49,11 +49,11 @@ class HomeTableViewController: UITableViewController {
                 DBViewController.getUserById(forUID: recording.OwnerID) { (user) in
                     if let user = user {
                         self.users[user.uid] = user
+                        self.table.reloadData()
                     }
                 }
             }
         }
-        
     }
     
     override func viewDidLoad() {

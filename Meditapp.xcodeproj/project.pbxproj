@@ -8,11 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		03C63C4425EE295A00AD7815 /* postCellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C63C4325EE295A00AD7815 /* postCellTableViewCell.swift */; };
-		03C63C4725EE2A3A00AD7815 /* HomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C63C4625EE2A3900AD7815 /* HomeTableViewController.swift */; };
 		3613CA952602BBC30065D1CE /* TagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3613CA912602BBC30065D1CE /* TagsViewController.swift */; };
 		3613CA962602BBC30065D1CE /* RecordingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3613CA922602BBC30065D1CE /* RecordingViewController.swift */; };
 		3613CA972602BBC30065D1CE /* RecordingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3613CA932602BBC30065D1CE /* RecordingCell.swift */; };
 		3613CA982602BBC30065D1CE /* Recording.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3613CA942602BBC30065D1CE /* Recording.swift */; };
+		3613CB4626067C460065D1CE /* HomePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3613CB4526067C460065D1CE /* HomePageViewController.swift */; };
 		60D61B693E64EB1965C57E2B /* Pods_Meditapp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC3A95EE12470508254ED4D5 /* Pods_Meditapp.framework */; };
 		9A60A38E2603F26200E93DB1 /* UserProfilePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A60A38D2603F26200E93DB1 /* UserProfilePageViewController.swift */; };
 		9A60A3DA26051CC400E93DB1 /* DBViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A60A3D926051CC400E93DB1 /* DBViewController.swift */; };
@@ -38,11 +38,11 @@
 
 /* Begin PBXFileReference section */
 		03C63C4325EE295A00AD7815 /* postCellTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = postCellTableViewCell.swift; sourceTree = "<group>"; };
-		03C63C4625EE2A3900AD7815 /* HomeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewController.swift; sourceTree = "<group>"; };
 		3613CA912602BBC30065D1CE /* TagsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsViewController.swift; sourceTree = "<group>"; };
 		3613CA922602BBC30065D1CE /* RecordingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordingViewController.swift; sourceTree = "<group>"; };
 		3613CA932602BBC30065D1CE /* RecordingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordingCell.swift; sourceTree = "<group>"; };
 		3613CA942602BBC30065D1CE /* Recording.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recording.swift; sourceTree = "<group>"; };
+		3613CB4526067C460065D1CE /* HomePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageViewController.swift; sourceTree = "<group>"; };
 		9A60A38D2603F26200E93DB1 /* UserProfilePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserProfilePageViewController.swift; path = Meditapp/UserProfilePageViewController.swift; sourceTree = SOURCE_ROOT; };
 		9A60A3D926051CC400E93DB1 /* DBViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBViewController.swift; sourceTree = "<group>"; };
 		9AE03F572602958D00715283 /* SelectTagsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectTagsViewController.swift; sourceTree = "<group>"; };
@@ -152,9 +152,9 @@
 				9AEA1D0D25E5DAC400C329C8 /* Info.plist */,
 				9AEA1D3525E5DF5100C329C8 /* GoogleService-Info.plist */,
 				03C63C4325EE295A00AD7815 /* postCellTableViewCell.swift */,
-				03C63C4625EE2A3900AD7815 /* HomeTableViewController.swift */,
 				9A60A3D926051CC400E93DB1 /* DBViewController.swift */,
 				9A60A38D2603F26200E93DB1 /* UserProfilePageViewController.swift */,
+				3613CB4526067C460065D1CE /* HomePageViewController.swift */,
 			);
 			path = Meditapp;
 			sourceTree = "<group>";
@@ -295,12 +295,12 @@
 				3613CA962602BBC30065D1CE /* RecordingViewController.swift in Sources */,
 				9AEA1D2725E5DE6000C329C8 /* Storyboard+Utility .swift in Sources */,
 				9AEA1D2F25E5DE7200C329C8 /* UserService.swift in Sources */,
-				03C63C4725EE2A3A00AD7815 /* HomeTableViewController.swift in Sources */,
 				9AEA1D2225E5DE5500C329C8 /* ProfileViewController.swift in Sources */,
 				3613CA982602BBC30065D1CE /* Recording.swift in Sources */,
 				9A60A38E2603F26200E93DB1 /* UserProfilePageViewController.swift in Sources */,
 				3613CA972602BBC30065D1CE /* RecordingCell.swift in Sources */,
 				9AEA1D2125E5DE5500C329C8 /* LoginViewController.swift in Sources */,
+				3613CB4626067C460065D1CE /* HomePageViewController.swift in Sources */,
 				9AEA1D2B25E5DE6800C329C8 /* User.swift in Sources */,
 				9AE03F752602994900715283 /* ChecklistViewController.swift in Sources */,
 				9AEA1D1C25E5DE4F00C329C8 /* CreateUserViewController.swift in Sources */,

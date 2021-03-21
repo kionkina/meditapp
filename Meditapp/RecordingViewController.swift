@@ -346,8 +346,9 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
                 print("Document successfully written!")
             }
         }
+        //let dbref = db.collection("Recordings").document(recID)
         db.collection("users").document(User.current.uid).updateData([
-            "content" : FieldValue.arrayUnion([recID])
+            "content" : FieldValue.arrayUnion([db.collection("Recordings").document(recID)])
         ])
 //        dismiss(animated: true, completion: nil)
         navigationController?.popViewController(animated: true)

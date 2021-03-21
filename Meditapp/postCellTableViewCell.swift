@@ -43,29 +43,16 @@ class postCellTableViewCell: UITableViewCell {
     @IBAction func commentButton(_ sender: UIButton) {
     }
     
-    @IBAction func username(_ sender: UIButton) {
-    }
-    
-    
-    static let identifier = "postCellTableViewCell"
-    var uid: String = ""
-    
-    static func nib() -> UINib{
-        return UINib(nibName: "postCellTableViewCell", bundle: nil)
-    }
+//    var uid: String = ""
+    var postUser: User?
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-    
-
-    func configure(with model: userPost, user:User){
+    //removed extra param: , user: User?
+    func configure(with model: userPost, for user: User?){
         self.likesCount.text = "\(model.numLikes)"
         self.dislikesCount.text = "\(model.numDislikes)"
         self.commentsCount.text = "\(model.numComments)"
@@ -74,8 +61,10 @@ class postCellTableViewCell: UITableViewCell {
         self.postDescription.text = model.postDescription
         self.postImage.image = UIImage(named: model.postImage)
         self.userImage.image = UIImage(named: model.userImage)
-        self.username.setTitle(user.username, for: .normal)
+        self.username.setTitle(user!.username, for: .normal)
         
+//        let userid = user?.uid
+//        print(userid ?? "")
     }
 
 }
