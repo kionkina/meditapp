@@ -324,11 +324,17 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Mos-m4-j63">
+                                <rect key="frame" x="0.0" y="304" width="414" height="432"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="Gvv-dS-PDx"/>
                     <connections>
+                        <outlet property="Pfp" destination="J8x-Uj-miz" id="IAa-lM-CcK"/>
                         <outlet property="firstNameLabel" destination="WOn-jY-wVN" id="GdN-0C-q2X"/>
                         <outlet property="lastNameLabel" destination="yna-JW-kDf" id="x1h-Nc-zY9"/>
                         <outlet property="usernameLabel" destination="chm-f2-rGN" id="gCP-Tn-1aJ"/>
