@@ -37,7 +37,11 @@ class UserProfilePageViewController:  UIViewController {
     
     
     func loadRecordings() {
+        print("in loadrecordings")
+        
+        print(postUser?.recordings)
         DBViewController.getRecordings(for: postUser!.recordings) { (docs) in
+            print("doc: ")
             print(docs)
         }
     }
@@ -51,7 +55,7 @@ class UserProfilePageViewController:  UIViewController {
                 let image = UIImage(data: data)
                 self.Pfp.image = image
             }
-            print(error ?? "NONE")
+            // print(error ?? "NONE")
         }
         
         downloadTask.resume()

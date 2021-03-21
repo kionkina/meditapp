@@ -43,7 +43,7 @@ class User : NSObject {
             let lastName = dict["lastName"] as? String,
             let username = dict["username"] as? String,
             let tags = dict["tags"] as? [String],
-            let recordings = dict["recordings"] as? [DocumentReference]
+            let recordings = dict["content"] as? [DocumentReference]
             else { return nil }
         self.uid = snapshot.documentID
         self.firstName = firstName
