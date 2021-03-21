@@ -29,9 +29,9 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         print("loadrecordings")
         print("I am user:",User.current.uid, "and my tags are ",User.current.tags)
         //TODO replace with fetch recordings
-        recordings.append(userPost(postTitle: "Morning Meditation", postDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.", postImage: "sunrise", userImage: "profile_pic_1", numLikes: 4, numDislikes: 1, numComments: 2, OwnerID: "QiX9p76TefPhNNqj7Hvlq2KpIuh2"))
+        recordings.append(userPost(postTitle: "Morning Meditation", postDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.", postImage: "sunrise", userImage: "profile_pic_1", numLikes: 4, numDislikes: 1, numComments: 2, OwnerID: "pbUueL7HvfVOCPoCVhTJlZIiXiM2"))
         
-        recordings.append(userPost(postTitle: "Take a break", postDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.", postImage: "photo", userImage: "profile_pic_2", numLikes: 10, numDislikes: 2, numComments: 7, OwnerID: "rLYgFmWpvGgtlnHooY76L9bVnOr2"))
+        recordings.append(userPost(postTitle: "Take a break", postDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.", postImage: "photo", userImage: "profile_pic_2", numLikes: 10, numDislikes: 2, numComments: 7, OwnerID: "pbUueL7HvfVOCPoCVhTJlZIiXiM2"))
         
 //        tableView.reloadData()
         success()
@@ -44,9 +44,13 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
             if !users.keys.contains(recording.OwnerID) {
                 DBViewController.getUserById(forUID: recording.OwnerID) { (user) in
                     //instantiate user using snapshot, append to users dict
+                    print("before let user")
                     if let user = user {
+                        print("after let user")
                         self.users[user.uid] = user
                         self.tableView.reloadData()
+                        print(self.users)
+                        print("reloaded")
                     }
                 }
             }
@@ -72,7 +76,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
 //            cell.configure(with: recording)
             //cell.uid = recordings[indexPath.row].OwnerID
             cell.configure(with: recording, for: user )
-            cell.postUser = user
+            //cell.postUser = user
         }
         
         return cell

@@ -9,7 +9,9 @@ import UIKit
 import FirebaseFirestore
 import FirebaseStorage
 
-class UserProfilePageViewController: UIViewController {
+class UserProfilePageViewController:  UIViewController {
+    
+
 
 //    var uid = String()
     var pfpReference: StorageReference{
@@ -29,7 +31,15 @@ class UserProfilePageViewController: UIViewController {
         
         print("in profile! uid: " + postUser!.uid)
         loadPfp()
+        loadRecordings()
         // Do any additional setup after loading the view.
+    }
+    
+    
+    func loadRecordings() {
+        DBViewController.getRecordings(for: postUser!.recordings) { (docs) in
+            print(docs)
+        }
     }
     
     //TODO : CHECK IF USER HAS IMAGE: BOOL.

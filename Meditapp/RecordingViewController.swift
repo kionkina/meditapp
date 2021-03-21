@@ -346,10 +346,13 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
                 print("Document successfully written!")
             }
         }
-        //let dbref = db.collection("Recordings").document(recID)
+       
+        let dbref: DocumentReference = db.collection("Recordings").document(recID)
         db.collection("users").document(User.current.uid).updateData([
-            "content" : FieldValue.arrayUnion([db.collection("Recordings").document(recID)])
+            "content" : FieldValue.arrayUnion([dbref])
         ])
+        User.current.recordings.append(dbref)
+        
 //        dismiss(animated: true, completion: nil)
         navigationController?.popViewController(animated: true)
         //deleteAllFiles(false)

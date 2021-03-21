@@ -62,6 +62,7 @@ class postCellTableViewCell: UITableViewCell {
         self.postImage.image = UIImage(named: model.postImage)
         self.userImage.image = UIImage(named: model.userImage)
         self.username.setTitle(user!.username, for: .normal)
+        self.postUser = user
         
 //        let userid = user?.uid
 //        print(userid ?? "")
