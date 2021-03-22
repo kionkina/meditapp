@@ -38,19 +38,26 @@ class User : NSObject {
     
     //User init using Firebase snapshots
     init?(snapshot: DocumentSnapshot) {
-        guard let dict = snapshot.data(),
-            let firstName = dict["firstName"] as? String,
-            let lastName = dict["lastName"] as? String,
-            let username = dict["username"] as? String,
-            let tags = dict["tags"] as? [String],
-            let recordings = dict["content"] as? [DocumentReference]
-            else { return nil }
-        self.uid = snapshot.documentID
-        self.firstName = firstName
-        self.lastName = lastName
-        self.username = username
-        self.tags = tags
-        self.recordings = recordings
+//        guard let dict = snapshot.data(),
+//            let firstName = dict["firstName"] as? String,
+//            let lastName = dict["lastName"] as? String,
+//            let username = dict["username"] as? String,
+//            let tags = dict["tags"] as? [String],
+//            let recordings = dict["content"] as? [DocumentReference]
+//            else {
+//            return nil }
+        if let dict = snapshot.data(){
+            self.uid = snapshot.documentID
+            self.firstName = (dict["firstName"] as? String) ?? ""
+            self.lastName = (dict["lastName"] as? String) ?? ""
+            self.username = (dict["username"] as? String) ?? ""
+            self.tags = (dict["tags"] as? [String]) ?? []
+            self.recordings = (dict["content"] as? [DocumentReference]) ?? []
+        }
+        else{
+            print("ERROR")
+            return nil
+        }
     }
     
     //UserDefaults
@@ -85,6 +92,7 @@ class User : NSObject {
     
     class func setCurrent(_ user: User, writeToUserDefaults: Bool = false) {
         if writeToUserDefaults {
+            print("I made it to setcurrent?")
             let data = NSKeyedArchiver.archivedData(withRootObject: user)
             
             UserDefaults.standard.set(data, forKey: "currentUser")
