@@ -14,8 +14,7 @@ class Post : NSObject {
     //User variables
     let Description : String
     let Name : String
-//    let OwnerID : String
-    let OwnerRef: DocumentReference
+    let OwnerID : String
     let RecID : String
     var Tags: [String]
     let Timestamp: Timestamp
@@ -29,11 +28,10 @@ class Post : NSObject {
 //    }
     
     //Standard Post init()
-    init(Description: String, Name: String, OwnerRef: DocumentReference, RecID:String, Tags:[String], Timestamp: Timestamp) {
+    init(Description: String, Name: String, OwnerID: String, RecID:String, Tags:[String], Timestamp: Timestamp) {
         self.Description = Description
         self.Name = Name
-//        self.OwnerID = OwnerID
-        self.OwnerRef = OwnerRef
+        self.OwnerID = OwnerID
         self.RecID = RecID
         self.Tags = Tags
         self.Timestamp = Timestamp
@@ -45,8 +43,7 @@ class Post : NSObject {
         guard let dict = snapshot.data(),
             let Description = dict["Description"] as? String,
             let Name = dict["Name"] as? String,
-//            let OwnerID = dict["OwnerID"] as? String,
-            let OwnerRef = dict["OwnerRef"] as? DocumentReference,
+            let OwnerID = dict["OwnerID"] as? String,
             let RecID = dict["RecID"] as? String,
             let Tags = dict["Tags"] as? [String],
             let Timestamp = dict["Timestamp"] as? Timestamp
@@ -56,7 +53,7 @@ class Post : NSObject {
         }
         self.Description = Description
         self.Name = Name
-        self.OwnerRef = OwnerRef
+        self.OwnerID = OwnerID
         self.RecID = RecID
         self.Tags = Tags
         self.Timestamp = Timestamp

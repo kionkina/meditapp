@@ -38,9 +38,15 @@ class DBViewController: UIViewController {
                 print("BOUTTA PRINT")
                 print(querySnapshot!)
                 //querysnapshot can contain multiple documents
-                for snapshot in querySnapshot!.documents{
-//                    print("\(snapshot.documentID)")
-                    setDict.append(Post(snapshot: snapshot)!)
+                if querySnapshot!.documents.isEmpty{
+                    print("no documents fetched")
+                }
+                else{
+                    for snapshot in querySnapshot!.documents{
+                        print("THIS IS \(snapshot.documentID)")
+                        setDict.append(Post(snapshot: snapshot)!)
+                    }
+                    success(setDict)
                 }
             }
         }
