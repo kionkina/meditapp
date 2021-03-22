@@ -10,7 +10,7 @@ import Firebase
 
 class ChecklistViewController: UITableViewController {
     
-    var checklist: [String] = ["morning", "evening", "relaxing", "energizing", "mantra"]
+    var checklist: [String] = ["Morning", "Evening", "Relaxing", "Energizing", "Mantra"]
     
     override func viewDidLoad() {
         

@@ -17,6 +17,36 @@ class DBViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    static func getPostsByTags(forTags tags: [String], success: @escaping ([Post]) -> Void){
+        let db = Firestore.firestore()
+        //let userRef = db.collection("users").document(User.current.uid)
+        //returns a firquery. using orderby requires creating index
+        let queryRef = db.collection("Recordings")
+            //.whereField("OwnerID", notIn: [User.current.uid])
+            .whereField("Tags", arrayContainsAny: tags)
+            .order(by: "Timestamp", descending: true)
+            .limit(to: 5)
+        
+        print("Boutta get snapshots")
+        //get documents from that query
+        var setDict = [Post]()
+        queryRef.getDocuments { (querySnapshot, error) in
+            if let error = error{
+                print("Error getting documents: \(error.localizedDescription)")
+            }
+            else{
+                print("BOUTTA PRINT")
+                print(querySnapshot!)
+                //querysnapshot can contain multiple documents
+                for snapshot in querySnapshot!.documents{
+//                    print("\(snapshot.documentID)")
+                    setDict.append(Post(snapshot: snapshot)!)
+                }
+            }
+        }
+        
+        
+    }
     
     static func getUserById(forUID uid: String, success: @escaping (User?) -> Void) {
         print("Getting user with uid \(uid)")
