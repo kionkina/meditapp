@@ -4,16 +4,22 @@
 //
 //  Created by Jackson Lu on 3/20/21.
 //
-
+import AVFoundation
 import UIKit
 import FirebaseFirestore
+import FirebaseStorage
 
 class HomePageViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet var tableView: UITableView!
-    
+
     var recordings = [Post]()
     var users = [String: User?]()
+    var audioPlayer = AVAudioPlayer()
+    
+    var audioReference: StorageReference{
+        return Storage.storage().reference().child("recordings")
+    }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "toProfile") {
@@ -57,6 +63,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(User.current.uid, "FOLLOWED BY THE TAGS", User.current.tags)
         loadRecordings(success: loadUsers)
 
     }
@@ -74,6 +81,28 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
 //            cell.configure(with: recording)
             //cell.uid = recordings[indexPath.row].OwnerID
             cell.configure(with: recording, for: user )
+            cell.playAudio = {
+                let downloadPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(recording.RecID)
+                
+                print("DOWNLOAD TO URL", downloadPath)
+                let audioRef = self.audioReference.child(recording.Name)
+                
+                let downloadTask = audioRef.write(toFile: downloadPath){ url, error in
+                    if let error = error{
+                        print("Error has occured")
+                    }
+                    else{
+                        do {
+                            self.audioPlayer = try AVAudioPlayer(contentsOf: url!)
+                            print("ABOUTTA PLAY AUDIO")
+                            self.audioPlayer.play()
+                        } catch {
+                            print(error)
+                        }
+                    }
+                }
+                downloadTask.resume()
+            }
             //cell.postUser = user
         }
         

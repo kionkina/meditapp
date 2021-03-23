@@ -333,7 +333,8 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
             "Name" : filename,
             "Timestamp" : Timestamp(date: Date()),
             "RecID" : recID,
-            "OwnerRef" : db.collection("users").document(User.current.uid),
+//            "OwnerRef" : db.collection("users").document(User.current.uid),
+            "OwnerID" : User.current.uid,
             "Tags" : postTags,
             "Description" : postDesc.text!
 //            "StorageRef" : audioRef

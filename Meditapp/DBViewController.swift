@@ -18,6 +18,7 @@ class DBViewController: UIViewController {
     }
     
     static func getPostsByTags(forTags tags: [String], success: @escaping ([Post]) -> Void){
+        print("IM IN")
         let db = Firestore.firestore()
         //let userRef = db.collection("users").document(User.current.uid)
         //returns a firquery. using orderby requires creating index

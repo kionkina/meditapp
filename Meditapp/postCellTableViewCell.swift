@@ -23,6 +23,7 @@ class postCellTableViewCell: UITableViewCell {
     
     
     @IBAction func playButton(_ sender: UIButton) {
+        playAudio!()
     }
     
     @IBAction func backwardsButton(_ sender: UIButton) {
@@ -45,6 +46,7 @@ class postCellTableViewCell: UITableViewCell {
     
 //    var uid: String = ""
     var postUser: User?
+    var playAudio: (() -> Void)?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -67,5 +69,7 @@ class postCellTableViewCell: UITableViewCell {
 //        let userid = user?.uid
 //        print(userid ?? "")
     }
+
+    
 
 }
