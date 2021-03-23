@@ -8,6 +8,7 @@
 import UIKit
 import FirebaseFirestore
 import FirebaseStorage
+import AVFoundation
 
 class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UITableViewDataSource {
    
@@ -16,6 +17,12 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
     @IBOutlet var firstName: UILabel!
     @IBOutlet var lastName: UILabel!
     @IBOutlet var followBotton: UIButton!
+    
+    var audioPlayer = AVAudioPlayer()
+    
+    var audioReference: StorageReference{
+        return Storage.storage().reference().child("recordings")
+    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! postCellTableViewCell
@@ -30,6 +37,29 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
 //            cell.configure(with: recording)
             //cell.uid = recordings[indexPath.row].OwnerID
             cell.configure(with: recording, for: user )
+            cell.playAudio = {
+                let downloadPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(recording.RecID)
+                
+                print("DOWNLOAD TO URL", downloadPath)
+                let audioRef = self.audioReference.child(recording.Name)
+                
+                let downloadTask = audioRef.write(toFile: downloadPath){ url, error in
+                    if let error = error{
+                        print("Error has occured")
+                    }
+                    else{
+                        do {
+                            self.audioPlayer.stop()
+                            self.audioPlayer = try AVAudioPlayer(contentsOf: url!)
+                            print("ABOUTTA PLAY AUDIO")
+                            self.audioPlayer.play()
+                        } catch {
+                            print(error)
+                        }
+                    }
+                }
+                downloadTask.resume()
+            }
             //cell.postUser = user
         }
         

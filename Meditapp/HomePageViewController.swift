@@ -93,6 +93,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                     }
                     else{
                         do {
+                            self.audioPlayer.stop()
                             self.audioPlayer = try AVAudioPlayer(contentsOf: url!)
                             print("ABOUTTA PLAY AUDIO")
                             self.audioPlayer.play()

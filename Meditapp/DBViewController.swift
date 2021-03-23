@@ -39,7 +39,7 @@ class DBViewController: UIViewController {
                 print("BOUTTA PRINT")
                 print(querySnapshot!)
                 //querysnapshot can contain multiple documents
-                if querySnapshot!.documents.isEmpty{
+                if querySnapshot!.documents.count > 0{
                     print("no documents fetched")
                 }
                 else{
@@ -91,7 +91,5 @@ class DBViewController: UIViewController {
             }
 
         }
-        
-
     }
 }
