@@ -73,6 +73,14 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! postCellTableViewCell
         
         let recording = recordings[indexPath.row]
+        cell.post = recording
+        
+        if User.current.likedPosts[recording.RecID] != nil{
+            cell.setLiked(true)
+        }
+        else{
+            cell.setLiked(false)
+        }
         //if user to current post found in dict
         //configure the cell
 //        cell.configure(with: recording)
@@ -81,6 +89,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
 //            cell.configure(with: recording)
             //cell.uid = recordings[indexPath.row].OwnerID
             cell.configure(with: recording, for: user )
+            
             cell.playAudio = {
                 let downloadPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(recording.RecID)
                 

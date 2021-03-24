@@ -336,7 +336,8 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
 //            "OwnerRef" : db.collection("users").document(User.current.uid),
             "OwnerID" : User.current.uid,
             "Tags" : postTags,
-            "Description" : postDesc.text!
+            "Description" : postDesc.text!,
+            "numLikes" : 0
 //            "StorageRef" : audioRef
         ]
         

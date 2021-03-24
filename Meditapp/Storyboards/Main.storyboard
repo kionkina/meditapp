@@ -123,6 +123,7 @@
                                                     </constraints>
                                                     <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <state key="normal" image="hand.thumbsup" catalog="system"/>
+                                                    <state key="selected" image="hand.thumbsup.fill" catalog="system"/>
                                                     <connections>
                                                         <action selector="likeButton:" destination="St0-jy-Ijf" eventType="touchUpInside" id="d0B-DP-TWC"/>
                                                     </connections>
@@ -254,6 +255,7 @@
                                         <connections>
                                             <outlet property="commentsCount" destination="kyl-5c-wFl" id="qfg-Zc-ib0"/>
                                             <outlet property="dislikesCount" destination="LJN-PF-1hL" id="jLM-2f-KYz"/>
+                                            <outlet property="likeButton" destination="XlG-kM-ZjQ" id="S5U-cG-DhB"/>
                                             <outlet property="likesCount" destination="0c2-qU-fqJ" id="a8H-tF-6yH"/>
                                             <outlet property="postDescription" destination="Ya5-sf-YON" id="aVt-4w-iZu"/>
                                             <outlet property="postImage" destination="nG0-tr-g8t" id="SyL-AF-iep"/>
@@ -884,6 +886,7 @@
         <image name="forward.fill" catalog="system" width="128" height="79"/>
         <image name="hand.thumbsdown" catalog="system" width="128" height="128"/>
         <image name="hand.thumbsup" catalog="system" width="128" height="128"/>
+        <image name="hand.thumbsup.fill" catalog="system" width="128" height="121"/>
         <image name="house.fill" catalog="system" width="128" height="106"/>
         <image name="person.badge.plus" catalog="system" width="128" height="124"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>

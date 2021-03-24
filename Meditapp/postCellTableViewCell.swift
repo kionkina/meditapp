@@ -16,7 +16,11 @@ class postCellTableViewCell: UITableViewCell {
     @IBOutlet weak var userImage: UIImageView!
     
     @IBOutlet weak var likesCount: UILabel!
+    
     @IBOutlet weak var dislikesCount: UILabel!
+    @IBOutlet weak var likeButton: UIButton!
+    
+    
     @IBOutlet weak var commentsCount: UILabel!
     @IBOutlet weak var username:UIButton!
     
@@ -33,9 +37,40 @@ class postCellTableViewCell: UITableViewCell {
     }
     
     @IBAction func followButton(_ sender: UIButton) {
+        
+    }
+    
+    func setLiked(_ isLiked: Bool){
+        liked = isLiked
+        if(liked){
+            DispatchQueue.main.async{
+                self.likeButton.isSelected = true
+            }
+//            likeButton.setImage(UIImage(named: "heartfilled"), for: UIControl.State.selected)
+        }
+        else{
+            DispatchQueue.main.async{
+                self.likeButton.isSelected = false
+            }
+//            likeButton.setImage(UIImage(named: "heart"), for: UIControl.State.normal)
+        }
     }
     
     @IBAction func likeButton(_ sender: UIButton) {
+        let like = !liked
+        if(like){
+            DBViewController.updateLikes(for: post!.RecID){
+                User.current.likedPosts[self.post!.RecID] = true
+                self.setLiked(true)
+            }
+        }
+        else{
+//            TwitterAPICaller.client?.destroyFavTweet(tweetID: tweetID, success: {
+//                self.setFavorite(false)
+//            }, failure: { (Error) in
+//                print("Could not like")
+//            })
+        }
     }
     
     @IBAction func dislikeButton(_ sender: UIButton) {
@@ -46,6 +81,8 @@ class postCellTableViewCell: UITableViewCell {
     
 //    var uid: String = ""
     var postUser: User?
+    var post: Post?
+    var liked: Bool = false
     var playAudio: (() -> Void)?
 
     override func awakeFromNib() {
@@ -64,10 +101,11 @@ class postCellTableViewCell: UITableViewCell {
         self.postImage.image = UIImage(named: "sunrise")
         self.userImage.image = UIImage(named:"profile_pic_1")
         self.username.setTitle(user!.username, for: .normal)
-        self.postUser = user
         
-//        let userid = user?.uid
-//        print(userid ?? "")
+        self.likesCount.text = String(model.numLikes)
+        
+        self.postUser = user
+        self.post = model
     }
 
     

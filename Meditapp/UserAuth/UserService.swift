@@ -17,7 +17,8 @@ struct UserService {
                          "firstName": firstName,
                          "lastName": lastName,
                          "tags": [],
-                         "recordings": []] as [String : Any]
+                         "recordings": [],
+                         "likedPosts": [String:Bool]()] as [String : Any]
         
         let ref = Firestore.firestore().collection("users").document(firUser.uid)
         
