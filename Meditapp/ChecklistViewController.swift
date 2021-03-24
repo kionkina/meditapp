@@ -10,7 +10,7 @@ import Firebase
 
 class ChecklistViewController: UITableViewController {
     
-    var checklist: [String] = ["morning", "evening", "relaxing", "energizing", "mantra"]
+    var checklist: [String] = ["Morning", "Evening", "Relaxing", "Energizing", "Mantra"]
     
     override func viewDidLoad() {
         
@@ -79,6 +79,7 @@ class ChecklistViewController: UITableViewController {
         }
         
         print(userSelection)
+        User.current.tags = userSelection
         updateData(selectedTags: userSelection)
         //send this to db
         
@@ -98,7 +99,6 @@ class ChecklistViewController: UITableViewController {
             if let err = err {
                 print("Error updating document: \(err)")
             } else {
-                User.current.tags = selectedTags
                 print("Document successfully updated")
             }
         }

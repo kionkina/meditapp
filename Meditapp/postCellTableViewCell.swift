@@ -1,4 +1,4 @@
-//
+    //
 //  postCellTableViewCell.swift
 //  Meditapp
 //
@@ -9,8 +9,6 @@ import UIKit
 
 class postCellTableViewCell: UITableViewCell {
     
-    
-    
     @IBOutlet weak var postTitle: UILabel!
     @IBOutlet weak var postDescription: UILabel!
     @IBOutlet weak var postImage: UIImageView!
@@ -20,8 +18,12 @@ class postCellTableViewCell: UITableViewCell {
     @IBOutlet weak var likesCount: UILabel!
     @IBOutlet weak var dislikesCount: UILabel!
     @IBOutlet weak var commentsCount: UILabel!
+    @IBOutlet weak var username:UIButton!
+    
+    
     
     @IBAction func playButton(_ sender: UIButton) {
+        playAudio!()
     }
     
     @IBAction func backwardsButton(_ sender: UIButton) {
@@ -42,32 +44,32 @@ class postCellTableViewCell: UITableViewCell {
     @IBAction func commentButton(_ sender: UIButton) {
     }
     
-    
-    static let identifier = "postCellTableViewCell"
-    
-    static func nib() -> UINib{
-        return UINib(nibName: "postCellTableViewCell", bundle: nil)
-    }
+//    var uid: String = ""
+    var postUser: User?
+    var playAudio: (() -> Void)?
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-    
-    func configure(with model: userPost){
-        self.likesCount.text = "\(model.numLikes)"
-        self.dislikesCount.text = "\(model.numDislikes)"
-        self.commentsCount.text = "\(model.numComments)"
+    //removed extra param: , user: User?
+    func configure(with model: Post, for user: User?){
+        self.likesCount.text = "\(4)"
+        self.dislikesCount.text = "\(3)"
+        self.commentsCount.text = "\(5)"
         
-        self.postTitle.text = model.postTitle
-        self.postDescription.text = model.postDescription
-        self.postImage.image = UIImage(named: model.postImage)
-        self.userImage.image = UIImage(named: model.userImage)
+        self.postTitle.text = model.Name
+        self.postDescription.text = model.Description
+        self.postImage.image = UIImage(named: "sunrise")
+        self.userImage.image = UIImage(named:"profile_pic_1")
+        self.username.setTitle(user!.username, for: .normal)
+        self.postUser = user
+        
+//        let userid = user?.uid
+//        print(userid ?? "")
     }
+
+    
 
 }

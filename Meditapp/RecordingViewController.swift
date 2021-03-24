@@ -304,10 +304,13 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
         let db = Firestore.firestore()
         //get reference to recordings bucket
         let recordingRef = recordingReference
+        
         let filename = recordings[checkedIndex.row].recordingName
-        let localFile = getDirectory().appendingPathComponent("\(filename).m4a")
         //append to bucket route
         let audioRef = recordingRef.child(filename)
+        
+        let localFile = getDirectory().appendingPathComponent("\(filename).m4a")
+        
         //specify task. on success, we get info that we can reference to in our documents
         let uploadTask = audioRef.putFile(from: localFile, metadata: nil){ (metadata, err) in
             
@@ -330,6 +333,7 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
             "Name" : filename,
             "Timestamp" : Timestamp(date: Date()),
             "RecID" : recID,
+//            "OwnerRef" : db.collection("users").document(User.current.uid),
             "OwnerID" : User.current.uid,
             "Tags" : postTags,
             "Description" : postDesc.text!
@@ -343,9 +347,13 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
                 print("Document successfully written!")
             }
         }
+       
+        let dbref: DocumentReference = db.collection("Recordings").document(recID)
         db.collection("users").document(User.current.uid).updateData([
-            "content" : FieldValue.arrayUnion([recID])
+            "content" : FieldValue.arrayUnion([dbref])
         ])
+        User.current.recordings.append(dbref)
+        
 //        dismiss(animated: true, completion: nil)
         navigationController?.popViewController(animated: true)
         //deleteAllFiles(false)

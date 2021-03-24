@@ -22,6 +22,7 @@ class User : NSObject {
                 "username" : username]
     }
     var tags: [String]
+    var recordings: [DocumentReference]
     
     
     //Standard User init()
@@ -31,22 +32,32 @@ class User : NSObject {
         self.lastName = lastName
         self.username = username
         self.tags = []
+        self.recordings = []
         super.init()
     }
     
     //User init using Firebase snapshots
     init?(snapshot: DocumentSnapshot) {
-        guard let dict = snapshot.data(),
-            let firstName = dict["firstName"] as? String,
-            let lastName = dict["lastName"] as? String,
-            let username = dict["username"] as? String,
-            let tags = dict["tags"] as? [String]
-            else { return nil }
-        self.uid = snapshot.documentID
-        self.firstName = firstName
-        self.lastName = lastName
-        self.username = username
-        self.tags = tags
+//        guard let dict = snapshot.data(),
+//            let firstName = dict["firstName"] as? String,
+//            let lastName = dict["lastName"] as? String,
+//            let username = dict["username"] as? String,
+//            let tags = dict["tags"] as? [String],
+//            let recordings = dict["content"] as? [DocumentReference]
+//            else {
+//            return nil }
+        if let dict = snapshot.data(){
+            self.uid = snapshot.documentID
+            self.firstName = (dict["firstName"] as? String) ?? ""
+            self.lastName = (dict["lastName"] as? String) ?? ""
+            self.username = (dict["username"] as? String) ?? ""
+            self.tags = (dict["tags"] as? [String]) ?? []
+            self.recordings = (dict["content"] as? [DocumentReference]) ?? []
+        }
+        else{
+            print("ERROR")
+            return nil
+        }
     }
     
     //UserDefaults
@@ -55,7 +66,8 @@ class User : NSObject {
             let firstName = aDecoder.decodeObject(forKey: "firstName") as? String,
             let lastName = aDecoder.decodeObject(forKey: "lastName") as? String,
             let username = aDecoder.decodeObject(forKey: "username") as? String,
-            let tags = aDecoder.decodeObject(forKey:"tags") as? [String]
+            let tags = aDecoder.decodeObject(forKey:"tags") as? [String],
+            let recordings = aDecoder.decodeObject(forKey:"recordings") as? [DocumentReference]
             else { return nil }
         
         self.uid = uid
@@ -63,6 +75,7 @@ class User : NSObject {
         self.lastName = lastName
         self.username = username
         self.tags = tags
+        self.recordings = recordings
     }
     
     
@@ -79,6 +92,7 @@ class User : NSObject {
     
     class func setCurrent(_ user: User, writeToUserDefaults: Bool = false) {
         if writeToUserDefaults {
+            print("I made it to setcurrent?")
             let data = NSKeyedArchiver.archivedData(withRootObject: user)
             
             UserDefaults.standard.set(data, forKey: "currentUser")
@@ -95,5 +109,6 @@ extension User: NSCoding {
         aCoder.encode(lastName, forKey: "lastName")
         aCoder.encode(username, forKey: "username")
         aCoder.encode(tags, forKey: "tags")
+        aCoder.encode(recordings, forKey: "recordings")
     }
 }

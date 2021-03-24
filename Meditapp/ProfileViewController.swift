@@ -19,9 +19,6 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        nameLabel.text = "\(User.current.firstName) \(User.current.lastName)"
-        usernameLabel.text = User.current.username
-        
         authHandle = AuthService.authListener(viewController: self)
     }
 

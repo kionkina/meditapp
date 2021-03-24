@@ -20,6 +20,7 @@ class CreateUserViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("screen loaded")
         configureView()
     }
 
@@ -49,18 +50,22 @@ class CreateUserViewController: UIViewController {
                 print("Required fields are not all filled!")
                 return
             }
-        
+        print("before creating user and store in db")
         AuthService.createUser(controller: self, email: email, password: password) { (authUser) in
             guard let firUser = authUser else {
+                print("sum wrong1")
                 return
             }
             
             UserService.create(firUser, username: username, firstName: firstName, lastName: lastName) { (user) in
                 guard let user = user else {
+                    print("sum wrong2")
                     return
                 }
                 
+                print("About to setcurrent")
                 User.setCurrent(user, writeToUserDefaults: true)
+                print("After stored and aobut to segue")
                 self.performSegue(withIdentifier: "selectTags", sender:nil)
             }
         }

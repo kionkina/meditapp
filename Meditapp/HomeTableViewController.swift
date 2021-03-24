@@ -13,7 +13,49 @@ class HomeTableViewController: UITableViewController {
     @IBOutlet var table: UITableView!
     
     var models = [userPost]()
+    
+    //Dictionary to store user ids and user objects
+    var users = [String: User]()
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "toProfile") {
+            let button = sender as! UIButton
+            if let cell = button.superview?.superview as? postCellTableViewCell {
+                print(cell.uid)
+                let vc = segue.destination as! UserProfilePageViewController
+                vc.uid = cell.uid
+            }
+        }
+    }
+    
+    func loadRecordings(success: @escaping(() -> Void)) {
+        print("loadrecordings")
+        //TODO replace with fetch recordings
+        models.append(userPost(postTitle: "Morning Meditation", postDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.", postImage: "sunrise", userImage: "profile_pic_1", numLikes: 4, numDislikes: 1, numComments: 2, OwnerID: "QiX9p76TefPhNNqj7Hvlq2KpIuh2"))
+        
+        models.append(userPost(postTitle: "Take a break", postDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.", postImage: "photo", userImage: "profile_pic_2", numLikes: 10, numDislikes: 2, numComments: 7, OwnerID: "rLYgFmWpvGgtlnHooY76L9bVnOr2"))
+        
+        success()
+    }
+    
+        
+    
+    func loadUsers() -> Void {
+    
+        print("loadUsers")
+        //check if ID is not already in users
+        for recording in models {
+            if !users.keys.contains(recording.OwnerID) {
+                DBViewController.getUserById(forUID: recording.OwnerID) { (user) in
+                    if let user = user {
+                        self.users[user.uid] = user
+                        self.table.reloadData()
+                    }
+                }
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -21,9 +63,8 @@ class HomeTableViewController: UITableViewController {
         table.delegate = self
         table.dataSource = self
         
-        models.append(userPost(postTitle: "Morning Meditation", postDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.", postImage: "sunrise", userImage: "profile_pic_1", numLikes: 4, numDislikes: 1, numComments: 2))
+        loadRecordings(success: loadUsers)
         
-        models.append(userPost(postTitle: "Take a break", postDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.", postImage: "photo", userImage: "profile_pic_2", numLikes: 10, numDislikes: 2, numComments: 7))
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -35,7 +76,9 @@ class HomeTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! postCellTableViewCell
-        cell.configure(with: models[indexPath.row])
+        let recording = models[indexPath.row]
+        cell.configure(with: recording, user: users[recording.OwnerID]!)
+        cell.uid = models[indexPath.row].OwnerID
         
         return cell
     }
@@ -63,4 +106,5 @@ struct userPost {
     let numLikes: Int
     let numDislikes: Int
     let numComments: Int
+    let OwnerID: String
 }
