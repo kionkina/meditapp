@@ -19,6 +19,10 @@ class DBViewController: UIViewController {
     
     static func getPostsByTags(forTags tags: [String], success: @escaping ([Post]) -> Void){
         print("IM IN")
+        if tags.isEmpty{
+            print("EMPTY TAG" )
+            return
+        }
         let db = Firestore.firestore()
         //let userRef = db.collection("users").document(User.current.uid)
         //returns a firquery. using orderby requires creating index
@@ -39,7 +43,7 @@ class DBViewController: UIViewController {
                 print("BOUTTA PRINT")
                 print(querySnapshot!)
                 //querysnapshot can contain multiple documents
-                if querySnapshot!.documents.count > 0{
+                if querySnapshot!.documents.count <= 0{
                     print("no documents fetched")
                 }
                 else{
