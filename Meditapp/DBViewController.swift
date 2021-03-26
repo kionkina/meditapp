@@ -95,7 +95,7 @@ class DBViewController: UIViewController {
         }
     }
     
-    static func updateLikes(for postID: String, success: @escaping () -> ()){
+    static func createLike(for postID: String, success: @escaping (Int) -> Void){
         let db = Firestore.firestore()
         let postRef = db.collection("Recordings").document(postID)
         let userRef = db.collection("users").document(User.current.uid)
@@ -137,7 +137,7 @@ class DBViewController: UIViewController {
             transaction.updateData(["numLikes": newLikes], forDocument: postRef)
             //messed up b4
             transaction.updateData(["likedPosts.\(postID)":true], forDocument: userRef)
-            success()
+            success(newLikes)
             return newLikes
         }) { (object, error) in
             if let error = error {
@@ -148,8 +148,57 @@ class DBViewController: UIViewController {
         }
     }
     
-//    static func updateDislikes(){
-//
-//    }
+    static func destroyLike(for postID: String, success: @escaping (Int) -> Void){
+        let db = Firestore.firestore()
+        let postRef = db.collection("Recordings").document(postID)
+        let userRef = db.collection("users").document(User.current.uid)
+
+        db.runTransaction({ (transaction, errorPointer) -> Any? in
+            let postDoc: DocumentSnapshot
+            do {
+                try postDoc = transaction.getDocument(postRef)
+            } catch let fetchError as NSError {
+                errorPointer?.pointee = fetchError
+                return nil
+            }
+
+            guard let oldLikes = postDoc.data()?["numLikes"] as? Int else {
+                let error = NSError(
+                    domain: "AppErrorDomain",
+                    code: -1,
+                    userInfo: [
+                        NSLocalizedDescriptionKey: "Unable to retrieve population from snapshot \(postDoc)"
+                    ]
+                )
+                errorPointer?.pointee = error
+                return nil
+            }
+            print("OLD LIKES PRINT",oldLikes)
+            // Note: this could be done without a transaction
+            //       by updating the population using FieldValue.increment()
+            let newLikes = oldLikes - 1
+            guard newLikes <= 1000000 else {
+                let error = NSError(
+                    domain: "AppErrorDomain",
+                    code: -2,
+                    userInfo: [NSLocalizedDescriptionKey: "likes \(newLikes) too big"]
+                )
+                errorPointer?.pointee = error
+                return nil
+            }
+
+            transaction.updateData(["numLikes": newLikes], forDocument: postRef)
+            //messed up b4
+            transaction.updateData(["likedPosts.\(postID)": FieldValue.delete()], forDocument: userRef)
+            success(newLikes)
+            return newLikes
+        }) { (object, error) in
+            if let error = error {
+                print("Error updating population: \(error)")
+            } else {
+                print("Population increased to \(object!)")
+            }
+        }
+    }
     
 }

@@ -64,6 +64,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         print(User.current.uid, "FOLLOWED BY THE TAGS", User.current.tags)
+        print(User.current.likedPosts, "MY LIKED POSTS")
         loadRecordings(success: loadUsers)
 
     }
@@ -75,11 +76,12 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         let recording = recordings[indexPath.row]
         cell.post = recording
         
+        //set whether the post has already been liked when displaying cells.
         if User.current.likedPosts[recording.RecID] != nil{
-            cell.setLiked(true)
+            cell.setLiked(User.current.likedPosts[recording.RecID]!, recording.numLikes)
         }
         else{
-            cell.setLiked(false)
+            cell.setLiked(false, recording.numLikes)
         }
         //if user to current post found in dict
         //configure the cell

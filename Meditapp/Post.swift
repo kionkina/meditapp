@@ -63,7 +63,7 @@ class Post : NSObject {
         self.numLikes = numLikes
     }
     
-    //UserDefaults
+//    UserDefaults
     required init?(coder aDecoder: NSCoder) {
         guard let Description = aDecoder.decodeObject(forKey: "Description") as? String,
             let Name = aDecoder.decodeObject(forKey: "Name") as? String,
@@ -82,8 +82,8 @@ class Post : NSObject {
         self.Timestamp = Timestamp
         self.numLikes = numLikes
     }
-    
-    
+
+
 
 }
 

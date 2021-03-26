@@ -40,17 +40,19 @@ class postCellTableViewCell: UITableViewCell {
         
     }
     
-    func setLiked(_ isLiked: Bool){
+    func setLiked(_ isLiked: Bool, _ numofLikes: Int){
         liked = isLiked
         if(liked){
             DispatchQueue.main.async{
                 self.likeButton.isSelected = true
+                self.likesCount.text = String(numofLikes)
             }
 //            likeButton.setImage(UIImage(named: "heartfilled"), for: UIControl.State.selected)
         }
         else{
             DispatchQueue.main.async{
                 self.likeButton.isSelected = false
+                self.likesCount.text = String(numofLikes)
             }
 //            likeButton.setImage(UIImage(named: "heart"), for: UIControl.State.normal)
         }
@@ -59,17 +61,18 @@ class postCellTableViewCell: UITableViewCell {
     @IBAction func likeButton(_ sender: UIButton) {
         let like = !liked
         if(like){
-            DBViewController.updateLikes(for: post!.RecID){
+            DBViewController.createLike(for: post!.RecID){ numofLikes in
                 User.current.likedPosts[self.post!.RecID] = true
-                self.setLiked(true)
+                self.setLiked(true, numofLikes)
+                print(User.current.likedPosts, "THIS IS AFTER LIKED")
             }
         }
         else{
-//            TwitterAPICaller.client?.destroyFavTweet(tweetID: tweetID, success: {
-//                self.setFavorite(false)
-//            }, failure: { (Error) in
-//                print("Could not like")
-//            })
+            DBViewController.destroyLike(for: post!.RecID){ numofLikes in
+                User.current.likedPosts[self.post!.RecID] = nil
+                self.setLiked(false, numofLikes)
+                print(User.current.likedPosts, "THIS IS AFTER DISLIKED")
+            }
         }
     }
     

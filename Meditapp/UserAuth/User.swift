@@ -80,6 +80,7 @@ class User : NSObject {
         self.tags = tags
         self.recordings = recordings
         self.likedPosts = likedPosts
+        print(self.likedPosts, "IN USERSWIFT")
     }
     
     
