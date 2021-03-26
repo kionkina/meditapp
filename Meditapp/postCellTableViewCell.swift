@@ -70,7 +70,7 @@ class postCellTableViewCell: UITableViewCell {
                 print(User.current.likedPosts, "THIS IS AFTER LIKED")
                 
                 let userLikedPost:[String:Bool] =  User.current.likedPosts
-                defaults.set(userLikedPost, forKey: "UserLikedPost")
+                defaults.set(userLikedPost, forKey: "UserLikedPosts")
             }
         }
         else{
@@ -80,7 +80,7 @@ class postCellTableViewCell: UITableViewCell {
                 print(User.current.likedPosts, "THIS IS AFTER DISLIKED")
                 
                 let userLikedPost:[String:Bool] =  User.current.likedPosts
-                defaults.set(userLikedPost, forKey: "UserLikedPost")
+                defaults.set(userLikedPost, forKey: "UserLikedPosts")
             }
         }
     }
