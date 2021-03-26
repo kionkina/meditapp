@@ -64,6 +64,7 @@ class postCellTableViewCell: UITableViewCell {
 
         if(like){
             DBViewController.createLike(for: post!.RecID){ numofLikes in
+                //update user likepost then store it back in userdefault.
                 User.current.likedPosts.updateValue(true, forKey: self.post!.RecID)
                 self.setLiked(true, numofLikes)
                 print(User.current.likedPosts, "THIS IS AFTER LIKED")

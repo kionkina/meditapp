@@ -100,7 +100,9 @@ class User : NSObject {
             print("I made it to setcurrent?")
             let data = NSKeyedArchiver.archivedData(withRootObject: user)
             
-            UserDefaults.standard.set(data, forKey: "currentUser")
+//            UserDefaults.standard.set(data, forKey: "currentUser")
+//            let userLikedPost:[String:Bool] =  user.likedPosts
+//            UserDefaults.standard.set(userLikedPost, forKey: "UserLikedPost")
         }
         
         _current = user
