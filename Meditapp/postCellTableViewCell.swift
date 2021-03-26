@@ -60,18 +60,26 @@ class postCellTableViewCell: UITableViewCell {
     
     @IBAction func likeButton(_ sender: UIButton) {
         let like = !liked
+        let defaults = UserDefaults.standard
+
         if(like){
             DBViewController.createLike(for: post!.RecID){ numofLikes in
-                User.current.likedPosts[self.post!.RecID] = true
+                User.current.likedPosts.updateValue(true, forKey: self.post!.RecID)
                 self.setLiked(true, numofLikes)
                 print(User.current.likedPosts, "THIS IS AFTER LIKED")
+                
+                let userLikedPost:[String:Bool] =  User.current.likedPosts
+                defaults.set(userLikedPost, forKey: "UserLikedPost")
             }
         }
         else{
             DBViewController.destroyLike(for: post!.RecID){ numofLikes in
-                User.current.likedPosts[self.post!.RecID] = nil
+                User.current.likedPosts.removeValue(forKey: self.post!.RecID)
                 self.setLiked(false, numofLikes)
                 print(User.current.likedPosts, "THIS IS AFTER DISLIKED")
+                
+                let userLikedPost:[String:Bool] =  User.current.likedPosts
+                defaults.set(userLikedPost, forKey: "UserLikedPost")
             }
         }
     }
@@ -95,7 +103,7 @@ class postCellTableViewCell: UITableViewCell {
 
     //removed extra param: , user: User?
     func configure(with model: Post, for user: User?){
-        self.likesCount.text = "\(4)"
+//        self.likesCount.text = "\(4)"
         self.dislikesCount.text = "\(3)"
         self.commentsCount.text = "\(5)"
         
@@ -105,7 +113,7 @@ class postCellTableViewCell: UITableViewCell {
         self.userImage.image = UIImage(named:"profile_pic_1")
         self.username.setTitle(user!.username, for: .normal)
         
-        self.likesCount.text = String(model.numLikes)
+//        self.likesCount.text = String(model.numLikes)
         
         self.postUser = user
         self.post = model

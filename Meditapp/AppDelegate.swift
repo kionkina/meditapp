@@ -38,8 +38,16 @@ extension AppDelegate {
             let userData = defaults.object(forKey: "currentUser") as? Data,
             let user = NSKeyedUnarchiver.unarchiveObject(with: userData) as? User {
             
-            
             User.setCurrent(user)
+            
+            
+            if let UserLikedPosts = UserDefaults.standard.dictionary(forKey: "UserLikedPost") as? [String:Bool]{
+                User.current.likedPosts = UserLikedPosts
+            }
+            else{
+                print("NONE YETT")
+            }
+            
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             initialViewController = storyboard.instantiateViewController(withIdentifier: "tabController")
         }
