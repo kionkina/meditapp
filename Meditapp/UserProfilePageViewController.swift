@@ -32,6 +32,15 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
         //if user to current post found in dict
         //configure the cell
 //        cell.configure(with: recording)
+        cell.post = recording
+        
+        if User.current.likedPosts[recording.RecID] != nil{
+            cell.setLiked(User.current.likedPosts[recording.RecID]!, recording.numLikes)
+        }
+        else{
+            cell.setLiked(false, recording.numLikes)
+        }
+        
         if let user = postUser{
 //            cell.configure(with: recording, user: user)
 //            cell.configure(with: recording)
