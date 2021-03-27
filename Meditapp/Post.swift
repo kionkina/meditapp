@@ -18,7 +18,7 @@ class Post : NSObject {
     let RecID : String
     var Tags: [String]
     let Timestamp: Timestamp
-    let numLikes: Int
+    var numLikes: Int
 //    var dictValue: [String: Any] {
 //        return ["Description" : Description,
 //                "Name" : Name,

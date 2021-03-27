@@ -41,7 +41,7 @@ extension AppDelegate {
             User.setCurrent(user)
             
             
-            if let UserLikedPosts = UserDefaults.standard.dictionary(forKey: "UserLikedPost") as? [String:Bool]{
+            if let UserLikedPosts = UserDefaults.standard.dictionary(forKey: "UserLikedPosts") as? [String:Bool]{
                 User.current.likedPosts = UserLikedPosts
             }
             else{

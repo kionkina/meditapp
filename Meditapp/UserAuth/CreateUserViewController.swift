@@ -64,6 +64,9 @@ class CreateUserViewController: UIViewController {
                 }
                 
                 print("About to setcurrent")
+                
+                UserDefaults.standard.removeObject(forKey: "UserLikedPosts")
+                
                 User.setCurrent(user, writeToUserDefaults: true)
                 print("After stored and aobut to segue")
                 self.performSegue(withIdentifier: "selectTags", sender:nil)

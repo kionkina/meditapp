@@ -1,4 +1,3 @@
-    //
 //  postCellTableViewCell.swift
 //  Meditapp
 //
@@ -6,8 +5,16 @@
 //
 
 import UIKit
+import UserNotifications
+
+protocol postCellTableViewDelegate: class {
+    func postCellTableViewCell(numUpdate numLikes: Int, forRecID RecID: String)
+}
 
 class postCellTableViewCell: UITableViewCell {
+    
+    weak var delegate: postCellTableViewDelegate?
+
     
     @IBOutlet weak var postTitle: UILabel!
     @IBOutlet weak var postDescription: UILabel!
@@ -42,6 +49,7 @@ class postCellTableViewCell: UITableViewCell {
     
     func setLiked(_ isLiked: Bool, _ numofLikes: Int){
         liked = isLiked
+//        print("Am i in wtf?")
         if(liked){
             DispatchQueue.main.async{
                 self.likeButton.isSelected = true
@@ -67,10 +75,19 @@ class postCellTableViewCell: UITableViewCell {
                 //update user likepost then store it back in userdefault.
                 User.current.likedPosts.updateValue(true, forKey: self.post!.RecID)
                 self.setLiked(true, numofLikes)
+                
+                let updateDict = [
+                    "updateRecID":self.post!.RecID,
+                    "updateLikes":numofLikes
+                ] as [String : Any]
+                
+                NotificationCenter.default.post(name: Notification.Name("UpdateLikes"), object: updateDict)
+                
+                print(self.post!.numLikes, "ADDING IN PCT")
                 print(User.current.likedPosts, "THIS IS AFTER LIKED")
                 
-                let userLikedPost:[String:Bool] =  User.current.likedPosts
-                defaults.set(userLikedPost, forKey: "UserLikedPost")
+                let userLikedPosts:[String:Bool] =  User.current.likedPosts
+                defaults.set(userLikedPosts, forKey: "UserLikedPosts")
             }
         }
         else{
@@ -78,9 +95,18 @@ class postCellTableViewCell: UITableViewCell {
                 User.current.likedPosts.removeValue(forKey: self.post!.RecID)
                 self.setLiked(false, numofLikes)
                 print(User.current.likedPosts, "THIS IS AFTER DISLIKED")
+
+                let updateDict = [
+                    "updateRecID":self.post!.RecID,
+                    "updateLikes":numofLikes
+                ] as [String : Any]
                 
-                let userLikedPost:[String:Bool] =  User.current.likedPosts
-                defaults.set(userLikedPost, forKey: "UserLikedPost")
+                NotificationCenter.default.post(name: Notification.Name("UpdateLikes"), object: updateDict)
+                
+                print(self.post!.numLikes, "SUBT IN PCT")
+                
+                let userLikedPosts:[String:Bool] =  User.current.likedPosts
+                defaults.set(userLikedPosts, forKey: "UserLikedPosts")
             }
         }
     }

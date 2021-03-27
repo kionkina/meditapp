@@ -32,6 +32,17 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
         //if user to current post found in dict
         //configure the cell
 //        cell.configure(with: recording)
+        cell.post = recording
+        
+        //set whether the post has already been liked when displaying cells.
+        if User.current.likedPosts[recording.RecID] != nil{
+//            print(User.current.likedPosts, "INSIDE PROFILE PAGE")
+            cell.setLiked(User.current.likedPosts[recording.RecID]!, recording.numLikes)
+        }
+        else{
+            cell.setLiked(false, recording.numLikes)
+        }
+        
         if let user = postUser{
 //            cell.configure(with: recording, user: user)
 //            cell.configure(with: recording)
@@ -90,6 +101,11 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
     @IBOutlet weak var Pfp: UIImageView!
     
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -100,7 +116,7 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
         lastName.text = postUser?.lastName
         username.text = postUser?.username
         
-        print("in profile! uid: " + postUser!.uid)
+//        print("in profile! uid: " + postUser!.uid)
         loadPfp()
         loadRecordings()
         // Do any additional setup after loading the view.

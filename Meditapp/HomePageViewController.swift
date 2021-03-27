@@ -9,13 +9,24 @@ import UIKit
 import FirebaseFirestore
 import FirebaseStorage
 
-class HomePageViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class HomePageViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
+
+    
+    
+//    func postCellTableViewCell(numUpdate numLikes: Int, forRecID RecID: String) {
+//
+//        if let updateNumLikes = recordings.firstIndex(where: { post in post.RecID == RecID}){
+//            recordings[updateNumLikes].numLikes = numLikes
+//        }
+//    }
+  
 
     @IBOutlet var tableView: UITableView!
 
     var recordings = [Post]()
     var users = [String: User?]()
     var audioPlayer = AVAudioPlayer()
+    
     
     var audioReference: StorageReference{
         return Storage.storage().reference().child("recordings")
@@ -61,14 +72,38 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print(User.current.uid, "FOLLOWED BY THE TAGS", User.current.tags)
         print(User.current.likedPosts, "MY LIKED POSTS")
         loadRecordings(success: loadUsers)
 
+        NotificationCenter.default.addObserver(self, selector: #selector(handleLikes), name: Notification.Name("UpdateLikes"), object: nil)
     }
 
+    @objc func handleLikes(notification: NSNotification) {
+        if let dict = notification.object as? [String:Any] {
+            //print(dict)
+//            if let i = self.recordings.firstIndex(where: {$0.RecID == dict["updateRecID"]
+//            }) {
+//
+//            }
+            for post in recordings{
+                if post.RecID == dict["updateRecID"] as! String{
+                    post.numLikes = dict["updateLikes"] as! Int
+                }
+            }
+            
+//            if let updateNumLikes = recordings.firstIndex(where: { post in post.RecID == dict["updateRecID"]}){
+//            //            recordings[updateNumLikes].numLikes = numLikes
+        }
+    }
+        
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! postCellTableViewCell
@@ -132,18 +167,4 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     
 
 }
-
-/* USE POST OBJECT instead
-struct userPost {
-    let postTitle: String
-    let postDescription: String
-    let postImage: String //will change later
-    let userImage: String
-    let numLikes: Int
-    let numDislikes: Int
-    let numComments: Int
-    let OwnerID: String
-}*/
-
-
 
