@@ -100,12 +100,12 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
     @IBOutlet weak var lastNameLabel: UILabel!
     @IBOutlet weak var Pfp: UIImageView!
     
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        tableView.reloadData()
-    }
-    
+//
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        tableView.reloadData()
+//    }
+//
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -119,6 +119,7 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
 //        print("in profile! uid: " + postUser!.uid)
         loadPfp()
         loadRecordings()
+        print("loading recordings in userprofiles")
         // Do any additional setup after loading the view.
     }
     
@@ -128,16 +129,12 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
         
         print(postUser?.recordings)
         DBViewController.getRecordings(for: postUser!.recordings) { (doc: DocumentSnapshot) in
-            //Typecast to post model
-                print("doc: " )
-                print(doc)
             if (doc != nil) {
                 self.recordings.append(Post(snapshot: doc)!)
-                print(self.recordings)
+//                print(self.recordings)
                 self.tableView.reloadData()
-                }
-            //reloadtable
             }
+        }
     }
     
     //TODO : CHECK IF USER HAS IMAGE: BOOL.

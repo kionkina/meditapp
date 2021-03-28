@@ -11,16 +11,6 @@ import FirebaseStorage
 
 class HomePageViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
 
-    
-    
-//    func postCellTableViewCell(numUpdate numLikes: Int, forRecID RecID: String) {
-//
-//        if let updateNumLikes = recordings.firstIndex(where: { post in post.RecID == RecID}){
-//            recordings[updateNumLikes].numLikes = numLikes
-//        }
-//    }
-  
-
     @IBOutlet var tableView: UITableView!
 
     var recordings = [Post]()
@@ -88,19 +78,11 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
 
     @objc func handleLikes(notification: NSNotification) {
         if let dict = notification.object as? [String:Any] {
-            //print(dict)
-//            if let i = self.recordings.firstIndex(where: {$0.RecID == dict["updateRecID"]
-//            }) {
-//
-//            }
             for post in recordings{
                 if post.RecID == dict["updateRecID"] as! String{
                     post.numLikes = dict["updateLikes"] as! Int
                 }
             }
-            
-//            if let updateNumLikes = recordings.firstIndex(where: { post in post.RecID == dict["updateRecID"]}){
-//            //            recordings[updateNumLikes].numLikes = numLikes
         }
     }
         

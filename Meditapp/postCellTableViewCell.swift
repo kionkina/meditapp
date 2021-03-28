@@ -7,14 +7,7 @@
 import UIKit
 import UserNotifications
 
-protocol postCellTableViewDelegate: class {
-    func postCellTableViewCell(numUpdate numLikes: Int, forRecID RecID: String)
-}
-
 class postCellTableViewCell: UITableViewCell {
-    
-    weak var delegate: postCellTableViewDelegate?
-
     
     @IBOutlet weak var postTitle: UILabel!
     @IBOutlet weak var postDescription: UILabel!
