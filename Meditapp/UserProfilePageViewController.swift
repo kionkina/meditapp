@@ -94,9 +94,7 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
     var postUser: User?
     var recordings: [Post] = []
     
-    @IBOutlet weak var usernameLabel: UILabel!
-    @IBOutlet weak var firstNameLabel: UILabel!
-    @IBOutlet weak var lastNameLabel: UILabel!
+
     @IBOutlet weak var Pfp: UIImageView!
     
 //
@@ -111,9 +109,9 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
         tableView.delegate = self
         tableView.dataSource = self
         
-        usernameLabel.text = postUser?.firstName
-        firstNameLabel.text = postUser?.lastName
-        usernameLabel.text = postUser?.username
+        username.text = postUser?.firstName
+        firstName.text = postUser?.lastName
+        lastName.text = postUser?.username
         
 //        print("in profile! uid: " + postUser!.uid)
         loadPfp()
