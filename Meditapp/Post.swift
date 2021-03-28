@@ -18,6 +18,8 @@ class Post : NSObject {
     let RecID : String
     var Tags: [String]
     let Timestamp: Timestamp
+    let PostImg: String
+    
 //    var dictValue: [String: Any] {
 //        return ["Description" : Description,
 //                "Name" : Name,
@@ -28,13 +30,16 @@ class Post : NSObject {
 //    }
     
     //Standard Post init()
-    init(Description: String, Name: String, OwnerID: String, RecID:String, Tags:[String], Timestamp: Timestamp) {
+    //add pic param
+    init(Description: String, Name: String, OwnerID: String, RecID:String, Tags:[String], Timestamp: Timestamp, PostImg: String) {
         self.Description = Description
         self.Name = Name
         self.OwnerID = OwnerID
         self.RecID = RecID
         self.Tags = Tags
         self.Timestamp = Timestamp
+        self.PostImg = PostImg
+        //self.pic
         super.init()
     }
 
@@ -46,7 +51,8 @@ class Post : NSObject {
             let OwnerID = dict["OwnerID"] as? String,
             let RecID = dict["RecID"] as? String,
             let Tags = dict["Tags"] as? [String],
-            let Timestamp = dict["Timestamp"] as? Timestamp
+            let Timestamp = dict["Timestamp"] as? Timestamp,
+            let PostImg = dict["Image"] as? String
             else {
             print ("returning nil")
             return nil
@@ -57,6 +63,7 @@ class Post : NSObject {
         self.RecID = RecID
         self.Tags = Tags
         self.Timestamp = Timestamp
+        self.PostImg = PostImg
     }
     
 //    //UserDefaults

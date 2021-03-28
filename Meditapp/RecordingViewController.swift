@@ -10,10 +10,12 @@ import AVFoundation
 import FirebaseAuth
 import FirebaseStorage
 import FirebaseFirestore
+import Photos
+import FirebaseUI
 
 
 
-class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITableViewDelegate, UITextFieldDelegate, UITextViewDelegate, UITableViewDataSource, TagsViewControllerDelegate {
+class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITableViewDelegate, UITextFieldDelegate, UITextViewDelegate, UITableViewDataSource, TagsViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     
     //MARK: - Outlets
@@ -23,6 +25,7 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
     @IBOutlet weak var postDesc: UITextView!
     @IBOutlet weak var charLimit: UILabel!
     @IBOutlet weak var postButton: UIBarButtonItem!
+    @IBOutlet weak var postImage: UIImageView!
     
     
     
@@ -32,12 +35,16 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
     var audioPlayer = AVAudioPlayer()
     var recordings = [Recording]()
     var postTags = [String]()
-    
+    var imagePickerController = UIImagePickerController()
     
     var checkedIndex: IndexPath!
     
     var recordingReference: StorageReference{
         return Storage.storage().reference().child("recordings")
+    }
+    
+    var postPhotoReference: StorageReference{
+        return Storage.storage().reference().child("postphotos")
     }
     
     override func viewDidLoad() {
@@ -73,7 +80,11 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
                 print("not granted")
             }
         }
+        
+        imagePickerController.delegate = self
+        checkPermissions()
     }
+    
     
     @objc func dismissKeyboard(_ sender: UITapGestureRecognizer) {
         self.view.endEditing(true)
@@ -141,7 +152,59 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
         }
     }
     
+    @IBAction func uploadImg(_ sender: Any) {
+        self.imagePickerController.sourceType = .photoLibrary
+        self.present(self.imagePickerController, animated: true, completion: nil)
+        
+    }
     
+    
+    func checkPermissions() {
+       if PHPhotoLibrary.authorizationStatus() != PHAuthorizationStatus.authorized {
+                                PHPhotoLibrary.requestAuthorization({ (status: PHAuthorizationStatus) -> Void in
+                                    ()
+                                })
+                            }
+
+                            if PHPhotoLibrary.authorizationStatus() == PHAuthorizationStatus.authorized {
+                            } else {
+                                PHPhotoLibrary.requestAuthorization(requestAuthorizationHandler)
+                            }
+    }
+    
+    //photo auth function
+    func requestAuthorizationHandler(status: PHAuthorizationStatus){
+        if PHPhotoLibrary.authorizationStatus() == PHAuthorizationStatus.authorized{
+            print("WE CAN ACCESS PHOTOS NOW")
+        } else {
+            print("PHOTO ACCESS DENIED")
+        }
+    }
+    
+    //see what img user chose and upload it to firebase
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let url = info[UIImagePickerController.InfoKey.imageURL] as? URL{
+            print("Image selected: \(url)")
+            let postPhotoRef = postPhotoReference
+            let localFile = url
+            let photoRef = postPhotoRef.child(url.lastPathComponent)
+            
+            let uploadTask = photoRef.putFile(from: localFile, metadata: nil) { (metadata, err) in
+                guard let metadata = metadata
+                else {
+                    print(err?.localizedDescription)
+                    return
+                }
+                print("Photo uploaded")
+                self.postImage.sd_setImage(with: photoRef)
+                print("img URL: \(String(describing: self.postImage.sd_imageURL?.lastPathComponent))")
+//                print("this is the post image")
+            }
+            
+        }
+        
+        imagePickerController.dismiss(animated: true, completion: nil)
+    }
     
     //MARK: - Actions
     @IBAction func record(_ sender: Any) {
@@ -189,6 +252,7 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
             saveRecordings()
         }
     }
+    
     
     
     
@@ -336,7 +400,8 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
 //            "OwnerRef" : db.collection("users").document(User.current.uid),
             "OwnerID" : User.current.uid,
             "Tags" : postTags,
-            "Description" : postDesc.text!
+            "Description" : postDesc.text!,
+            "Image" : postImage.sd_imageURL?.lastPathComponent as Any
 //            "StorageRef" : audioRef
         ]
         
