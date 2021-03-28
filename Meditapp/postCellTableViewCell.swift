@@ -81,6 +81,7 @@ class postCellTableViewCell: UITableViewCell {
                 
                 let userLikedPosts:[String:Bool] =  User.current.likedPosts
                 defaults.set(userLikedPosts, forKey: "UserLikedPosts")
+
             }
         }
         else{
@@ -100,6 +101,7 @@ class postCellTableViewCell: UITableViewCell {
                 
                 let userLikedPosts:[String:Bool] =  User.current.likedPosts
                 defaults.set(userLikedPosts, forKey: "UserLikedPosts")
+
             }
         }
     }

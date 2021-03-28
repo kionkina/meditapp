@@ -34,9 +34,8 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
 //        cell.configure(with: recording)
         cell.post = recording
         
-        //set whether the post has already been liked when displaying cells.
+
         if User.current.likedPosts[recording.RecID] != nil{
-//            print(User.current.likedPosts, "INSIDE PROFILE PAGE")
             cell.setLiked(User.current.likedPosts[recording.RecID]!, recording.numLikes)
         }
         else{
