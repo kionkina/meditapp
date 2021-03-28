@@ -19,6 +19,8 @@ class Post : NSObject {
     var Tags: [String]
     let Timestamp: Timestamp
     var numLikes: Int
+    let PostImg: String
+    
 //    var dictValue: [String: Any] {
 //        return ["Description" : Description,
 //                "Name" : Name,
@@ -29,7 +31,9 @@ class Post : NSObject {
 //    }
     
     //Standard Post init()
-    init(Description: String, Name: String, OwnerID: String, RecID:String, Tags:[String], Timestamp: Timestamp, numLikes: Int) {
+
+    //add pic param
+    init(Description: String, Name: String, OwnerID: String, RecID:String, Tags:[String], Timestamp: Timestamp, PostImg: String) {
         self.Description = Description
         self.Name = Name
         self.OwnerID = OwnerID
@@ -37,6 +41,8 @@ class Post : NSObject {
         self.Tags = Tags
         self.Timestamp = Timestamp
         self.numLikes = numLikes
+        self.PostImg = PostImg
+        //self.pic
         super.init()
     }
 
@@ -49,7 +55,8 @@ class Post : NSObject {
             let RecID = dict["RecID"] as? String,
             let Tags = dict["Tags"] as? [String],
             let Timestamp = dict["Timestamp"] as? Timestamp,
-            let numLikes = dict["numLikes"] as? Int
+            let numLikes = dict["numLikes"] as? Int,
+            let PostImg = dict["Image"] as? String
             else {
             print ("returning nil")
             return nil
@@ -61,40 +68,41 @@ class Post : NSObject {
         self.Tags = Tags
         self.Timestamp = Timestamp
         self.numLikes = numLikes
+        self.PostImg = PostImg
     }
     
-//    UserDefaults
-    required init?(coder aDecoder: NSCoder) {
-        guard let Description = aDecoder.decodeObject(forKey: "Description") as? String,
-            let Name = aDecoder.decodeObject(forKey: "Name") as? String,
-            let OwnerID = aDecoder.decodeObject(forKey: "OwnerID") as? String,
-            let RecID = aDecoder.decodeObject(forKey: "RecID") as? String,
-            let Tags = aDecoder.decodeObject(forKey:"Tags") as? [String],
-            let Timestamp = aDecoder.decodeObject(forKey:"timestamp") as? Timestamp,
-            let numLikes = aDecoder.decodeObject(forKey:"numLikes") as? Int
-            else { return nil }
-
-        self.Description = Description
-        self.Name = Name
-        self.OwnerID = OwnerID
-        self.RecID = RecID
-        self.Tags = Tags
-        self.Timestamp = Timestamp
-        self.numLikes = numLikes
-    }
-
-
-
-}
-
-extension Post: NSCoding {
-    func encode(with aCoder: NSCoder) {
-        aCoder.encode(Description, forKey: "Description")
-        aCoder.encode(Name, forKey: "Name")
-        aCoder.encode(OwnerID, forKey: "OwnerID")
-        aCoder.encode(RecID, forKey: "RecID")
-        aCoder.encode(Tags, forKey: "Tags")
-        aCoder.encode(Timestamp, forKey: "Timestamp")
-        aCoder.encode(numLikes, forKey: "numLikes")
-    }
+////    UserDefaults
+//    required init?(coder aDecoder: NSCoder) {
+//        guard let Description = aDecoder.decodeObject(forKey: "Description") as? String,
+//            let Name = aDecoder.decodeObject(forKey: "Name") as? String,
+//            let OwnerID = aDecoder.decodeObject(forKey: "OwnerID") as? String,
+//            let RecID = aDecoder.decodeObject(forKey: "RecID") as? String,
+//            let Tags = aDecoder.decodeObject(forKey:"Tags") as? [String],
+//            let Timestamp = aDecoder.decodeObject(forKey:"timestamp") as? Timestamp,
+//            let numLikes = aDecoder.decodeObject(forKey:"numLikes") as? Int
+//            else { return nil }
+//
+//        self.Description = Description
+//        self.Name = Name
+//        self.OwnerID = OwnerID
+//        self.RecID = RecID
+//        self.Tags = Tags
+//        self.Timestamp = Timestamp
+//        self.numLikes = numLikes
+//    }
+//
+//
+//
+//}
+//
+//extension Post: NSCoding {
+//    func encode(with aCoder: NSCoder) {
+//        aCoder.encode(Description, forKey: "Description")
+//        aCoder.encode(Name, forKey: "Name")
+//        aCoder.encode(OwnerID, forKey: "OwnerID")
+//        aCoder.encode(RecID, forKey: "RecID")
+//        aCoder.encode(Tags, forKey: "Tags")
+//        aCoder.encode(Timestamp, forKey: "Timestamp")
+//        aCoder.encode(numLikes, forKey: "numLikes")
+//    }
 }
