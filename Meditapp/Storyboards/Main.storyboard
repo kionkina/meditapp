@@ -567,11 +567,11 @@
                     <navigationItem key="navigationItem" id="Gvv-dS-PDx"/>
                     <connections>
                         <outlet property="Pfp" destination="J8x-Uj-miz" id="IAa-lM-CcK"/>
-                        <outlet property="firstName" destination="WOn-jY-wVN" id="p7b-nR-lBQ"/>
+                        <outlet property="firstNameLabel" destination="WOn-jY-wVN" id="py4-zp-5hL"/>
                         <outlet property="followBotton" destination="AbF-S1-2Hr" id="hUw-OU-me0"/>
-                        <outlet property="lastName" destination="yna-JW-kDf" id="bgw-Kf-Jpr"/>
+                        <outlet property="lastNameLabel" destination="yna-JW-kDf" id="NaY-2U-dYO"/>
                         <outlet property="tableView" destination="kk3-Fn-VtY" id="rKb-68-SW9"/>
-                        <outlet property="username" destination="chm-f2-rGN" id="P8s-1O-PDo"/>
+                        <outlet property="usernameLabel" destination="chm-f2-rGN" id="cXC-Ae-h2U"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DDL-AZ-dJO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

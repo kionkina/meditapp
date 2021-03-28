@@ -111,9 +111,9 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
         tableView.delegate = self
         tableView.dataSource = self
         
-        firstName.text = postUser?.firstName
-        lastName.text = postUser?.lastName
-        username.text = postUser?.username
+        usernameLabel.text = postUser?.firstName
+        firstNameLabel.text = postUser?.lastName
+        usernameLabel.text = postUser?.username
         
 //        print("in profile! uid: " + postUser!.uid)
         loadPfp()
@@ -124,9 +124,6 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
     
     
     func loadRecordings() {
-        print("in loadrecordings")
-        
-        print(postUser?.recordings)
         DBViewController.getRecordings(for: postUser!.recordings) { (doc: DocumentSnapshot) in
             if (doc != nil) {
                 self.recordings.append(Post(snapshot: doc)!)
