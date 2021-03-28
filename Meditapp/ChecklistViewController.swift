@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import FirebaseFirestore
 
 class ChecklistViewController: UITableViewController {
     
@@ -23,8 +24,6 @@ class ChecklistViewController: UITableViewController {
     
     func configureText(for cell: UITableViewCell,
                         with item: String) {
-         print("in config text")
-         print(cell)
         
         let label = cell.viewWithTag(1000) as! UILabel
          label.text = item
@@ -48,16 +47,10 @@ class ChecklistViewController: UITableViewController {
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath)
         -> UITableViewCell {
-            print("CLICKED")
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: "ChecklistItem",
                 for: indexPath)
-            print("cell: ")
-            print(cell)
-            print("indexPath:")
-            print(indexPath)
             let item = checklist[indexPath.row]
-            print(item)
             configureText(for: cell, with: item)
 
             return cell
@@ -66,7 +59,6 @@ class ChecklistViewController: UITableViewController {
 
     
     @IBAction func done() {
-        print("done!")
         
         var userSelection: [String] = []
         //unwrap optional
@@ -74,11 +66,9 @@ class ChecklistViewController: UITableViewController {
             
             for item: IndexPath in selectedRows {
                 userSelection.append(checklist[item.row])
-                print(checklist[item.row])
             }
         }
         
-        print(userSelection)
         User.current.tags = userSelection
         updateData(selectedTags: userSelection)
         //send this to db

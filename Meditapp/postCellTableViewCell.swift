@@ -1,4 +1,3 @@
-    //
 //  postCellTableViewCell.swift
 //  Meditapp
 //
@@ -6,6 +5,7 @@
 //
 
 import UIKit
+import UserNotifications
 
 class postCellTableViewCell: UITableViewCell {
     
@@ -16,7 +16,11 @@ class postCellTableViewCell: UITableViewCell {
     @IBOutlet weak var userImage: UIImageView!
     
     @IBOutlet weak var likesCount: UILabel!
+    
     @IBOutlet weak var dislikesCount: UILabel!
+    @IBOutlet weak var likeButton: UIButton!
+    
+    
     @IBOutlet weak var commentsCount: UILabel!
     @IBOutlet weak var username:UIButton!
     
@@ -33,9 +37,64 @@ class postCellTableViewCell: UITableViewCell {
     }
     
     @IBAction func followButton(_ sender: UIButton) {
+        
+    }
+    
+    func setLiked(_ isLiked: Bool, _ numofLikes: Int){
+        liked = isLiked
+        if(liked){
+            DispatchQueue.main.async{
+                self.likeButton.isSelected = true
+                self.likesCount.text = String(numofLikes)
+            }
+        }
+        else{
+            DispatchQueue.main.async{
+                self.likeButton.isSelected = false
+                self.likesCount.text = String(numofLikes)
+            }
+        }
     }
     
     @IBAction func likeButton(_ sender: UIButton) {
+        let like = !liked
+        let defaults = UserDefaults.standard
+
+        if(like){
+            DBViewController.createLike(for: post!.RecID){ numofLikes in
+                //update user likepost then store it back in userdefault.
+                User.current.likedPosts.updateValue(true, forKey: self.post!.RecID)
+                self.setLiked(true, numofLikes)
+                
+                let updateDict = [
+                    "updateRecID":self.post!.RecID,
+                    "updateLikes":numofLikes
+                ] as [String : Any]
+                
+                NotificationCenter.default.post(name: Notification.Name("UpdateLikes"), object: updateDict)
+                
+                let userLikedPosts:[String:Bool] =  User.current.likedPosts
+                defaults.set(userLikedPosts, forKey: "UserLikedPosts")
+
+            }
+        }
+        else{
+            DBViewController.destroyLike(for: post!.RecID){ numofLikes in
+                User.current.likedPosts.removeValue(forKey: self.post!.RecID)
+                self.setLiked(false, numofLikes)
+
+                let updateDict = [
+                    "updateRecID":self.post!.RecID,
+                    "updateLikes":numofLikes
+                ] as [String : Any]
+                
+                NotificationCenter.default.post(name: Notification.Name("UpdateLikes"), object: updateDict)
+                
+                let userLikedPosts:[String:Bool] =  User.current.likedPosts
+                defaults.set(userLikedPosts, forKey: "UserLikedPosts")
+
+            }
+        }
     }
     
     @IBAction func dislikeButton(_ sender: UIButton) {
@@ -46,6 +105,8 @@ class postCellTableViewCell: UITableViewCell {
     
 //    var uid: String = ""
     var postUser: User?
+    var post: Post?
+    var liked: Bool = false
     var playAudio: (() -> Void)?
 
     override func awakeFromNib() {
@@ -55,7 +116,6 @@ class postCellTableViewCell: UITableViewCell {
 
     //removed extra param: , user: User?
     func configure(with model: Post, for user: User?){
-        self.likesCount.text = "\(4)"
         self.dislikesCount.text = "\(3)"
         self.commentsCount.text = "\(5)"
         
@@ -64,10 +124,9 @@ class postCellTableViewCell: UITableViewCell {
         self.postImage.image = UIImage(named: "sunrise")
         self.userImage.image = UIImage(named:"profile_pic_1")
         self.username.setTitle(user!.username, for: .normal)
-        self.postUser = user
         
-//        let userid = user?.uid
-//        print(userid ?? "")
+        self.postUser = user
+        self.post = model
     }
 
     

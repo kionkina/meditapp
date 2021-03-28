@@ -17,26 +17,23 @@ struct UserService {
                          "firstName": firstName,
                          "lastName": lastName,
                          "tags": [],
-                         "recordings": []] as [String : Any]
+                         "recordings": [],
+                         "likedPosts": [String:Bool]()] as [String : Any]
         
         let ref = Firestore.firestore().collection("users").document(firUser.uid)
         
         ref.setData(userAttrs) { error in
             if let error = error {
-                print("WHY IS THERE AN ERROR HERE???")
                 assertionFailure(error.localizedDescription)
                 return completion(nil)
             }
             else {
-                print("DID I MAKE IT")
                 ref.addSnapshotListener { documentSnapshot, error in
                     guard let snapshot = documentSnapshot else {
                             print("Error fetching document: \(error!)")
                             return
                         }
-                    print(documentSnapshot?.data())
                     let user = User(snapshot: snapshot)
-                    print("MAKING USER RN", user)
                     completion(user)
                     print("new account created")
                 }

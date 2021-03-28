@@ -9,13 +9,14 @@ import UIKit
 import FirebaseFirestore
 import FirebaseStorage
 
-class HomePageViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class HomePageViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
 
     @IBOutlet var tableView: UITableView!
 
     var recordings = [Post]()
     var users = [String: User?]()
     var audioPlayer = AVAudioPlayer()
+    
     
     var audioReference: StorageReference{
         return Storage.storage().reference().child("recordings")
@@ -48,12 +49,8 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
             if !users.keys.contains(recording.OwnerID) {
                 DBViewController.getUserById(forUID: recording.OwnerID) { (user) in
                     //instantiate user using snapshot, append to users dict
-                    print("before let user")
                     if let user = user {
-                        print("after let user")
                         self.users[user.uid] = user
-                        print(self.users)
-                        print("reloaded")
                         self.tableView.reloadData()
                     }
                 }
@@ -61,26 +58,46 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(User.current.uid, "FOLLOWED BY THE TAGS", User.current.tags)
         loadRecordings(success: loadUsers)
 
+        NotificationCenter.default.addObserver(self, selector: #selector(handleLikes), name: Notification.Name("UpdateLikes"), object: nil)
     }
 
+    @objc func handleLikes(notification: NSNotification) {
+        if let dict = notification.object as? [String:Any] {
+            for post in recordings{
+                if post.RecID == dict["updateRecID"] as! String{
+                    post.numLikes = dict["updateLikes"] as! Int
+                }
+            }
+        }
+    }
+        
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! postCellTableViewCell
         
         let recording = recordings[indexPath.row]
+        cell.post = recording
+        
+        //set whether the post has already been liked when displaying cells.
+        if User.current.likedPosts[recording.RecID] != nil{
+            cell.setLiked(User.current.likedPosts[recording.RecID]!, recording.numLikes)
+        }
+        else{
+            cell.setLiked(false, recording.numLikes)
+        }
         //if user to current post found in dict
-        //configure the cell
-//        cell.configure(with: recording)
         if let user = users[recording.OwnerID]{
-//            cell.configure(with: recording, user: user)
-//            cell.configure(with: recording)
-            //cell.uid = recordings[indexPath.row].OwnerID
             cell.configure(with: recording, for: user )
+            
             cell.playAudio = {
                 let downloadPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(recording.RecID)
                 
@@ -95,7 +112,6 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                         do {
                             self.audioPlayer.stop()
                             self.audioPlayer = try AVAudioPlayer(contentsOf: url!)
-                            print("ABOUTTA PLAY AUDIO")
                             self.audioPlayer.play()
                         } catch {
                             print(error)
@@ -121,18 +137,4 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     
 
 }
-
-/* USE POST OBJECT instead
-struct userPost {
-    let postTitle: String
-    let postDescription: String
-    let postImage: String //will change later
-    let userImage: String
-    let numLikes: Int
-    let numDislikes: Int
-    let numComments: Int
-    let OwnerID: String
-}*/
-
-
 

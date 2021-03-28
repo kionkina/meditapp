@@ -26,12 +26,20 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! postCellTableViewCell
-        print("in table view")
-        print(indexPath)
         let recording = recordings[indexPath.row]
         //if user to current post found in dict
         //configure the cell
 //        cell.configure(with: recording)
+        cell.post = recording
+        
+
+        if User.current.likedPosts[recording.RecID] != nil{
+            cell.setLiked(User.current.likedPosts[recording.RecID]!, recording.numLikes)
+        }
+        else{
+            cell.setLiked(false, recording.numLikes)
+        }
+        
         if let user = postUser{
 //            cell.configure(with: recording, user: user)
 //            cell.configure(with: recording)
@@ -40,7 +48,6 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
             cell.playAudio = {
                 let downloadPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(recording.RecID)
                 
-                print("DOWNLOAD TO URL", downloadPath)
                 let audioRef = self.audioReference.child(recording.Name)
                 
                 let downloadTask = audioRef.write(toFile: downloadPath){ url, error in
@@ -51,7 +58,6 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
                         do {
                             self.audioPlayer.stop()
                             self.audioPlayer = try AVAudioPlayer(contentsOf: url!)
-                            print("ABOUTTA PLAY AUDIO")
                             self.audioPlayer.play()
                         } catch {
                             print(error)
@@ -84,44 +90,41 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
     var postUser: User?
     var recordings: [Post] = []
     
-    @IBOutlet weak var usernameLabel: UILabel!
-    @IBOutlet weak var firstNameLabel: UILabel!
-    @IBOutlet weak var lastNameLabel: UILabel!
+
     @IBOutlet weak var Pfp: UIImageView!
     
-    
+//
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        tableView.reloadData()
+//    }
+//
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.delegate = self
         tableView.dataSource = self
         
-        firstName.text = postUser?.firstName
-        lastName.text = postUser?.lastName
-        username.text = postUser?.username
+        username.text = postUser?.firstName
+        firstName.text = postUser?.lastName
+        lastName.text = postUser?.username
         
-        print("in profile! uid: " + postUser!.uid)
+//        print("in profile! uid: " + postUser!.uid)
         loadPfp()
         loadRecordings()
+        print("loading recordings in userprofiles")
         // Do any additional setup after loading the view.
     }
     
     
     func loadRecordings() {
-        print("in loadrecordings")
-        
-        print(postUser?.recordings)
         DBViewController.getRecordings(for: postUser!.recordings) { (doc: DocumentSnapshot) in
-            //Typecast to post model
-                print("doc: " )
-                print(doc)
             if (doc != nil) {
                 self.recordings.append(Post(snapshot: doc)!)
-                print(self.recordings)
+//                print(self.recordings)
                 self.tableView.reloadData()
-                }
-            //reloadtable
             }
+        }
     }
     
     //TODO : CHECK IF USER HAS IMAGE: BOOL.
