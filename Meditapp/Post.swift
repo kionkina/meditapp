@@ -33,7 +33,7 @@ class Post : NSObject {
     //Standard Post init()
 
     //add pic param
-    init(Description: String, Name: String, OwnerID: String, RecID:String, Tags:[String], Timestamp: Timestamp, PostImg: String) {
+    init(Description: String, Name: String, OwnerID: String, RecID:String, Tags:[String], Timestamp: Timestamp, numLikes: Int, PostImg: String) {
         self.Description = Description
         self.Name = Name
         self.OwnerID = OwnerID

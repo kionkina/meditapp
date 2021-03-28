@@ -17,6 +17,23 @@ class DBViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    static func getRandomPosts(forDiff diff: Int, forArray arr: [String]) -> [Post]{
+        
+        let db = Firestore.firestore()
+        
+        let queryRef = db.collection("Recordings")
+            .whereField("RecID", notIn: arr)
+            .order(by: "Timestamp", descending: true)
+            .limit(to: diff)
+        
+        
+        
+        
+        let db = Firestore.firestore()
+        
+        
+    }
+    
     static func getPostsByTags(forTags tags: [String], success: @escaping ([Post]) -> Void){
         if tags.isEmpty{
             return
