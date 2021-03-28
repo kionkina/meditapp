@@ -43,16 +43,12 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print(User.current.uid)
-        
         loadRecordings()
-        print(getDirectory())
         navigationItem.largeTitleDisplayMode = .never
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard(_:)))
         tapGesture.cancelsTouchesInView = false
         
         self.view.addGestureRecognizer(tapGesture)
-        //print(getDirectory())
         nameofRecording.delegate = self
         postDesc.delegate = self
         

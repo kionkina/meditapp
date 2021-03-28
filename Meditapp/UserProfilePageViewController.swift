@@ -26,8 +26,6 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! postCellTableViewCell
-        print("in table view")
-        print(indexPath)
         let recording = recordings[indexPath.row]
         //if user to current post found in dict
         //configure the cell
@@ -50,7 +48,6 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
             cell.playAudio = {
                 let downloadPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(recording.RecID)
                 
-                print("DOWNLOAD TO URL", downloadPath)
                 let audioRef = self.audioReference.child(recording.Name)
                 
                 let downloadTask = audioRef.write(toFile: downloadPath){ url, error in
@@ -61,7 +58,6 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
                         do {
                             self.audioPlayer.stop()
                             self.audioPlayer = try AVAudioPlayer(contentsOf: url!)
-                            print("ABOUTTA PLAY AUDIO")
                             self.audioPlayer.play()
                         } catch {
                             print(error)

@@ -53,22 +53,17 @@ class CreateUserViewController: UIViewController {
         print("before creating user and store in db")
         AuthService.createUser(controller: self, email: email, password: password) { (authUser) in
             guard let firUser = authUser else {
-                print("sum wrong1")
                 return
             }
             
             UserService.create(firUser, username: username, firstName: firstName, lastName: lastName) { (user) in
                 guard let user = user else {
-                    print("sum wrong2")
                     return
                 }
-                
-                print("About to setcurrent")
                 
                 UserDefaults.standard.removeObject(forKey: "UserLikedPosts")
                 
                 User.setCurrent(user, writeToUserDefaults: true)
-                print("After stored and aobut to segue")
                 self.performSegue(withIdentifier: "selectTags", sender:nil)
             }
         }

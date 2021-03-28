@@ -45,7 +45,7 @@ extension AppDelegate {
                 User.current.likedPosts = UserLikedPosts
             }
             else{
-                print("NONE YETT")
+                print("No user liked posts object")
             }
             
             let storyboard = UIStoryboard(name: "Main", bundle: nil)

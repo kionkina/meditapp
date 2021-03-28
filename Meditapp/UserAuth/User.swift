@@ -39,14 +39,6 @@ class User : NSObject {
     
     //User init using Firebase snapshots
     init?(snapshot: DocumentSnapshot) {
-//        guard let dict = snapshot.data(),
-//            let firstName = dict["firstName"] as? String,
-//            let lastName = dict["lastName"] as? String,
-//            let username = dict["username"] as? String,
-//            let tags = dict["tags"] as? [String],
-//            let recordings = dict["content"] as? [DocumentReference]
-//            else {
-//            return nil }
         if let dict = snapshot.data(){
             self.uid = snapshot.documentID
             self.firstName = (dict["firstName"] as? String) ?? ""
@@ -97,7 +89,6 @@ class User : NSObject {
     
     class func setCurrent(_ user: User, writeToUserDefaults: Bool = false) {
         if writeToUserDefaults {
-            print("I made it to setcurrent?")
             let data = NSKeyedArchiver.archivedData(withRootObject: user)
             
             UserDefaults.standard.set(data, forKey: "currentUser")

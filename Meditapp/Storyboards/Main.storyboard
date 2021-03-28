@@ -306,7 +306,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="kk3-Fn-VtY">
-                                <rect key="frame" x="0.0" y="357" width="414" height="309"/>
+                                <rect key="frame" x="0.0" y="288" width="414" height="399"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
@@ -535,11 +535,6 @@
                                     <outlet property="delegate" destination="dBm-fB-Yng" id="U42-Oo-bUn"/>
                                 </connections>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AbF-S1-2Hr">
-                                <rect key="frame" x="187" y="284" width="44" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Follow"/>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EhD-h1-RQn">
                                 <rect key="frame" x="189" y="205" width="42" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -568,7 +563,6 @@
                     <connections>
                         <outlet property="Pfp" destination="J8x-Uj-miz" id="IAa-lM-CcK"/>
                         <outlet property="firstName" destination="kaT-ju-sQ4" id="gdb-qg-Xz2"/>
-                        <outlet property="followBotton" destination="AbF-S1-2Hr" id="hUw-OU-me0"/>
                         <outlet property="lastName" destination="nvz-Ol-j91" id="Kf8-xk-iRB"/>
                         <outlet property="tableView" destination="kk3-Fn-VtY" id="rKb-68-SW9"/>
                         <outlet property="username" destination="EhD-h1-RQn" id="ggC-e7-Pvz"/>

@@ -42,20 +42,17 @@ class postCellTableViewCell: UITableViewCell {
     
     func setLiked(_ isLiked: Bool, _ numofLikes: Int){
         liked = isLiked
-//        print("Am i in wtf?")
         if(liked){
             DispatchQueue.main.async{
                 self.likeButton.isSelected = true
                 self.likesCount.text = String(numofLikes)
             }
-//            likeButton.setImage(UIImage(named: "heartfilled"), for: UIControl.State.selected)
         }
         else{
             DispatchQueue.main.async{
                 self.likeButton.isSelected = false
                 self.likesCount.text = String(numofLikes)
             }
-//            likeButton.setImage(UIImage(named: "heart"), for: UIControl.State.normal)
         }
     }
     
@@ -76,9 +73,6 @@ class postCellTableViewCell: UITableViewCell {
                 
                 NotificationCenter.default.post(name: Notification.Name("UpdateLikes"), object: updateDict)
                 
-                print(self.post!.numLikes, "ADDING IN PCT")
-                print(User.current.likedPosts, "THIS IS AFTER LIKED")
-                
                 let userLikedPosts:[String:Bool] =  User.current.likedPosts
                 defaults.set(userLikedPosts, forKey: "UserLikedPosts")
 
@@ -88,7 +82,6 @@ class postCellTableViewCell: UITableViewCell {
             DBViewController.destroyLike(for: post!.RecID){ numofLikes in
                 User.current.likedPosts.removeValue(forKey: self.post!.RecID)
                 self.setLiked(false, numofLikes)
-                print(User.current.likedPosts, "THIS IS AFTER DISLIKED")
 
                 let updateDict = [
                     "updateRecID":self.post!.RecID,
@@ -96,8 +89,6 @@ class postCellTableViewCell: UITableViewCell {
                 ] as [String : Any]
                 
                 NotificationCenter.default.post(name: Notification.Name("UpdateLikes"), object: updateDict)
-                
-                print(self.post!.numLikes, "SUBT IN PCT")
                 
                 let userLikedPosts:[String:Bool] =  User.current.likedPosts
                 defaults.set(userLikedPosts, forKey: "UserLikedPosts")
@@ -125,7 +116,6 @@ class postCellTableViewCell: UITableViewCell {
 
     //removed extra param: , user: User?
     func configure(with model: Post, for user: User?){
-//        self.likesCount.text = "\(4)"
         self.dislikesCount.text = "\(3)"
         self.commentsCount.text = "\(5)"
         
@@ -134,8 +124,6 @@ class postCellTableViewCell: UITableViewCell {
         self.postImage.image = UIImage(named: "sunrise")
         self.userImage.image = UIImage(named:"profile_pic_1")
         self.username.setTitle(user!.username, for: .normal)
-        
-//        self.likesCount.text = String(model.numLikes)
         
         self.postUser = user
         self.post = model

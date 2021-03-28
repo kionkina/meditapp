@@ -49,12 +49,8 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
             if !users.keys.contains(recording.OwnerID) {
                 DBViewController.getUserById(forUID: recording.OwnerID) { (user) in
                     //instantiate user using snapshot, append to users dict
-                    print("before let user")
                     if let user = user {
-                        print("after let user")
                         self.users[user.uid] = user
-                        print(self.users)
-                        print("reloaded")
                         self.tableView.reloadData()
                     }
                 }
@@ -69,8 +65,6 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(User.current.uid, "FOLLOWED BY THE TAGS", User.current.tags)
-        print(User.current.likedPosts, "MY LIKED POSTS")
         loadRecordings(success: loadUsers)
 
         NotificationCenter.default.addObserver(self, selector: #selector(handleLikes), name: Notification.Name("UpdateLikes"), object: nil)
@@ -101,12 +95,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
             cell.setLiked(false, recording.numLikes)
         }
         //if user to current post found in dict
-        //configure the cell
-//        cell.configure(with: recording)
         if let user = users[recording.OwnerID]{
-//            cell.configure(with: recording, user: user)
-//            cell.configure(with: recording)
-            //cell.uid = recordings[indexPath.row].OwnerID
             cell.configure(with: recording, for: user )
             
             cell.playAudio = {
@@ -123,7 +112,6 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                         do {
                             self.audioPlayer.stop()
                             self.audioPlayer = try AVAudioPlayer(contentsOf: url!)
-                            print("ABOUTTA PLAY AUDIO")
                             self.audioPlayer.play()
                         } catch {
                             print(error)

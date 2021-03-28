@@ -36,7 +36,7 @@ class ProfileViewController: UIViewController {
     
     @IBAction func deleteAccountClicked(_ sender: UIButton) {
         guard let user = Auth.auth().currentUser else {
-            print("NO USER EXISTS???")
+            print("NO USER EXISTS")
             return
         }
         AuthService.presentDelete(viewController: self, user : user)
