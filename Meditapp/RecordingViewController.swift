@@ -357,6 +357,17 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
         return updatedText.count <= charlimit
     }
     
+    func converTimetoToInt(date: Date) -> Int {
+        // using current date and time as an example
+
+        // convert Date to TimeInterval (typealias for Double)
+        let timeInterval = date.timeIntervalSince1970
+
+        // convert to Integer
+        let myInt = Int(timeInterval)
+        
+        return myInt
+    }
     
     // MARK: -Actions
     @IBAction func postRec(_ sender: Any) {
@@ -388,17 +399,21 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
 //        guard let user = Auth.auth().currentUser else{return}
         
         let recID = UUID().uuidString
+        let stamp = Timestamp(date: Date())
+        let currTime = converTimetoToInt(date: Date())
         
         let docData: [String: Any] = [
             "Name" : filename,
-            "Timestamp" : Timestamp(date: Date()),
+            "Timestamp" : stamp,
             "RecID" : recID,
 //            "OwnerRef" : db.collection("users").document(User.current.uid),
             "OwnerID" : User.current.uid,
             "Tags" : postTags,
             "Description" : postDesc.text!,
             "numLikes" : 0,
-            "Image" : postImage.sd_imageURL?.lastPathComponent as Any
+            "Image" : postImage.sd_imageURL?.lastPathComponent as Any,
+            //combine query for filtering and sorting
+            "IdTime" : String(currTime) + recID
 //            "StorageRef" : audioRef
         ]
         

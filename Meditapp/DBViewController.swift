@@ -53,7 +53,10 @@ class DBViewController: UIViewController {
         if tags.isEmpty{
             return
         }
+        print("FETCHING BY TAGS")
+        print(tags)
         let db = Firestore.firestore()
+        print("about to run query")
         //let userRef = db.collection("users").document(User.current.uid)
         //returns a firquery. using orderby requires creating index
         let queryRef = db.collection("Recordings")
@@ -75,9 +78,16 @@ class DBViewController: UIViewController {
                 }
                 else{
                     for snapshot in querySnapshot!.documents{
+                        if (snapshot.data()["IdTime"] is String) {
+                            print("yes")
+                        }
+                        else {
+                            print("no")
+                        }
+                        print(snapshot.data())
                         let curPost = Post(snapshot: snapshot)!
                         setDict.append(curPost)
-                        foundPosts.append(curPost.RecID)
+                        foundPosts.append(curPost.IdTime)
                     }
                     
                     if limit - setDict.count <= 0{
@@ -87,9 +97,8 @@ class DBViewController: UIViewController {
                     else{
                         print("going to fetch more")
                         let queryRef2 = db.collection("Recordings")
-                            .whereField("RecID", notIn: foundPosts)
-                            .order(by: "RecID")
-                            .order(by: "Timestamp", descending: true)
+                            .whereField("IdTime", notIn: foundPosts)
+                            .order(by: "IdTime", descending: true)
                             .limit(to: limit - setDict.count)
                         
                         queryRef2.getDocuments { (querySnapshot, error) in
@@ -104,11 +113,12 @@ class DBViewController: UIViewController {
                                 }
                                 else{
                                     for snapshot in querySnapshot!.documents{
+                                        print(snapshot.data()["IdTime"])
                                         let curPost = Post(snapshot: snapshot)!
                                         setDict.append(curPost)
                                     }
-                                    success(setDict)
                                 }
+                                success(setDict)
                             }
                         }
                     }

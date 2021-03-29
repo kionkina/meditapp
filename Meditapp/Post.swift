@@ -20,6 +20,7 @@ class Post : NSObject {
     let Timestamp: Timestamp
     var numLikes: Int
     let PostImg: String
+    let IdTime: String
     
 //    var dictValue: [String: Any] {
 //        return ["Description" : Description,
@@ -33,7 +34,7 @@ class Post : NSObject {
     //Standard Post init()
 
     //add pic param
-    init(Description: String, Name: String, OwnerID: String, RecID:String, Tags:[String], Timestamp: Timestamp, numLikes: Int, PostImg: String) {
+    init(Description: String, Name: String, OwnerID: String, RecID:String, Tags:[String], Timestamp: Timestamp, numLikes: Int, PostImg: String, IdTime:String) {
         self.Description = Description
         self.Name = Name
         self.OwnerID = OwnerID
@@ -42,14 +43,17 @@ class Post : NSObject {
         self.Timestamp = Timestamp
         self.numLikes = numLikes
         self.PostImg = PostImg
+        self.IdTime = IdTime
         //self.pic
         super.init()
     }
 
     //Post init using Firebase snapshots
     init?(snapshot: DocumentSnapshot!) {
+        print(snapshot.data())
         guard let dict = snapshot.data(),
             let Description = dict["Description"] as? String,
+            let IdTime = dict["IdTime"]! as? String,
             let Name = dict["Name"] as? String,
             let OwnerID = dict["OwnerID"] as? String,
             let RecID = dict["RecID"] as? String,
@@ -69,6 +73,7 @@ class Post : NSObject {
         self.Timestamp = Timestamp
         self.numLikes = numLikes
         self.PostImg = PostImg
+        self.IdTime = IdTime
 //        if let dict = snapshot.data(){
 //            self.description = (dict["Description"] as? String) ?? ""
 //            self.Name = (dict["Name"] as? String) ?? ""
