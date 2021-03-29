@@ -69,6 +69,19 @@ class Post : NSObject {
         self.Timestamp = Timestamp
         self.numLikes = numLikes
         self.PostImg = PostImg
+//        if let dict = snapshot.data(){
+//            self.description = (dict["Description"] as? String) ?? ""
+//            self.Name = (dict["Name"] as? String) ?? ""
+//            self.OwnerID = (dict["OwnerID"] as? String) ?? ""
+//            self.RecID = (dict["RecID"] as? String) ?? ""
+//            self.Tags = (dict["Tags"] as? [String]) ?? []
+//            self.Timestamp = (dict["Timestamp"] as? Timestamp) ?? 
+//            self.likedPosts = (dict["likedPosts"] as? [String:Bool]) ?? [String:Bool]()
+//        }
+//        else{
+//            print("ERROR")
+//            return nil
+//        }
     }
     
 ////    UserDefaults

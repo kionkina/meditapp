@@ -17,24 +17,39 @@ class DBViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-    static func getRandomPosts(forDiff diff: Int, forArray arr: [String]) -> [Post]{
-        
-        let db = Firestore.firestore()
-        
-        let queryRef = db.collection("Recordings")
-            .whereField("RecID", notIn: arr)
-            .order(by: "Timestamp", descending: true)
-            .limit(to: diff)
-        
-        
-        
-        
-        let db = Firestore.firestore()
-        
-        
-    }
+//    static func getRandomPosts(forDiff diff: Int, forArray arr: [String], success: @escaping ([Post]) -> Void){
+////        if diff == 0{ return nil}
+//
+//        var morePost = [Post]()
+//
+//        let db = Firestore.firestore()
+//        let queryRef = db.collection("Recordings")
+//            .whereField("RecID", notIn: arr)
+//            .order(by: "Timestamp", descending: true)
+//            .limit(to: diff)
+//
+//        queryRef.getDocuments { (querySnapshot, error) in
+//            if let error = error{
+//                print("Error getting documents: \(error.localizedDescription)")
+//            }
+//            else{
+//                //querysnapshot can contain multiple documents
+//                if querySnapshot!.documents.count <= 0{
+//                    print("no more content can be fetched!")
+////                    return nil
+//                }
+//                else{
+//                    for snapshot in querySnapshot!.documents{
+//                        var curPost = Post(snapshot: snapshot)!
+//                        morePost.append(curPost)
+//                    }
+////                    return morePost
+//                }
+//            }
+//        }
+//    }
     
-    static func getPostsByTags(forTags tags: [String], success: @escaping ([Post]) -> Void){
+    static func getPostsByTags(forLimit limit: Int , forTags tags: [String], success: @escaping ([Post]) -> Void){
         if tags.isEmpty{
             return
         }
@@ -48,6 +63,7 @@ class DBViewController: UIViewController {
             .limit(to: 5)
         //get documents from that query
         var setDict = [Post]()
+        var foundPosts = [String]()
         queryRef.getDocuments { (querySnapshot, error) in
             if let error = error{
                 print("Error getting documents: \(error.localizedDescription)")
@@ -59,14 +75,46 @@ class DBViewController: UIViewController {
                 }
                 else{
                     for snapshot in querySnapshot!.documents{
-                        setDict.append(Post(snapshot: snapshot)!)
+                        let curPost = Post(snapshot: snapshot)!
+                        setDict.append(curPost)
+                        foundPosts.append(curPost.RecID)
                     }
-                    success(setDict)
+                    
+                    if limit - setDict.count <= 0{
+                        print("no need to fetch more posts")
+                        success(setDict)
+                    }
+                    else{
+                        print("going to fetch more")
+                        let queryRef2 = db.collection("Recordings")
+                            .whereField("RecID", notIn: foundPosts)
+                            .order(by: "RecID")
+                            .order(by: "Timestamp", descending: true)
+                            .limit(to: limit - setDict.count)
+                        
+                        queryRef2.getDocuments { (querySnapshot, error) in
+                            if let error = error{
+                                print("Error getting documents: \(error.localizedDescription)")
+                            }
+                            else{
+                                //querysnapshot can contain multiple documents
+                                if querySnapshot!.documents.count <= 0{
+                                    print("no more content can be fetched!")
+                //                    return nil
+                                }
+                                else{
+                                    for snapshot in querySnapshot!.documents{
+                                        let curPost = Post(snapshot: snapshot)!
+                                        setDict.append(curPost)
+                                    }
+                                    success(setDict)
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
-        
-        
     }
     
     static func getUserById(forUID uid: String, success: @escaping (User?) -> Void) {

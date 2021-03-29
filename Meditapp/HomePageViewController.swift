@@ -16,7 +16,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     var recordings = [Post]()
     var users = [String: User?]()
     var audioPlayer = AVAudioPlayer()
-    
+    var queryLimit = 5
     
     var audioReference: StorageReference{
         return Storage.storage().reference().child("recordings")
@@ -34,7 +34,19 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func loadRecordings(success: @escaping(() -> Void)) {
-        DBViewController.getPostsByTags(forTags: User.current.tags) { docs in
+        queryLimit = 5
+        DBViewController.getPostsByTags(forLimit: queryLimit, forTags: User.current.tags) { docs in
+            for doc in docs{
+                self.recordings.append(doc)
+            }
+            success()
+        }
+    }
+    
+    func loadMoreRecordings(success: @escaping(() -> Void)) {
+        recordings.removeAll()
+        queryLimit += 5
+        DBViewController.getPostsByTags(forLimit: queryLimit, forTags: User.current.tags) { docs in
             for doc in docs{
                 self.recordings.append(doc)
             }
@@ -67,6 +79,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         super.viewDidLoad()
         loadRecordings(success: loadUsers)
 
+        print(User.current.tags, "my current tags")
         NotificationCenter.default.addObserver(self, selector: #selector(handleLikes), name: Notification.Name("UpdateLikes"), object: nil)
     }
 
