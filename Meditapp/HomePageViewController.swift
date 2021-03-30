@@ -9,7 +9,7 @@ import UIKit
 import FirebaseFirestore
 import FirebaseStorage
 
-class HomePageViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
+class HomePageViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate{
 
     @IBOutlet var tableView: UITableView!
 
@@ -17,6 +17,9 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     var users = [String: User?]()
     var audioPlayer = AVAudioPlayer()
     var queryLimit = 5
+    let myRefreshControl = UIRefreshControl()
+
+    var fetchingMore:Bool = false
     
     var audioReference: StorageReference{
         return Storage.storage().reference().child("recordings")
@@ -33,17 +36,34 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
-    func loadRecordings(success: @escaping(() -> Void)) {
+    @objc func refreshReload(){
+        loadRecordings(success: loadUsers)
+    }
+    
+    func createSpinnerFooter() -> UIView{
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 100))
+        let spinner = UIActivityIndicatorView()
+        spinner.center = footerView.center
+        spinner.startAnimating()
+        
+        return footerView
+    }
+    
+    @objc func loadRecordings(success: @escaping(() -> Void)) {
+        recordings.removeAll()
         queryLimit = 5
         DBViewController.getPostsByTags(forLimit: queryLimit, forTags: User.current.tags) { docs in
             for doc in docs{
                 self.recordings.append(doc)
             }
+            print(self.recordings.count, "after first load")
             success()
+            self.myRefreshControl.endRefreshing()
         }
     }
     
     func loadMoreRecordings(success: @escaping(() -> Void)) {
+        print("load more recordings being called")
         recordings.removeAll()
         queryLimit += 5
         DBViewController.getPostsByTags(forLimit: queryLimit, forTags: User.current.tags) { docs in
@@ -51,10 +71,38 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                 self.recordings.append(doc)
             }
             success()
+            self.fetchingMore = false
         }
     }
     
-    func loadUsers() -> Void {
+//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        let position = scrollView.contentOffset.y
+//        if position > (tableView.contentSize.height-100-scrollView.frame.height){
+////            print("need more data")
+//            guard !fetchingMore else{
+//                print("already fetching")
+//                return
+//            }
+////            tableView.tableFooterView = createSpinnerFooter()
+//            loadMoreRecordings(success: loadUsers)
+//            fetchingMore = true
+//        }
+//    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row + 1 == recordings.count{
+            print(indexPath.row, "calling willdisplay")
+            guard !fetchingMore else{
+                print("already fetching")
+                return
+            }
+            print("scrolled to bottom. need fetch more")
+            loadMoreRecordings(success: loadUsers)
+            fetchingMore = true
+        }
+    }
+    
+    @objc func loadUsers() -> Void {
         print("loadUsers")
         //check if ID is not already in users
         for recording in recordings {
@@ -77,10 +125,15 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        myRefreshControl.addTarget(self, action: #selector(refreshReload), for: .valueChanged)
+        tableView.refreshControl = myRefreshControl
+        
         loadRecordings(success: loadUsers)
 
         print(User.current.tags, "my current tags")
         NotificationCenter.default.addObserver(self, selector: #selector(handleLikes), name: Notification.Name("UpdateLikes"), object: nil)
+        print(recordings.count, "current count")
     }
 
     @objc func handleLikes(notification: NSNotification) {

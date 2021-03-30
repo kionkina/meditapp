@@ -11,43 +11,11 @@ import FirebaseStorage
 
 class DBViewController: UIViewController {
     
-    
+    public var fetchingMore:Bool = false
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
-    
-//    static func getRandomPosts(forDiff diff: Int, forArray arr: [String], success: @escaping ([Post]) -> Void){
-////        if diff == 0{ return nil}
-//
-//        var morePost = [Post]()
-//
-//        let db = Firestore.firestore()
-//        let queryRef = db.collection("Recordings")
-//            .whereField("RecID", notIn: arr)
-//            .order(by: "Timestamp", descending: true)
-//            .limit(to: diff)
-//
-//        queryRef.getDocuments { (querySnapshot, error) in
-//            if let error = error{
-//                print("Error getting documents: \(error.localizedDescription)")
-//            }
-//            else{
-//                //querysnapshot can contain multiple documents
-//                if querySnapshot!.documents.count <= 0{
-//                    print("no more content can be fetched!")
-////                    return nil
-//                }
-//                else{
-//                    for snapshot in querySnapshot!.documents{
-//                        var curPost = Post(snapshot: snapshot)!
-//                        morePost.append(curPost)
-//                    }
-////                    return morePost
-//                }
-//            }
-//        }
-//    }
     
     static func getPostsByTags(forLimit limit: Int , forTags tags: [String], success: @escaping ([Post]) -> Void){
         if tags.isEmpty{
