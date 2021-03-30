@@ -154,18 +154,16 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
         
     }
     
-    
     func checkPermissions() {
        if PHPhotoLibrary.authorizationStatus() != PHAuthorizationStatus.authorized {
-                                PHPhotoLibrary.requestAuthorization({ (status: PHAuthorizationStatus) -> Void in
-                                    ()
-                                })
-                            }
-
-                            if PHPhotoLibrary.authorizationStatus() == PHAuthorizationStatus.authorized {
-                            } else {
-                                PHPhotoLibrary.requestAuthorization(requestAuthorizationHandler)
-                            }
+      
+        PHPhotoLibrary.requestAuthorization({ (status: PHAuthorizationStatus) -> Void in ()})}
+        
+        if PHPhotoLibrary.authorizationStatus() == PHAuthorizationStatus.authorized {
+        }
+        else {
+            PHPhotoLibrary.requestAuthorization(requestAuthorizationHandler)
+        }
     }
     
     //photo auth function

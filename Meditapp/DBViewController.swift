@@ -18,12 +18,36 @@ class DBViewController: UIViewController {
     }
     
     static func getPostsByTags(forLimit limit: Int , forTags tags: [String], success: @escaping ([Post]) -> Void){
+        let db = Firestore.firestore()
+        var fetchedPosts = [Post]()
         if tags.isEmpty{
+//            let queryRef2 = db.collection("Recordings")
+//                .order(by: "IdTime", descending: true)
+//                .limit(to: limit)
+//
+//            queryRef2.getDocuments { (querySnapshot, error) in
+//                if let error = error{
+//                    print("Error getting documents: \(error.localizedDescription)")
+//                }
+//                else{
+//                    //querysnapshot can contain multiple documents
+//                    if querySnapshot!.documents.count <= 0{
+//                        print("no more content can be fetched!")
+//    //                    return nil
+//                    }
+//                    else{
+//                        for snapshot in querySnapshot!.documents{
+//                            print(snapshot.data()["IdTime"])
+//                            let curPost = Post(snapshot: snapshot)!
+//                            fetchedPosts.append(curPost)
+//                        }
+//                    }
+//                    success(fetchedPosts)
+//                }
+//            }
             return
         }
-        print("FETCHING BY TAGS")
-        print(tags)
-        let db = Firestore.firestore()
+        print("FETCHING BY TAGS", tags)
         print("about to run query")
         //let userRef = db.collection("users").document(User.current.uid)
         //returns a firquery. using orderby requires creating index
@@ -33,7 +57,6 @@ class DBViewController: UIViewController {
             .order(by: "Timestamp", descending: true)
             .limit(to: 5)
         //get documents from that query
-        var setDict = [Post]()
         var foundPosts = [String]()
         queryRef.getDocuments { (querySnapshot, error) in
             if let error = error{
@@ -54,20 +77,20 @@ class DBViewController: UIViewController {
                         }
                         print(snapshot.data())
                         let curPost = Post(snapshot: snapshot)!
-                        setDict.append(curPost)
+                        fetchedPosts.append(curPost)
                         foundPosts.append(curPost.IdTime)
                     }
                     
-                    if limit - setDict.count <= 0{
+                    if limit - fetchedPosts.count <= 0{
                         print("no need to fetch more posts")
-                        success(setDict)
+                        success(fetchedPosts)
                     }
                     else{
                         print("going to fetch more")
                         let queryRef2 = db.collection("Recordings")
                             .whereField("IdTime", notIn: foundPosts)
                             .order(by: "IdTime", descending: true)
-                            .limit(to: limit - setDict.count)
+                            .limit(to: limit - fetchedPosts.count)
                         
                         queryRef2.getDocuments { (querySnapshot, error) in
                             if let error = error{
@@ -81,12 +104,12 @@ class DBViewController: UIViewController {
                                 }
                                 else{
                                     for snapshot in querySnapshot!.documents{
-                                        print(snapshot.data()["IdTime"])
+                                        print(snapshot.data()["IdTime"], "the ID time of doc")
                                         let curPost = Post(snapshot: snapshot)!
-                                        setDict.append(curPost)
+                                        fetchedPosts.append(curPost)
                                     }
                                 }
-                                success(setDict)
+                                success(fetchedPosts)
                             }
                         }
                     }
@@ -108,14 +131,14 @@ class DBViewController: UIViewController {
         }
     }
     
-    static func getUsers(forUsers userIDs: Set<String>, success: @escaping ([User]) -> Void){
-        let db = Firestore.firestore()
-        let queryRef = db.collection("users")
-            //.whereField("OwnerID", notIn: [User.current.uid])
-            .whereField("ID", arrayContainsAny: tags)
-            .order(by: "Timestamp", descending: true)
-            .limit(to: 5)
-    }
+//    static func getUsers(forUsers userIDs: Set<String>, success: @escaping ([User]) -> Void){
+//        let db = Firestore.firestore()
+//        let queryRef = db.collection("users")
+//            //.whereField("OwnerID", notIn: [User.current.uid])
+//            .whereField("ID", arrayContainsAny: tags)
+//            .order(by: "Timestamp", descending: true)
+//            .limit(to: 5)
+//    }
 
     //TODO: ask if using references better
     static func getRecordings(for references: [DocumentReference], success: @escaping (DocumentSnapshot) -> Void){

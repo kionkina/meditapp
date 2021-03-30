@@ -17,10 +17,11 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     var users = [String: User?]()
     var userIDs = Set<String>()
     var audioPlayer = AVAudioPlayer()
-    var queryLimit = 5
+    var queryLimit = 0
     let myRefreshControl = UIRefreshControl()
 
     var fetchingMore:Bool = false
+    var isLoadingStarted:Bool = false
     
     var audioReference: StorageReference{
         return Storage.storage().reference().child("recordings")
@@ -50,10 +51,42 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         return footerView
     }
     
+    @objc func loadUsers() -> Void {
+        print(userIDs, "My set of userIDs")
+        print("loadUsers")
+        //check if ID is not already in users
+        var i:Int = 1
+        for recording in recordings {
+            if !users.keys.contains(recording.OwnerID) {
+                if i < userIDs.count{
+                    i += 1
+                    DBViewController.getUserById(forUID: recording.OwnerID) { (user) in
+                        if let user = user {
+                            self.users[user.uid] = user
+                        }
+                    }
+                }
+                else{
+                    print("No more new users")
+                    DBViewController.getUserById(forUID: recording.OwnerID) { (user) in
+                        //instantiate user using snapshot, append to users dict
+                        if let user = user {
+                            self.users[user.uid] = user
+                            self.fetchingMore = false
+                            self.tableView.reloadData()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     @objc func loadRecordings(success: @escaping(() -> Void)) {
-        recordings.removeAll()
+        print("i'm in loadrecordings")
         queryLimit = 5
         DBViewController.getPostsByTags(forLimit: queryLimit, forTags: User.current.tags) { docs in
+            self.recordings.removeAll()
+            self.userIDs.removeAll()
             for doc in docs{
                 self.recordings.append(doc)
                 self.userIDs.insert(doc.OwnerID)
@@ -64,32 +97,18 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
-    @objc func loadUsers() -> Void {
-        print("loadUsers")
-        //check if ID is not already in users
-        for recording in recordings {
-            if !users.keys.contains(recording.OwnerID) {
-                DBViewController.getUserById(forUID: recording.OwnerID) { (user) in
-                    //instantiate user using snapshot, append to users dict
-                    if let user = user {
-                        self.users[user.uid] = user
-                        self.tableView.reloadData()
-                    }
-                }
-            }
-        }
-    }
-    
     func loadMoreRecordings(success: @escaping(() -> Void)) {
         print("load more recordings being called")
-        recordings.removeAll()
         queryLimit += 5
         DBViewController.getPostsByTags(forLimit: queryLimit, forTags: User.current.tags) { docs in
+            self.recordings.removeAll()
+            self.userIDs.removeAll()
             for doc in docs{
                 self.recordings.append(doc)
+                self.userIDs.insert(doc.OwnerID)
             }
+            print(self.recordings.count)
             success()
-            self.fetchingMore = false
         }
     }
     
@@ -107,18 +126,36 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
 //        }
 //    }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row + 1 == recordings.count{
-            print(indexPath.row, "calling willdisplay")
-            guard !fetchingMore else{
-                print("already fetching")
-                return
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        
+        if offsetY > contentHeight - scrollView.frame.height {
+            if !fetchingMore{
+                print("need more")
+                fetchingMore = true
+                loadMoreRecordings(success: loadUsers)
             }
-            print("scrolled to bottom. need fetch more")
-            loadMoreRecordings(success: loadUsers)
-            fetchingMore = true
         }
     }
+    
+//    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+//        self.isLoadingStarted = true
+//    }
+    
+//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//        if indexPath.row + 1 == recordings.count{
+//            print("need to fetch more")
+////            print(indexPath.row, "calling willdisplay")
+////            guard !fetchingMore else{
+////                print("already fetching")
+////                return
+////            }
+////            print("scrolled to bottom. need fetch more")
+////            fetchingMore = true
+//            loadMoreRecordings(success: loadUsers)
+//        }
+//    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
