@@ -15,12 +15,11 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
 
     var recordings = [Post]()
     var users = [String: User?]()
-    var userIDs = Set<String>()
     var audioPlayer = AVAudioPlayer()
     var queryLimit = 0
     let myRefreshControl = UIRefreshControl()
 
-    var fetchingMore:Bool = false
+    var isFetchingMore:Bool = false
     var isLoadingStarted:Bool = false
     
     var audioReference: StorageReference{
@@ -52,29 +51,15 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @objc func loadUsers() -> Void {
-        print(userIDs, "My set of userIDs")
+        tableView.reloadData()
         print("loadUsers")
         //check if ID is not already in users
-        var i:Int = 1
         for recording in recordings {
             if !users.keys.contains(recording.OwnerID) {
-                if i < userIDs.count{
-                    i += 1
-                    DBViewController.getUserById(forUID: recording.OwnerID) { (user) in
-                        if let user = user {
-                            self.users[user.uid] = user
-                        }
-                    }
-                }
-                else{
-                    print("No more new users")
-                    DBViewController.getUserById(forUID: recording.OwnerID) { (user) in
-                        //instantiate user using snapshot, append to users dict
-                        if let user = user {
-                            self.users[user.uid] = user
-                            self.fetchingMore = false
-                            self.tableView.reloadData()
-                        }
+                DBViewController.getUserById(forUID: recording.OwnerID) { (user) in
+                    if let user = user {
+                        self.users[user.uid] = user
+                        self.tableView.reloadData()
                     }
                 }
             }
@@ -83,13 +68,11 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     
     @objc func loadRecordings(success: @escaping(() -> Void)) {
         print("i'm in loadrecordings")
-        queryLimit = 5
+        queryLimit = 2
         DBViewController.getPostsByTags(forLimit: queryLimit, forTags: User.current.tags) { docs in
             self.recordings.removeAll()
-            self.userIDs.removeAll()
             for doc in docs{
                 self.recordings.append(doc)
-                self.userIDs.insert(doc.OwnerID)
             }
             print(self.recordings.count, "after first load")
             success()
@@ -99,41 +82,30 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     
     func loadMoreRecordings(success: @escaping(() -> Void)) {
         print("load more recordings being called")
-        queryLimit += 5
+        queryLimit += 2
         DBViewController.getPostsByTags(forLimit: queryLimit, forTags: User.current.tags) { docs in
             self.recordings.removeAll()
-            self.userIDs.removeAll()
             for doc in docs{
                 self.recordings.append(doc)
-                self.userIDs.insert(doc.OwnerID)
             }
-            print(self.recordings.count)
+//            print(self.recordings.count)
+            //in case we already have all users in our users dict.
+            self.tableView.reloadData()
+            self.isFetchingMore = false
             success()
         }
     }
-    
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        let position = scrollView.contentOffset.y
-//        if position > (tableView.contentSize.height-100-scrollView.frame.height){
-////            print("need more data")
-//            guard !fetchingMore else{
-//                print("already fetching")
-//                return
-//            }
-////            tableView.tableFooterView = createSpinnerFooter()
-//            loadMoreRecordings(success: loadUsers)
-//            fetchingMore = true
-//        }
-//    }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
         
         if offsetY > contentHeight - scrollView.frame.height {
-            if !fetchingMore{
-                print("need more")
-                fetchingMore = true
+//            print("need to fetch more")
+            if !isFetchingMore{
+                print("need to fetch more")
+                isFetchingMore = true
+//                print(isFetchingMore, "fetching more")
                 loadMoreRecordings(success: loadUsers)
             }
         }
@@ -166,6 +138,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         super.viewDidLoad()
         
         myRefreshControl.addTarget(self, action: #selector(refreshReload), for: .valueChanged)
+        
         tableView.refreshControl = myRefreshControl
         
         loadRecordings(success: loadUsers)
