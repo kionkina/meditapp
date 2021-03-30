@@ -268,7 +268,7 @@
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="dBm-fB-Yng" id="KbW-2H-ZPK"/>
-                                    <outlet property="delegate" destination="dBm-fB-Yng" id="ULG-H7-SAk"/>
+                                    <outlet property="delegate" destination="dBm-fB-Yng" id="Idm-PG-riq"/>
                                 </connections>
                             </tableView>
                         </subviews>

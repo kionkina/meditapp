@@ -20,7 +20,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     let myRefreshControl = UIRefreshControl()
 
     var isFetchingMore:Bool = false
-    var isLoadingStarted:Bool = false
+    var canFetchMore:Bool = true
     
     var audioReference: StorageReference{
         return Storage.storage().reference().child("recordings")
@@ -38,6 +38,11 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @objc func refreshReload(){
+        canFetchMore = true
+        //because if we dont remove users, in the loadusers post, all our users already stored, so it wont get to point of reloading data, since if statement never checks in loaduser since we run the loop on recordings we already fetched where it checks if ownerid exists in dict we had prior before we removed. The table then tries to load the cell before table has been reloading so it tries to load the row from data model that is no longer dere.
+        recordings.removeAll()
+        users.removeAll()
+        
         loadRecordings(success: loadUsers)
     }
     
@@ -51,7 +56,6 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @objc func loadUsers() -> Void {
-        tableView.reloadData()
         print("loadUsers")
         //check if ID is not already in users
         for recording in recordings {
@@ -68,66 +72,50 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     
     @objc func loadRecordings(success: @escaping(() -> Void)) {
         print("i'm in loadrecordings")
-        queryLimit = 2
+        queryLimit = 4
         DBViewController.getPostsByTags(forLimit: queryLimit, forTags: User.current.tags) { docs in
             self.recordings.removeAll()
             for doc in docs{
                 self.recordings.append(doc)
             }
             print(self.recordings.count, "after first load")
-            success()
+            self.tableView.reloadData()
             self.myRefreshControl.endRefreshing()
+            success()
         }
     }
     
     func loadMoreRecordings(success: @escaping(() -> Void)) {
         print("load more recordings being called")
-        queryLimit += 2
+        queryLimit += 4
         DBViewController.getPostsByTags(forLimit: queryLimit, forTags: User.current.tags) { docs in
+            let prevNumPosts = self.recordings.count
             self.recordings.removeAll()
             for doc in docs{
                 self.recordings.append(doc)
             }
-//            print(self.recordings.count)
-            //in case we already have all users in our users dict.
+            //check is prev num post is equal to new amount of post. if so, cant fetch anymore
+            if prevNumPosts == self.recordings.count{
+                self.canFetchMore = false
+                print("no more posts to fetch")
+            }
+            //in case we already have all users in our users dict, if statement wont check and it wont reload.
             self.tableView.reloadData()
             self.isFetchingMore = false
             success()
         }
     }
     
+    //might be called twice when we reload tableview but whocares
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let offsetY = scrollView.contentOffset.y
-        let contentHeight = scrollView.contentSize.height
-        
-        if offsetY > contentHeight - scrollView.frame.height {
-//            print("need to fetch more")
-            if !isFetchingMore{
-                print("need to fetch more")
-                isFetchingMore = true
-//                print(isFetchingMore, "fetching more")
-                loadMoreRecordings(success: loadUsers)
-            }
+        let position = scrollView.contentOffset.y
+        //if canfetchmore and isn't currently fetching and we scroll to bottom of tableview, set fetchmore to true.
+        if !isFetchingMore && canFetchMore && position > (tableView.contentSize.height-100-scrollView.frame.size.height){
+            print("fetching more")
+            isFetchingMore = true
+            loadMoreRecordings(success: loadUsers)
         }
     }
-    
-//    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-//        self.isLoadingStarted = true
-//    }
-    
-//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//        if indexPath.row + 1 == recordings.count{
-//            print("need to fetch more")
-////            print(indexPath.row, "calling willdisplay")
-////            guard !fetchingMore else{
-////                print("already fetching")
-////                return
-////            }
-////            print("scrolled to bottom. need fetch more")
-////            fetchingMore = true
-//            loadMoreRecordings(success: loadUsers)
-//        }
-//    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -138,14 +126,13 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         super.viewDidLoad()
         
         myRefreshControl.addTarget(self, action: #selector(refreshReload), for: .valueChanged)
-        
         tableView.refreshControl = myRefreshControl
-        
+
         loadRecordings(success: loadUsers)
 
         print(User.current.tags, "my current tags")
+        
         NotificationCenter.default.addObserver(self, selector: #selector(handleLikes), name: Notification.Name("UpdateLikes"), object: nil)
-        print(recordings.count, "current count")
     }
 
     @objc func handleLikes(notification: NSNotification) {
