@@ -100,11 +100,15 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
         print("inserting")
         print(comment)
         DBViewController.insertComment(postID: self.recording!.RecID, comment: comment) {
-            self.loadComments {
+            self.addComment(comment: comment, success: {
                 self.commentTableView.reloadData()
-            }
+            })
         }
-
+    }
+    
+    func addComment(comment: Comment, success: @escaping(() -> Void)) {
+        self.comments.insert(comment, at: 0)
+            success()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
