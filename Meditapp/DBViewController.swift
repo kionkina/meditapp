@@ -107,6 +107,15 @@ class DBViewController: UIViewController {
             }
         }
     }
+    
+    static func getUsers(forUsers userIDs: Set<String>, success: @escaping ([User]) -> Void){
+        let db = Firestore.firestore()
+        let queryRef = db.collection("users")
+            //.whereField("OwnerID", notIn: [User.current.uid])
+            .whereField("ID", arrayContainsAny: tags)
+            .order(by: "Timestamp", descending: true)
+            .limit(to: 5)
+    }
 
     //TODO: ask if using references better
     static func getRecordings(for references: [DocumentReference], success: @escaping (DocumentSnapshot) -> Void){

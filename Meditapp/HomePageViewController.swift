@@ -15,6 +15,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
 
     var recordings = [Post]()
     var users = [String: User?]()
+    var userIDs = Set<String>()
     var audioPlayer = AVAudioPlayer()
     var queryLimit = 5
     let myRefreshControl = UIRefreshControl()
@@ -55,10 +56,27 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         DBViewController.getPostsByTags(forLimit: queryLimit, forTags: User.current.tags) { docs in
             for doc in docs{
                 self.recordings.append(doc)
+                self.userIDs.insert(doc.OwnerID)
             }
             print(self.recordings.count, "after first load")
             success()
             self.myRefreshControl.endRefreshing()
+        }
+    }
+    
+    @objc func loadUsers() -> Void {
+        print("loadUsers")
+        //check if ID is not already in users
+        for recording in recordings {
+            if !users.keys.contains(recording.OwnerID) {
+                DBViewController.getUserById(forUID: recording.OwnerID) { (user) in
+                    //instantiate user using snapshot, append to users dict
+                    if let user = user {
+                        self.users[user.uid] = user
+                        self.tableView.reloadData()
+                    }
+                }
+            }
         }
     }
     
@@ -99,22 +117,6 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
             print("scrolled to bottom. need fetch more")
             loadMoreRecordings(success: loadUsers)
             fetchingMore = true
-        }
-    }
-    
-    @objc func loadUsers() -> Void {
-        print("loadUsers")
-        //check if ID is not already in users
-        for recording in recordings {
-            if !users.keys.contains(recording.OwnerID) {
-                DBViewController.getUserById(forUID: recording.OwnerID) { (user) in
-                    //instantiate user using snapshot, append to users dict
-                    if let user = user {
-                        self.users[user.uid] = user
-                        self.tableView.reloadData()
-                    }
-                }
-            }
         }
     }
     
