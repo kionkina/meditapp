@@ -157,6 +157,30 @@ class DBViewController: UIViewController {
         }
     }
     
+    static func getCommentsById(forPost: String, success: @escaping (([DocumentSnapshot]) -> Void)) {
+        let db = Firestore.firestore()
+        db.collection("Recordings").document(forPost).collection("Comments").getDocuments{ (qs: QuerySnapshot?, err) in
+            success(qs!.documents)
+        }
+    }
+    
+    static func insertComment(postID: String, comment: Comment, success: @escaping ()  -> Void) {
+        let db = Firestore.firestore()
+        let recRef = db.collection("Recordings").document(postID)
+        recRef.collection("Comments").addDocument(data: [
+            "Content": comment.Content,
+            "Timestamp" : comment.Timestamp,
+            "OwnerID" : comment.OwnerID
+            ]){ err in
+                if let err = err {
+                    print("Error adding document: \(err)")
+                } else {
+                    print("Document added")
+                    success()
+                }
+        }
+    }
+    
     static func createLike(for postID: String, success: @escaping (Int) -> Void){
         let db = Firestore.firestore()
         let postRef = db.collection("Recordings").document(postID)

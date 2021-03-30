@@ -11,6 +11,7 @@ import FirebaseStorage
 
 class HomePageViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
 
+
     @IBOutlet var tableView: UITableView!
 
     var recordings = [Post]()
@@ -29,6 +30,15 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                 //print(cell.uid)
                 let vc = segue.destination as! UserProfilePageViewController
                 vc.postUser = cell.postUser
+            }
+        }
+        if (segue.identifier == "toComments") {
+            let button = sender as! UIButton
+            if let cell = button.superview?.superview as? postCellTableViewCell {
+                    //print(cell.uid)
+                    let vc = segue.destination as! CommentViewController
+                    vc.postUser = cell.postUser
+                    vc.recording = cell.post
             }
         }
     }
