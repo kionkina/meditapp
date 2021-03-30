@@ -24,6 +24,19 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
         return Storage.storage().reference().child("recordings")
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
+        if (segue.identifier == "toComments") {
+            let button = sender as! UIButton
+            if let cell = button.superview?.superview as? postCellTableViewCell {
+                    //print(cell.uid)
+                    let vc = segue.destination as! CommentViewController
+                    vc.postUser = self.postUser
+                    vc.recording = cell.post
+            }
+        }
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! postCellTableViewCell
         let recording = recordings[indexPath.row]

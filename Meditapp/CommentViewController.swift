@@ -30,6 +30,29 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
         return Storage.storage().reference().child("recordings")
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "toProfile1") {
+            let button = sender as! UIButton
+            if let cell = button.superview?.superview as? commentCellTableViewCell {
+                //print(cell.uid)
+                print("about to pass")
+                print(cell.postUser)
+                let vc = segue.destination as! UserProfilePageViewController
+                vc.postUser = cell.postUser
+            }
+        }
+        else if (segue.identifier == "toProfile2") {
+            let button = sender as! UIButton
+            if let cell = button.superview?.superview as? postCellTableViewCell {
+                //print(cell.uid)
+                print(cell.postUser)
+                let vc = segue.destination as! UserProfilePageViewController
+                vc.postUser = cell.postUser
+            }
+    }
+}
+    
+    
     func loadComments(success: @escaping(() -> Void)) {
         self.comments.removeAll()
         DBViewController.getCommentsById(forPost: (recording?.RecID)!) { (docs) in
