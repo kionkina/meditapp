@@ -1140,6 +1140,7 @@
                                 <connections>
                                     <outlet property="dataSource" destination="8RN-Os-wco" id="wYc-Kv-Anm"/>
                                     <outlet property="delegate" destination="8RN-Os-wco" id="izP-k8-rcd"/>
+                                    <outlet property="prefetchDataSource" destination="8RN-Os-wco" id="KDE-ax-otT"/>
                                 </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3BC-NJ-6y8">
@@ -1162,7 +1163,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="9mE-La-Xw1"/>
                     <connections>
-                        <outlet property="commentTableView" destination="7h6-pf-adB" id="lQ7-U3-S3J"/>
+                        <outlet property="commentTableView" destination="7h6-pf-adB" id="8qs-hG-eiV"/>
                         <outlet property="commentText" destination="ABx-x5-vtf" id="A99-VE-ufp"/>
                         <outlet property="postCommentButton" destination="3BC-NJ-6y8" id="HTx-ug-RcN"/>
                         <outlet property="tableView" destination="Zq3-JH-32S" id="bUM-l0-KGm"/>

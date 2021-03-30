@@ -159,7 +159,7 @@ class DBViewController: UIViewController {
     
     static func getCommentsById(forPost: String, success: @escaping (([DocumentSnapshot]) -> Void)) {
         let db = Firestore.firestore()
-        db.collection("Recordings").document(forPost).collection("Comments").getDocuments{ (qs: QuerySnapshot?, err) in
+        db.collection("Recordings").document(forPost).collection("Comments").order(by: "Timestamp", descending: true).getDocuments{ (qs: QuerySnapshot?, err) in
             success(qs!.documents)
         }
     }

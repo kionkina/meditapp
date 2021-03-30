@@ -17,8 +17,9 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
     var users: [String: User] = [:]
     var comments : [Comment] = []
     
+    @IBOutlet weak var commentTableView: UITableView!
     @IBOutlet var tableView: UITableView!
-    @IBOutlet var commentTableView: UITableView!
+
     @IBOutlet weak var commentText: UITextField!
     @IBOutlet weak var postCommentButton: UIButton!
 
@@ -30,23 +31,34 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
     }
     
     func loadComments(success: @escaping(() -> Void)) {
+        self.comments.removeAll()
         DBViewController.getCommentsById(forPost: (recording?.RecID)!) { (docs) in
             for doc in docs{
+                print("adding ")
+                print(doc.data())
+                print("to comment coleciton")
                 self.comments.append(Comment(snapshot: doc)!)
             }
-    
+            success()
         }
     }
     
     func loadUsers() -> Void {
         print("loadUsers")
+        print("comments: ")
+        print(self.comments)
         //check if ID is not already in users
-        for comment in comments {
+        for comment in self.comments {
+            print("ownerid ")
+            print(comment.OwnerID)
             if !users.keys.contains(comment.OwnerID) {
                 DBViewController.getUserById(forUID: comment.OwnerID) { (user) in
                     //instantiate user using snapshot, append to users dict
+                    print("got user")
+                    print(user!)
                     if let user = user {
                         self.users[user.uid] = user
+                        print("reloading comment table view data")
                         self.commentTableView.reloadData()
                     }
                 }
@@ -117,7 +129,7 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
         }
         else if (tableView === self.commentTableView) {
             print("in comment table")
-        let cell = tableView.dequeueReusableCell(withIdentifier: "sampleComment", for: indexPath) as!commentCellTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "sampleComment", for: indexPath) as! commentCellTableViewCell
             
             let comment = comments[indexPath.row]
             cell.comment = comment
@@ -137,12 +149,16 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
     // MARK: - Table view data source
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print("tv1")
+        print(tableView)
         // #warning Incomplete implementation, return the number of rows
         if (tableView === self.tableView){
             return 1
         }
         else {
-            return comments.count
+            print("IN ELSE STATEMENT")
+            print(self.comments.count)
+            return self.comments.count
         }
     }
     
@@ -159,8 +175,10 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
         loadComments(success: loadUsers)
         commentTableView.delegate = self
         commentTableView.dataSource = self
-        tableView.delegate = self
-        tableView.dataSource = self
+        //register your tableview cell
+        //self.commentTableView.register(UITableViewCell.self, forCellReuseIdentifier: "sampleComment")
+        //tableView.delegate = self
+        //tableView.dataSource = self
 
     
     }
