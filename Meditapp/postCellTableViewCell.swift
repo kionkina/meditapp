@@ -119,7 +119,7 @@ class postCellTableViewCell: UITableViewCell {
     //removed extra param: , user: User?
     func configure(with model: Post, for user: User?){
         self.dislikesCount.text = "\(3)"
-        self.commentsCount.text = "\(5)"
+        self.commentsCount.text = "\(model.numComments)"
         
         self.postTitle.text = model.Name
         self.postDescription.text = model.Description

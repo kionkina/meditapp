@@ -19,6 +19,7 @@ class Post : NSObject {
     var Tags: [String]
     let Timestamp: Timestamp
     var numLikes: Int
+    var numComments: Int
     let PostImg: String
     let IdTime: String
     
@@ -34,7 +35,7 @@ class Post : NSObject {
     //Standard Post init()
 
     //add pic param
-    init(Description: String, Name: String, OwnerID: String, RecID:String, Tags:[String], Timestamp: Timestamp, numLikes: Int, PostImg: String, IdTime:String) {
+    init(Description: String, Name: String, OwnerID: String, RecID:String, Tags:[String], Timestamp: Timestamp, numLikes: Int, numComments: Int = 0, PostImg: String, IdTime:String) {
         self.Description = Description
         self.Name = Name
         self.OwnerID = OwnerID
@@ -42,6 +43,7 @@ class Post : NSObject {
         self.Tags = Tags
         self.Timestamp = Timestamp
         self.numLikes = numLikes
+        self.numComments = numComments
         self.PostImg = PostImg
         self.IdTime = IdTime
         //self.pic
@@ -60,6 +62,7 @@ class Post : NSObject {
             let Tags = dict["Tags"] as? [String],
             let Timestamp = dict["Timestamp"] as? Timestamp,
             let numLikes = dict["numLikes"] as? Int,
+            let numComments = ( (dict.keys.contains("numComments") ) ? dict["numComments"] as? Int : 0),
             let PostImg = dict["Image"] as? String
             else {
             print ("returning nil")
@@ -72,6 +75,7 @@ class Post : NSObject {
         self.Tags = Tags
         self.Timestamp = Timestamp
         self.numLikes = numLikes
+        self.numComments = numComments
         self.PostImg = PostImg
         self.IdTime = IdTime
 //        if let dict = snapshot.data(){

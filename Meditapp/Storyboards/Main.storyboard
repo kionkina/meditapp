@@ -1024,7 +1024,7 @@
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <state key="normal" title="Button"/>
                                                     <connections>
-                                                        <segue destination="ct4-kI-yZX" kind="show" identifier="toProfile2" id="qhB-4N-e9X"/>
+                                                        <segue destination="ct4-kI-yZX" kind="show" identifier="toProfile2" id="oog-CA-QqO"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -1251,7 +1251,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="2Jf-FN-KVb"/>
-        <segue reference="qhB-4N-e9X"/>
+        <segue reference="Yzo-a8-p5x"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="backward.fill" catalog="system" width="128" height="79"/>

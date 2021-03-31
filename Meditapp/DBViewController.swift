@@ -164,23 +164,39 @@ class DBViewController: UIViewController {
         }
     }
     
-    static func insertComment(postID: String, comment: Comment, success: @escaping ()  -> Void) {
+    static func insertComment(postID: String, comment: Comment, oldNumComments: Int, success: @escaping (Int)  -> Void) {
         let db = Firestore.firestore()
         let recRef = db.collection("Recordings").document(postID)
-        recRef.collection("Comments").addDocument(data: [
-            "Content": comment.Content,
-            "Timestamp" : comment.Timestamp,
-            "OwnerID" : comment.OwnerID
-            ]){ err in
-                if let err = err {
-                    print("Error adding document: \(err)")
-                } else {
-                    print("Document added")
-                    success()
-                }
+        let commentRef = recRef.collection("Comments")
+        let newDocRef = commentRef.document()
+        let newNumComments = oldNumComments + 1
+
+        db.runTransaction({ (transaction, errorPointer) -> Any? in
+            do {
+                try transaction.setData([
+                    "Content": comment.Content,
+                    "Timestamp" : comment.Timestamp,
+                    "OwnerID" : comment.OwnerID
+                    ], forDocument: newDocRef)
+            } catch let fetchError as NSError {
+                errorPointer?.pointee = fetchError
+                return nil
+            }
+
+            print("updating num comments")
+            transaction.updateData(["numComments": newNumComments], forDocument: recRef)
+            return newNumComments
+             }) { (object, error) in
+            if let error = error {
+                print("Transaction failed: \(error)")
+            } else {
+                print("Transaction successfully committed!")
+                success(newNumComments)
+                //return newNumComments
+            }
         }
     }
-    
+
     static func createLike(for postID: String, success: @escaping (Int) -> Void){
         let db = Firestore.firestore()
         let postRef = db.collection("Recordings").document(postID)

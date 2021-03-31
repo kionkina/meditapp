@@ -31,6 +31,7 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("IN PREPARE")
         if (segue.identifier == "toProfile1") {
             let button = sender as! UIButton
             if let cell = button.superview?.superview as? commentCellTableViewCell {
@@ -42,13 +43,13 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
             }
         }
         else if (segue.identifier == "toProfile2") {
+            print("in segue2")
             let button = sender as! UIButton
             if let cell = button.superview?.superview as? postCellTableViewCell {
                 //print(cell.uid)
                 print(cell.postUser)
                 let vc = segue.destination as! UserProfilePageViewController
-                vc.postUser = cell.postUser
-            }
+                vc.postUser = self.postUser            }
     }
 }
     
@@ -99,10 +100,18 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
         
         print("inserting")
         print(comment)
-        DBViewController.insertComment(postID: self.recording!.RecID, comment: comment) {
+        DBViewController.insertComment(postID: self.recording!.RecID, comment: comment, oldNumComments: self.recording!.numComments) { (updatedNumComments) in
+            // update comment and comment table
             self.addComment(comment: comment, success: {
+                if (!self.users.keys.contains(User.current.uid)) {
+                    self.users[User.current.uid] = User.current
+                }
                 self.commentTableView.reloadData()
             })
+            // update numComments in post table
+            self.recording?.numComments = updatedNumComments
+            self.tableView.reloadData()
+            //TODO: add signal to prev pages
         }
     }
     
