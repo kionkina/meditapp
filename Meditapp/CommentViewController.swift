@@ -9,15 +9,18 @@ import UIKit
 import FirebaseFirestore
 import FirebaseStorage
 import AVFoundation
+import MessageInputBar
 
-class CommentViewController:  UIViewController, UITableViewDelegate, UITableViewDataSource {
+class CommentViewController:  UIViewController, UITableViewDelegate, UITableViewDataSource, MessageInputBarDelegate {
     
     var postUser: User?
     var recording: Post?
     var users: [String: User] = [:]
     var comments : [Comment] = []
     
-    @IBOutlet weak var commentTableView: UITableView!
+    let commentBar = MessageInputBar()
+    
+//    @IBOutlet weak var commentTableView: UITableView!
     @IBOutlet var tableView: UITableView!
 
     @IBOutlet weak var commentText: UITextField!
@@ -55,63 +58,29 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
     
     
     func loadComments(success: @escaping(() -> Void)) {
-        self.comments.removeAll()
-        DBViewController.getCommentsById(forPost: (recording?.RecID)!) { (docs) in
+        DBViewController.getCommentsById(forPost: (recording?.RecID)!){ (docs) in
+            self.comments.removeAll()
             for doc in docs{
-                print("adding ")
-                print(doc.data())
-                print("to comment coleciton")
                 self.comments.append(Comment(snapshot: doc)!)
             }
+            print(self.comments.count, "how much comments after fetched")
             success()
+//            self.tableView.reloadData()
         }
     }
     
     func loadUsers() -> Void {
-        print("loadUsers")
-        print("comments: ")
-        print(self.comments)
         //check if ID is not already in users
         for comment in self.comments {
-            print("ownerid ")
-            print(comment.OwnerID)
+//            print(comment.Content, "is the comment")
             if !users.keys.contains(comment.OwnerID) {
                 DBViewController.getUserById(forUID: comment.OwnerID) { (user) in
-                    //instantiate user using snapshot, append to users dict
-                    print("got user")
-                    print(user!)
                     if let user = user {
                         self.users[user.uid] = user
-                        print("reloading comment table view data")
-                        self.commentTableView.reloadData()
+                        self.tableView.reloadData()
                     }
                 }
             }
-        }
-    }
-    
-    @IBAction func postComment(_ sender: Any) {
-        //connect to firestore
-        
-        let OwnerID = User.current.uid
-        let stamp = Timestamp(date: Date())
-        let Content = commentText.text!
-        let comment = Comment(Content: Content, OwnerID: OwnerID, Timestamp: stamp)
-        
-        print("inserting")
-        print(comment)
-        DBViewController.insertComment(postID: self.recording!.RecID, comment: comment, oldNumComments: self.recording!.numComments) { (updatedNumComments) in
-            // update comment and comment table
-            self.addComment(comment: comment, success: {
-                if (!self.users.keys.contains(User.current.uid)) {
-                    self.users[User.current.uid] = User.current
-                }
-                self.commentTableView.reloadData()
-            })
-            // update numComments in post table
-            self.recording?.numComments = updatedNumComments
-            self.tableView.reloadData()
-            //TODO: add signal to prev pages
         }
     }
     
@@ -121,7 +90,7 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if (tableView === self.tableView) {
+        if (indexPath.row == 0) {
             let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! postCellTableViewCell
 
             cell.post = recording
@@ -163,11 +132,11 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
             }
             return cell
         }
-        else if (tableView === self.commentTableView) {
-            print("in comment table")
+        else if (comments.count > 0) {
+            print("dequing comments")
             let cell = tableView.dequeueReusableCell(withIdentifier: "sampleComment", for: indexPath) as! commentCellTableViewCell
             
-            let comment = comments[indexPath.row]
+            let comment = comments[indexPath.row - 1]
             cell.comment = comment
             
             //if user to current post found in dict
@@ -185,17 +154,7 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
     // MARK: - Table view data source
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("tv1")
-        print(tableView)
-        // #warning Incomplete implementation, return the number of rows
-        if (tableView === self.tableView){
-            return 1
-        }
-        else {
-            print("IN ELSE STATEMENT")
-            print(self.comments.count)
-            return self.comments.count
-        }
+        return 1 + comments.count
     }
     
 
@@ -208,14 +167,52 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
 //
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadComments(success: loadUsers)
-        commentTableView.delegate = self
-        commentTableView.dataSource = self
-        //register your tableview cell
-        //self.commentTableView.register(UITableViewCell.self, forCellReuseIdentifier: "sampleComment")
-        //tableView.delegate = self
-        //tableView.dataSource = self
+        
+        //set up the comment bar
+        commentBar.inputTextView.placeholder = "Add a comment..."
+        commentBar.sendButton.title = "Post"
+        commentBar.delegate = self
+        
+        //when you pull down on tableview enough, it dismisses keyboard
+        tableView.keyboardDismissMode = .interactive
 
+        
+        loadComments(success: loadUsers)
+    }
     
+    //these two functions will make the commentbar appear?
+    override var inputAccessoryView: UIView?{
+        return commentBar
+    }
+    //make commentbar always show at bottom.
+    override var canBecomeFirstResponder: Bool{
+        return true
+    }
+
+    //delegate method for when the post button on commentbar gets pressed
+    func messageInputBar(_ inputBar: MessageInputBar, didPressSendButtonWith text: String) {
+        
+        let OwnerID = User.current.uid
+        let stamp = Timestamp(date: Date())
+        let Content = text
+        let comment = Comment(Content: Content, OwnerID: OwnerID, Timestamp: stamp)
+        
+        DBViewController.insertComment(postID: self.recording!.RecID, comment: comment, oldNumComments: recording!.numComments) { (updatedNumComments) in
+            // update comment and comment table
+            self.addComment(comment: comment, success: {
+                if (!self.users.keys.contains(User.current.uid)) {
+                    self.users[User.current.uid] = User.current
+                }
+//                self.commentTableView.reloadData()
+            })
+            // update numComments in post table
+            self.recording?.numComments = updatedNumComments
+            self.tableView.reloadData()
+            //TODO: add signal to prev pages
+            
+            
+            self.commentBar.inputTextView.text = nil
+            self.commentBar.inputTextView.resignFirstResponder()
+        }
     }
 }

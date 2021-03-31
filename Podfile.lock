@@ -338,6 +338,9 @@ PODS:
   - gRPC-Core/Interface (1.28.2)
   - GTMSessionFetcher/Core (1.5.0)
   - leveldb-library (1.22)
+  - MessageInputBar (0.4.1):
+    - MessageInputBar/Core (= 0.4.1)
+  - MessageInputBar/Core (0.4.1)
   - nanopb (2.30907.0):
     - nanopb/decode (= 2.30907.0)
     - nanopb/encode (= 2.30907.0)
@@ -357,6 +360,7 @@ DEPENDENCIES:
   - Firebase/Firestore
   - Firebase/Storage
   - FirebaseUI/Storage
+  - MessageInputBar
   - TaggerKit
 
 SPEC REPOS:
@@ -380,6 +384,7 @@ SPEC REPOS:
     - gRPC-Core
     - GTMSessionFetcher
     - leveldb-library
+    - MessageInputBar
     - nanopb
     - PromisesObjC
     - SDWebImage
@@ -405,11 +410,12 @@ SPEC CHECKSUMS:
   gRPC-Core: 4afa11bfbedf7cdecd04de535a9e046893404ed5
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
+  MessageInputBar: e81c7535347f1f7b923de7080409a535a004b6e4
   nanopb: 59221d7f958fb711001e6a449489542d92ae113e
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   SDWebImage: c666b97e1fa9c64b4909816a903322018f0a9c84
   TaggerKit: e88422048a006b409a37b37f24785dfcca69b5b2
 
-PODFILE CHECKSUM: 64b893c5eed7f43a347b96f5461c85a6a32a5f80
+PODFILE CHECKSUM: 4322a1a3387525b00369c15386507c26e81d5a8a
 
 COCOAPODS: 1.10.1
