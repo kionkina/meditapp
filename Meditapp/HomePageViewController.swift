@@ -43,7 +43,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         //because if we dont remove users, in the loadusers post, all our users already stored, so it wont get to point of reloading data, since if statement never checks in loaduser since we run the loop on recordings we already fetched where it checks if ownerid exists in dict we had prior before we removed. The table then tries to load the cell before table has been reloading so it tries to load the row from data model that is no longer dere.
         recordings.removeAll()
         users.removeAll()
-        
+        tableView.reloadData()
         loadRecordings(success: loadUsers)
     }
     
