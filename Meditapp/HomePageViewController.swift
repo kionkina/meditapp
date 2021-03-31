@@ -38,6 +38,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @objc func refreshReload(){
+        print("i have refreshed")
         canFetchMore = true
         //because if we dont remove users, in the loadusers post, all our users already stored, so it wont get to point of reloading data, since if statement never checks in loaduser since we run the loop on recordings we already fetched where it checks if ownerid exists in dict we had prior before we removed. The table then tries to load the cell before table has been reloading so it tries to load the row from data model that is no longer dere.
         recordings.removeAll()
@@ -73,13 +74,15 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     @objc func loadRecordings(success: @escaping(() -> Void)) {
         print("i'm in loadrecordings")
         queryLimit = 4
+        print("about to make call to get posts")
         DBViewController.getPostsByTags(forLimit: queryLimit, forTags: User.current.tags) { docs in
             self.recordings.removeAll()
             for doc in docs{
                 self.recordings.append(doc)
             }
-            print(self.recordings.count, "after first load")
-            self.tableView.reloadData()
+//            print(self.recordings.count, "after first load")
+            print("successfully appended to datamodel")
+//            self.tableView.reloadData()
             self.myRefreshControl.endRefreshing()
             success()
         }
@@ -106,14 +109,12 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
-    //might be called twice when we reload tableview but whocares
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let position = scrollView.contentOffset.y
-        //if canfetchmore and isn't currently fetching and we scroll to bottom of tableview, set fetchmore to true.
-        if !isFetchingMore && canFetchMore && position > (tableView.contentSize.height-100-scrollView.frame.size.height){
-            print("fetching more")
-            isFetchingMore = true
-            loadMoreRecordings(success: loadUsers)
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row + 1 == recordings.count{
+            if !isFetchingMore && canFetchMore{
+                print("fetching more")
+                loadMoreRecordings(success: loadUsers)
+            }
         }
     }
     
@@ -125,6 +126,8 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.estimatedRowHeight = 1000 // or your estimate
+
         myRefreshControl.addTarget(self, action: #selector(refreshReload), for: .valueChanged)
         tableView.refreshControl = myRefreshControl
 
