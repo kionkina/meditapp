@@ -18,6 +18,7 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
     @IBOutlet var lastName: UILabel!
     @IBOutlet var followBotton: UIButton!
     
+    var pfpImage: UIImage?
     var audioPlayer = AVAudioPlayer()
     
     var audioReference: StorageReference{
@@ -38,51 +39,68 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! postCellTableViewCell
-        let recording = recordings[indexPath.row]
-        //if user to current post found in dict
-        //configure the cell
-//        cell.configure(with: recording)
-        cell.post = recording
         
-
-        if User.current.likedPosts[recording.RecID] != nil{
-            cell.setLiked(User.current.likedPosts[recording.RecID]!, recording.numLikes)
+        if indexPath.row == 0{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "profileCell", for: indexPath) as! profileCell
+            
+            cell.firstNameLabel.text = postUser?.firstName
+            cell.lastNameLabel.text = postUser?.lastName
+            if let pfpImage = pfpImage{
+                cell.profileImageView.image = pfpImage
+                return cell
+            }
+            else{
+                print("did not download image yet")
+                return cell
+            }
         }
         else{
-            cell.setLiked(false, recording.numLikes)
-        }
-        
-        if let user = postUser{
-//            cell.configure(with: recording, user: user)
-//            cell.configure(with: recording)
-            //cell.uid = recordings[indexPath.row].OwnerID
-            cell.configure(with: recording, for: user )
-            cell.playAudio = {
-                let downloadPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(recording.RecID)
-                
-                let audioRef = self.audioReference.child(recording.Name)
-                
-                let downloadTask = audioRef.write(toFile: downloadPath){ url, error in
-                    if let error = error{
-                        print("Error has occured")
-                    }
-                    else{
-                        do {
-                            self.audioPlayer.stop()
-                            self.audioPlayer = try AVAudioPlayer(contentsOf: url!)
-                            self.audioPlayer.play()
-                        } catch {
-                            print(error)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! postCellTableViewCell
+            let recording = recordings[indexPath.row - 1]
+            //if user to current post found in dict
+            //configure the cell
+    //        cell.configure(with: recording)
+            cell.post = recording
+            
+
+            if User.current.likedPosts[recording.RecID] != nil{
+                cell.setLiked(User.current.likedPosts[recording.RecID]!, recording.numLikes)
+            }
+            else{
+                cell.setLiked(false, recording.numLikes)
+            }
+            
+            if let user = postUser{
+    //            cell.configure(with: recording, user: user)
+    //            cell.configure(with: recording)
+                //cell.uid = recordings[indexPath.row].OwnerID
+                cell.configure(with: recording, for: user )
+                cell.playAudio = {
+                    let downloadPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(recording.RecID)
+                    
+                    let audioRef = self.audioReference.child(recording.Name)
+                    
+                    let downloadTask = audioRef.write(toFile: downloadPath){ url, error in
+                        if let error = error{
+                            print("Error has occured")
+                        }
+                        else{
+                            do {
+                                self.audioPlayer.stop()
+                                self.audioPlayer = try AVAudioPlayer(contentsOf: url!)
+                                self.audioPlayer.play()
+                            } catch {
+                                print(error)
+                            }
                         }
                     }
+                    downloadTask.resume()
                 }
-                downloadTask.resume()
+                //cell.postUser = user
             }
-            //cell.postUser = user
+            
+            return cell
         }
-        
-        return cell
     }
     
     
@@ -90,7 +108,7 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return recordings.count
+        return 1 + recordings.count
     }
     
 
@@ -125,12 +143,16 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
         tableView.delegate = self
         tableView.dataSource = self
         
-        username.text = postUser?.firstName
-        firstName.text = postUser?.lastName
-        lastName.text = postUser?.username
+//        username.text = postUser?.firstName
+        navigationItem.title = postUser?.username
+//        firstName.text = postUser?.lastName
+//        lastName.text = postUser?.username
         
 //        print("in profile! uid: " + postUser!.uid)
-        loadPfp()
+//        loadPfp()
+        
+        //change eventually to user.profileimage
+        loadPfp(forImageName: "default.jpeg")
         loadRecordings()
         NotificationCenter.default.addObserver(self, selector: #selector(handleLikes), name: Notification.Name("UpdateLikes"), object: nil)
         print("loading recordings in userprofiles")
@@ -171,13 +193,18 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
     }
     
     //TODO : CHECK IF USER HAS IMAGE: BOOL.
-    func loadPfp(){
-        let downloadImageRef = pfpReference.child("default.jpeg")
+    func loadPfp(forImageName imageName: String){
+        let downloadImageRef = pfpReference.child("\(imageName)")
         
         let downloadTask = downloadImageRef.getData(maxSize: 1024 * 1024 * 12) { (data, error) in
+            if let error = error{
+                print("error, \(error.localizedDescription)")
+            }
             if let data = data{
+                print("i have image data")
                 let image = UIImage(data: data)
-                self.Pfp.image = image
+                self.pfpImage = image
+                self.tableView.reloadData()
             }
             // print(error ?? "NONE")
         }

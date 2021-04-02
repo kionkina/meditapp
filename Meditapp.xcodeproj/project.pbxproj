@@ -13,6 +13,7 @@
 		3613CA972602BBC30065D1CE /* RecordingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3613CA932602BBC30065D1CE /* RecordingCell.swift */; };
 		3613CA982602BBC30065D1CE /* Recording.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3613CA942602BBC30065D1CE /* Recording.swift */; };
 		3613CB4626067C460065D1CE /* HomePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3613CB4526067C460065D1CE /* HomePageViewController.swift */; };
+		3626DF992617A1DB005EC4B6 /* profileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3626DF982617A1DB005EC4B6 /* profileCell.swift */; };
 		60D61B693E64EB1965C57E2B /* Pods_Meditapp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC3A95EE12470508254ED4D5 /* Pods_Meditapp.framework */; };
 		9A60A38E2603F26200E93DB1 /* UserProfilePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A60A38D2603F26200E93DB1 /* UserProfilePageViewController.swift */; };
 		9A60A3DA26051CC400E93DB1 /* DBViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A60A3D926051CC400E93DB1 /* DBViewController.swift */; };
@@ -47,6 +48,7 @@
 		3613CA932602BBC30065D1CE /* RecordingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordingCell.swift; sourceTree = "<group>"; };
 		3613CA942602BBC30065D1CE /* Recording.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recording.swift; sourceTree = "<group>"; };
 		3613CB4526067C460065D1CE /* HomePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		3626DF982617A1DB005EC4B6 /* profileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = profileCell.swift; sourceTree = "<group>"; };
 		9A60A38D2603F26200E93DB1 /* UserProfilePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserProfilePageViewController.swift; path = Meditapp/UserProfilePageViewController.swift; sourceTree = SOURCE_ROOT; };
 		9A60A3D926051CC400E93DB1 /* DBViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		9A60A4412607E48400E93DB1 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Post.swift; path = Meditapp/Post.swift; sourceTree = SOURCE_ROOT; };
@@ -167,6 +169,7 @@
 				9A60A38D2603F26200E93DB1 /* UserProfilePageViewController.swift */,
 				9A9970B526127E29008BAB51 /* CommentViewController.swift */,
 				3613CB4526067C460065D1CE /* HomePageViewController.swift */,
+				3626DF982617A1DB005EC4B6 /* profileCell.swift */,
 			);
 			path = Meditapp;
 			sourceTree = "<group>";
@@ -302,6 +305,7 @@
 				9AE03F582602958D00715283 /* SelectTagsViewController.swift in Sources */,
 				9A60A3DA26051CC400E93DB1 /* DBViewController.swift in Sources */,
 				9AEA1D0025E5DAC000C329C8 /* AppDelegate.swift in Sources */,
+				3626DF992617A1DB005EC4B6 /* profileCell.swift in Sources */,
 				03C63C4425EE295A00AD7815 /* postCellTableViewCell.swift in Sources */,
 				9AEA1D3025E5DE7200C329C8 /* AuthService.swift in Sources */,
 				9AEA1D2825E5DE6000C329C8 /* ViewController+Utility.swift in Sources */,

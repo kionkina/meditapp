@@ -94,7 +94,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         print(User.current.tags, "my current tags")
         NotificationCenter.default.addObserver(self, selector: #selector(handleLikes), name: Notification.Name("UpdateLikes"), object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(handleComment), name: Notification.Name("UpdateComment"), object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(handleComment), name: Notification.Name("UpdateComment"), object: nil)
     }
 
     @objc func handleLikes(notification: NSNotification) {
