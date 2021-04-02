@@ -101,18 +101,25 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
     }
     
     var postUser: User?
-    var recordings: [Post] = []
+    var recordings: [Post] = [] 
     
 
     @IBOutlet weak var Pfp: UIImageView!
     
-//
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        tableView.reloadData()
-//    }
-//
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+//        print("removing observer")
+//        NotificationCenter.default.removeObserver(self)
+    }
+    
+    
+    
     override func viewDidLoad() {
+        print("loading userprofile vc")
         super.viewDidLoad()
         
         tableView.delegate = self
@@ -125,10 +132,33 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
 //        print("in profile! uid: " + postUser!.uid)
         loadPfp()
         loadRecordings()
+        NotificationCenter.default.addObserver(self, selector: #selector(handleLikes), name: Notification.Name("UpdateLikes"), object: nil)
         print("loading recordings in userprofiles")
-        // Do any additional setup after loading the view.
+        
+//        NotificationCenter.default.addObserver(self, selector: #selector(handleComment), name: Notification.Name("UpdateComment"), object: nil)
     }
     
+    @objc func handleLikes(notification: NSNotification) {
+        print("like fired off handler in userprofile")
+        if let dict = notification.object as? [String:Any] {
+            for post in recordings{
+                if post.RecID == dict["updateRecID"] as! String{
+                    post.numLikes = dict["updateLikes"] as! Int
+                }
+            }
+        }
+    }
+    
+    @objc func handleComment(notification: NSNotification) {
+        print("like fired off comment handler in userprofile")
+        if let dict = notification.object as? [String:Any] {
+            for post in recordings{
+                if post.RecID == dict["updateRecID"] as! String{
+                    post.numComments = dict["updateComment"] as! Int
+                }
+            }
+        }
+    }
     
     func loadRecordings() {
         DBViewController.getRecordings(for: postUser!.recordings) { (doc: DocumentSnapshot) in

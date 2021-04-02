@@ -350,6 +350,7 @@ PODS:
   - SDWebImage (5.10.4):
     - SDWebImage/Core (= 5.10.4)
   - SDWebImage/Core (5.10.4)
+  - StreamingKit (0.1.30)
   - TaggerKit (0.6.1)
 
 DEPENDENCIES:
@@ -361,6 +362,7 @@ DEPENDENCIES:
   - Firebase/Storage
   - FirebaseUI/Storage
   - MessageInputBar
+  - StreamingKit
   - TaggerKit
 
 SPEC REPOS:
@@ -388,6 +390,7 @@ SPEC REPOS:
     - nanopb
     - PromisesObjC
     - SDWebImage
+    - StreamingKit
     - TaggerKit
 
 SPEC CHECKSUMS:
@@ -414,8 +417,9 @@ SPEC CHECKSUMS:
   nanopb: 59221d7f958fb711001e6a449489542d92ae113e
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   SDWebImage: c666b97e1fa9c64b4909816a903322018f0a9c84
+  StreamingKit: 70ca8608c206864b4d54a577eacb3c8bf7c72209
   TaggerKit: e88422048a006b409a37b37f24785dfcca69b5b2
 
-PODFILE CHECKSUM: 4322a1a3387525b00369c15386507c26e81d5a8a
+PODFILE CHECKSUM: 91dcc2c286e79675915269fdcf55257c2ecdca16
 
 COCOAPODS: 1.10.1

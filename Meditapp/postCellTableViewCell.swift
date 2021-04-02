@@ -17,13 +17,13 @@ class postCellTableViewCell: UITableViewCell {
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var userImage: UIImageView!
     
-    @IBOutlet weak var likesCount: UILabel!
+    @IBOutlet weak var likesCount: UILabel?
+    @IBOutlet weak var dislikesCount: UILabel?
     
-    @IBOutlet weak var dislikesCount: UILabel!
     @IBOutlet weak var likeButton: UIButton!
     
     
-    @IBOutlet weak var commentsCount: UILabel!
+    @IBOutlet weak var commentsCount: UILabel?
     @IBOutlet weak var username:UIButton!
     
     
@@ -47,13 +47,13 @@ class postCellTableViewCell: UITableViewCell {
         if(liked){
             DispatchQueue.main.async{
                 self.likeButton.isSelected = true
-                self.likesCount.text = String(numofLikes)
+                self.likesCount?.text = String(numofLikes)
             }
         }
         else{
             DispatchQueue.main.async{
                 self.likeButton.isSelected = false
-                self.likesCount.text = String(numofLikes)
+                self.likesCount?.text = String(numofLikes)
             }
         }
     }
@@ -118,8 +118,8 @@ class postCellTableViewCell: UITableViewCell {
 
     //removed extra param: , user: User?
     func configure(with model: Post, for user: User?){
-        self.dislikesCount.text = "\(3)"
-        self.commentsCount.text = "\(model.numComments)"
+        self.dislikesCount?.text = "\(3)"
+        self.commentsCount?.text = "\(model.numComments)"
         
         self.postTitle.text = model.Name
         self.postDescription.text = model.Description

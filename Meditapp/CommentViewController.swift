@@ -52,9 +52,10 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
                 //print(cell.uid)
                 print(cell.postUser)
                 let vc = segue.destination as! UserProfilePageViewController
-                vc.postUser = self.postUser            }
+                vc.postUser = self.postUser
+            }
+        }
     }
-}
     
     
     func loadComments(success: @escaping(() -> Void)) {
@@ -96,12 +97,12 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
             cell.post = recording
             
             //set whether the post has already been liked when displaying cells.
-            if User.current.likedPosts[self.recording!.RecID] != nil{
-                cell.setLiked(User.current.likedPosts[self.recording!.RecID]!, self.recording!.numLikes)
-            }
-            else{
-                cell.setLiked(false, self.recording!.numLikes)
-            }
+//            if User.current.likedPosts[self.recording!.RecID] != nil{
+//                cell.setLiked(User.current.likedPosts[self.recording!.RecID]!, self.recording!.numLikes)
+//            }
+//            else{
+//                cell.setLiked(false, self.recording!.numLikes)
+//            }
             //if user to current post found in dict
             if let user = postUser{
                 cell.configure(with: self.recording!, for: user )
@@ -133,7 +134,7 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
             return cell
         }
         else if (comments.count > 0) {
-            print("dequing comments")
+//            print("dequing comments")
             let cell = tableView.dequeueReusableCell(withIdentifier: "sampleComment", for: indexPath) as! commentCellTableViewCell
             
             let comment = comments[indexPath.row - 1]
@@ -165,6 +166,15 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
     }
     
 //
+    
+    override func viewWillAppear(_ animated: Bool) {
+        print("commentviewcontroller appearing")
+        super.viewWillAppear(animated)
+        comments.removeAll()
+        users.removeAll()
+        loadComments(success: loadUsers)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -210,9 +220,16 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
             self.tableView.reloadData()
             //TODO: add signal to prev pages
             
-            
+            //removes the keyboard
             self.commentBar.inputTextView.text = nil
             self.commentBar.inputTextView.resignFirstResponder()
+            
+            let updateDict = [
+                "updateRecID":self.recording!.RecID,
+                "updateComment": updatedNumComments
+            ] as [String : Any]
+            
+            NotificationCenter.default.post(name: Notification.Name("UpdateComment"), object: updateDict)
         }
     }
 }
