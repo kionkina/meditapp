@@ -374,11 +374,13 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
         //get reference to recordings bucket
         let recordingRef = recordingReference
         
+        let recID = UUID().uuidString
+        
         let filename = recordings[checkedIndex.row].recordingName
         //append to bucket route
         let audioRef = recordingRef.child(filename)
         
-        let localFile = getDirectory().appendingPathComponent("\(filename).m4a")
+        let localFile = getDirectory().appendingPathComponent("\(recID).m4a")
         
         //specify task. on success, we get info that we can reference to in our documents
         let uploadTask = audioRef.putFile(from: localFile, metadata: nil){ (metadata, err) in
@@ -396,7 +398,6 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
         
 //        guard let user = Auth.auth().currentUser else{return}
         
-        let recID = UUID().uuidString
         let stamp = Timestamp(date: Date())
         let currTime = converTimetoToInt(date: Date())
         
@@ -429,6 +430,14 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
             "content" : FieldValue.arrayUnion([dbref])
         ])
         User.current.recordings.append(dbref)
+        print(User.current.recordings, "after appending")
+//        do{
+//            let data = try NSKeyedArchiver.archivedData(withRootObject: User.current)
+//            try UserDefaults.standard.set(data, forKey: "currentUser")
+//        } catch{
+//            print("Error")
+//        }
+          
         
 //        dismiss(animated: true, completion: nil)
         navigationController?.popViewController(animated: true)

@@ -26,7 +26,6 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-
         if (segue.identifier == "toComments") {
             let button = sender as! UIButton
             if let cell = button.superview?.superview as? postCellTableViewCell {
@@ -121,6 +120,7 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
     var postUser: User?
     var recordings: [Post] = [] 
     
+    let myRefreshControl = UIRefreshControl()
 
     @IBOutlet weak var Pfp: UIImageView!
     
@@ -129,19 +129,15 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
         tableView.reloadData()
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-//        print("removing observer")
-//        NotificationCenter.default.removeObserver(self)
-    }
-    
-    
-    
     override func viewDidLoad() {
         print("loading userprofile vc")
         super.viewDidLoad()
         
         tableView.delegate = self
         tableView.dataSource = self
+        
+        myRefreshControl.addTarget(self, action: #selector(refreshReload), for: .valueChanged)
+        tableView.refreshControl = myRefreshControl
         
 //        username.text = postUser?.firstName
         navigationItem.title = postUser?.username
@@ -154,10 +150,16 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
         //change eventually to user.profileimage
         loadPfp(forImageName: "default.jpeg")
         loadRecordings()
-        NotificationCenter.default.addObserver(self, selector: #selector(handleLikes), name: Notification.Name("UpdateLikes"), object: nil)
-        print("loading recordings in userprofiles")
+//        NotificationCenter.default.addObserver(self, selector: #selector(handleLikes), name: Notification.Name("UpdateLikes"), object: nil)
         
 //        NotificationCenter.default.addObserver(self, selector: #selector(handleComment), name: Notification.Name("UpdateComment"), object: nil)
+    }
+    
+    @objc func refreshReload(){
+        print("i have refreshed")
+        recordings.removeAll()
+        tableView.reloadData()
+        loadRecordings()
     }
     
     @objc func handleLikes(notification: NSNotification) {
@@ -188,6 +190,7 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
                 self.recordings.append(Post(snapshot: doc)!)
 //                print(self.recordings)
                 self.tableView.reloadData()
+                self.myRefreshControl.endRefreshing()
             }
         }
     }

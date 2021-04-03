@@ -145,7 +145,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         loadRecordings(success: loadUsers)
 
         print(User.current.tags, "my current tags")
-        
+        print(User.current.recordings , "my recordings")
         NotificationCenter.default.addObserver(self, selector: #selector(handleLikes), name: Notification.Name("UpdateLikes"), object: nil)
         
 //        NotificationCenter.default.addObserver(self, selector: #selector(handleComment), name: Notification.Name("UpdateComment"), object: nil)
@@ -192,30 +192,28 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
             cell.configure(with: recording, for: user )
             
             cell.playAudio = {
-//                let downloadPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(recording.RecID)
-//
-//                print("DOWNLOAD TO URL", downloadPath)
+                let downloadPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(recording.RecID)
+
+                print("DOWNLOAD TO URL", downloadPath)
                 let audioRef = self.audioReference.child(recording.Name)
-//                audioPlayer.play(audioRef)
-                print(" this is my ref to this sound", audioRef)
-                self.audioPlayer.play("\(audioRef)")
-//                let downloadTask = audioRef.write(toFile: downloadPath){ url, error in
-//                    if let error = error{
-//                        print("Error has occured")
-//                    }
-//                    else{
-//                        do {
-//                            self.audioPlayer.stop()
-//                            self.audioPlayer = try AVAudioPlayer(contentsOf: url!)
-//                            self.audioPlayer.play()
-//                        } catch {
-//                            print(error)
-//                        }
-//                    }
-//                }
-//                downloadTask.resume()
+
+                let downloadTask = audioRef.write(toFile: downloadPath){ url, error in
+                    if let error = error{
+                        print("Error has occured")
+                    }
+                    else{
+                        do {
+                            self.audioPlayer.stop()
+                            self.audioPlayer = try AVAudioPlayer(contentsOf: url!)
+                            self.audioPlayer.play()
+                        } catch {
+                            print(error)
+                        }
+                    }
+                }
+                downloadTask.resume()
             }
-            //cell.postUser = user
+            cell.postUser = user
         }
         
         return cell
