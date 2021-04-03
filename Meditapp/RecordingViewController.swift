@@ -409,6 +409,7 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
             "Tags" : postTags,
             "Description" : postDesc.text!,
             "numLikes" : 0,
+            "numComments": 0,
             "Image" : postImage.sd_imageURL?.lastPathComponent as Any,
             //combine query for filtering and sorting
             "IdTime" : String(currTime) + recID

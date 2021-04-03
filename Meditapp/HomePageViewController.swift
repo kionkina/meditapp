@@ -8,8 +8,10 @@ import AVFoundation
 import UIKit
 import FirebaseFirestore
 import FirebaseStorage
+import StreamingKit
 
 class HomePageViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate{
+
 
     @IBOutlet var tableView: UITableView!
 
@@ -21,7 +23,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
 
     var isFetchingMore:Bool = false
     var canFetchMore:Bool = true
-    
+
     var audioReference: StorageReference{
         return Storage.storage().reference().child("recordings")
     }
@@ -33,6 +35,15 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                 //print(cell.uid)
                 let vc = segue.destination as! UserProfilePageViewController
                 vc.postUser = cell.postUser
+            }
+        }
+        if (segue.identifier == "toComments") {
+            let button = sender as! UIButton
+            if let cell = button.superview?.superview as? postCellTableViewCell {
+                    //print(cell.uid)
+                    let vc = segue.destination as! CommentViewController
+                    vc.postUser = cell.postUser
+                    vc.recording = cell.post
             }
         }
     }
@@ -136,13 +147,26 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         print(User.current.tags, "my current tags")
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleLikes), name: Notification.Name("UpdateLikes"), object: nil)
+        
+//        NotificationCenter.default.addObserver(self, selector: #selector(handleComment), name: Notification.Name("UpdateComment"), object: nil)
     }
 
     @objc func handleLikes(notification: NSNotification) {
+        print("like fired off handler in homepage")
         if let dict = notification.object as? [String:Any] {
             for post in recordings{
                 if post.RecID == dict["updateRecID"] as! String{
                     post.numLikes = dict["updateLikes"] as! Int
+                }
+            }
+        }
+    }
+    @objc func handleComment(notification: NSNotification) {
+        print("like fired off comment handler in homepage")
+        if let dict = notification.object as? [String:Any] {
+            for post in recordings{
+                if post.RecID == dict["updateRecID"] as! String{
+                    post.numComments = dict["updateComment"] as! Int
                 }
             }
         }
@@ -162,31 +186,34 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         else{
             cell.setLiked(false, recording.numLikes)
         }
+//        print("recording from firebase is ", audioReference.child(recording.Name))
         //if user to current post found in dict
         if let user = users[recording.OwnerID]{
             cell.configure(with: recording, for: user )
             
             cell.playAudio = {
-                let downloadPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(recording.RecID)
-                
-                print("DOWNLOAD TO URL", downloadPath)
+//                let downloadPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(recording.RecID)
+//
+//                print("DOWNLOAD TO URL", downloadPath)
                 let audioRef = self.audioReference.child(recording.Name)
-                
-                let downloadTask = audioRef.write(toFile: downloadPath){ url, error in
-                    if let error = error{
-                        print("Error has occured")
-                    }
-                    else{
-                        do {
-                            self.audioPlayer.stop()
-                            self.audioPlayer = try AVAudioPlayer(contentsOf: url!)
-                            self.audioPlayer.play()
-                        } catch {
-                            print(error)
-                        }
-                    }
-                }
-                downloadTask.resume()
+//                audioPlayer.play(audioRef)
+                print(" this is my ref to this sound", audioRef)
+                self.audioPlayer.play("\(audioRef)")
+//                let downloadTask = audioRef.write(toFile: downloadPath){ url, error in
+//                    if let error = error{
+//                        print("Error has occured")
+//                    }
+//                    else{
+//                        do {
+//                            self.audioPlayer.stop()
+//                            self.audioPlayer = try AVAudioPlayer(contentsOf: url!)
+//                            self.audioPlayer.play()
+//                        } catch {
+//                            print(error)
+//                        }
+//                    }
+//                }
+//                downloadTask.resume()
             }
             //cell.postUser = user
         }

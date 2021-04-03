@@ -15,4 +15,8 @@ pod 'Firebase/Storage'
 pod 'FirebaseUI/Storage'
 pod 'Firebase/DynamicLinks'
 pod 'TaggerKit'
+pod 'MessageInputBar'
+pod 'StreamingKit'
+
+
 end
