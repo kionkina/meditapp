@@ -186,7 +186,7 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
         //when you pull down on tableview enough, it dismisses keyboard
         tableView.keyboardDismissMode = .interactive
 
-        
+        print(User.current.profilePic, "current profile pic")
         loadComments(success: loadUsers)
     }
     

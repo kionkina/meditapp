@@ -24,9 +24,11 @@ class User : NSObject {
     var tags: [String]
     var recordings: [DocumentReference]
     var likedPosts: [String:Bool]
+    var profilePic: String
+
     
     //Standard User init()
-    init(uid: String, username: String, firstName: String, lastName: String) {
+    init(uid: String, username: String, firstName: String, lastName: String, profilePic: String = "default.jpeg") {
         self.uid = uid
         self.firstName = firstName
         self.lastName = lastName
@@ -34,6 +36,7 @@ class User : NSObject {
         self.tags = []
         self.recordings = []
         self.likedPosts = [String:Bool]()
+        self.profilePic = profilePic
         super.init()
     }
     
@@ -47,6 +50,14 @@ class User : NSObject {
             self.tags = (dict["tags"] as? [String]) ?? []
             self.recordings = (dict["content"] as? [DocumentReference]) ?? []
             self.likedPosts = (dict["likedPosts"] as? [String:Bool]) ?? [String:Bool]()
+//            self.profilePic = ( (dict.keys.contains("profilePic") ) ? dict["profilePic"] as! String : "default.jpeg")
+            if dict.keys.contains("profilePic"){
+                self.profilePic = dict["profilePic"] as! String
+            }
+            else{
+                self.profilePic = "default.jpeg"
+                print("user snapshot init makes defualt jpeg as pfp")
+            }
         }
         else{
             print("ERROR")
@@ -62,7 +73,8 @@ class User : NSObject {
             let username = aDecoder.decodeObject(forKey: "username") as? String,
             let tags = aDecoder.decodeObject(forKey:"tags") as? [String],
             let recordings = aDecoder.decodeObject(forKey:"recordings") as? [DocumentReference],
-            let likedPosts = aDecoder.decodeObject(forKey:"likedPosts") as? [String:Bool]
+            let likedPosts = aDecoder.decodeObject(forKey:"likedPosts") as? [String:Bool],
+            let profilePic = aDecoder.decodeObject(forKey: "profilePic") as? String
             else { return nil }
         
         self.uid = uid
@@ -72,6 +84,7 @@ class User : NSObject {
         self.tags = tags
         self.recordings = recordings
         self.likedPosts = likedPosts
+        self.profilePic = profilePic
         print(self.likedPosts, "IN USERSWIFT")
     }
     
@@ -107,5 +120,6 @@ extension User: NSCoding {
         aCoder.encode(tags, forKey: "tags")
         aCoder.encode(recordings, forKey: "recordings")
         aCoder.encode(likedPosts, forKey: "likedPosts")
+        aCoder.encode(profilePic, forKey: "profilePic")
     }
 }

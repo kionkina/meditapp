@@ -25,6 +25,7 @@ class postCellTableViewCell: UITableViewCell {
     
     @IBOutlet weak var commentsCount: UILabel?
     @IBOutlet weak var username:UIButton!
+    @IBOutlet weak var usernameLabel: UILabel?
     
     
     
@@ -127,9 +128,12 @@ class postCellTableViewCell: UITableViewCell {
         let imageRef = Storage.storage().reference().child("postphotos").child(model.PostImg)
         //sets the image from the path to the UIImageView
         self.postImage.sd_setImage(with: imageRef)
+        print("setting postimage with", model.PostImg)
+        
+        self.userImage.sd_setImage(with: Storage.storage().reference().child("profilephotos").child(user!.profilePic))
         //fix user image when implement profile picture
-        self.userImage.image = UIImage(named:"profile_pic_1")
         self.username.setTitle(user!.username, for: .normal)
+        self.usernameLabel?.text = user!.username
         
         self.postUser = user
         self.post = model

@@ -58,15 +58,6 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         loadRecordings(success: loadUsers)
     }
     
-    func createSpinnerFooter() -> UIView{
-        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 100))
-        let spinner = UIActivityIndicatorView()
-        spinner.center = footerView.center
-        spinner.startAnimating()
-        
-        return footerView
-    }
-    
     @objc func loadUsers() -> Void {
         print("loadUsers")
         //check if ID is not already in users
@@ -144,8 +135,10 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
 
         loadRecordings(success: loadUsers)
 
+        print(User.current.uid, "i am the current user")
         print(User.current.tags, "my current tags")
         print(User.current.recordings , "my recordings")
+        print(User.current.profilePic, "current profile in homepage")
         NotificationCenter.default.addObserver(self, selector: #selector(handleLikes), name: Notification.Name("UpdateLikes"), object: nil)
         
 //        NotificationCenter.default.addObserver(self, selector: #selector(handleComment), name: Notification.Name("UpdateComment"), object: nil)

@@ -36,6 +36,7 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
     var recordings = [Recording]()
     var postTags = [String]()
     var imagePickerController = UIImagePickerController()
+    var curSelectedPhotoURL: URL?
     
     var checkedIndex: IndexPath!
     
@@ -177,24 +178,29 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
     
     //see what img user chose and upload it to firebase
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+//        if let url = info[UIImagePickerController.InfoKey.imageURL] as? URL{
+//            print("Image selected: \(url)")
+//            let postPhotoRef = postPhotoReference
+//            let localFile = url
+//            let photoRef = postPhotoRef.child(url.lastPathComponent)
+//
+//            let uploadTask = photoRef.putFile(from: localFile, metadata: nil) { (metadata, err) in
+//                guard let metadata = metadata
+//                else {
+//                    print(err?.localizedDescription)
+//                    return
+//                }
+//                print("Photo uploaded")
+//                self.postImage.sd_setImage(with: photoRef)
+//                print("img URL: \(String(describing: self.postImage.sd_imageURL?.lastPathComponent))")
+////                print("this is the post image")
+//            }
+//
+//        }
+        postImage.image = info[.originalImage] as? UIImage
+        
         if let url = info[UIImagePickerController.InfoKey.imageURL] as? URL{
-            print("Image selected: \(url)")
-            let postPhotoRef = postPhotoReference
-            let localFile = url
-            let photoRef = postPhotoRef.child(url.lastPathComponent)
-            
-            let uploadTask = photoRef.putFile(from: localFile, metadata: nil) { (metadata, err) in
-                guard let metadata = metadata
-                else {
-                    print(err?.localizedDescription)
-                    return
-                }
-                print("Photo uploaded")
-                self.postImage.sd_setImage(with: photoRef)
-                print("img URL: \(String(describing: self.postImage.sd_imageURL?.lastPathComponent))")
-//                print("this is the post image")
-            }
-            
+            curSelectedPhotoURL = url
         }
         
         imagePickerController.dismiss(animated: true, completion: nil)
@@ -411,7 +417,7 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
             "Description" : postDesc.text!,
             "numLikes" : 0,
             "numComments": 0,
-            "Image" : postImage.sd_imageURL?.lastPathComponent as Any,
+            "Image" : recID,
             //combine query for filtering and sorting
             "IdTime" : String(currTime) + recID
 //            "StorageRef" : audioRef
@@ -426,20 +432,29 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
         }
        
         let dbref: DocumentReference = db.collection("Recordings").document(recID)
+        
         db.collection("users").document(User.current.uid).updateData([
             "content" : FieldValue.arrayUnion([dbref])
         ])
+        
         User.current.recordings.append(dbref)
         print(User.current.recordings, "after appending")
-//        do{
-//            let data = try NSKeyedArchiver.archivedData(withRootObject: User.current)
-//            try UserDefaults.standard.set(data, forKey: "currentUser")
-//        } catch{
-//            print("Error")
-//        }
-          
+
+        let profilePicRef = Storage.storage().reference().child("postphotos")
+        let photoRef = profilePicRef.child(recID)
+
+        //upload image to bucket
+        let uploadImageTask = photoRef.putFile(from: curSelectedPhotoURL!, metadata: nil) { (metadata, err) in
+            if let err = err{
+                print(err.localizedDescription)
+            }
+            else{
+                print("successfully uploaded image")
+            }
+        }
+        uploadImageTask.resume()
+
         
-//        dismiss(animated: true, completion: nil)
         navigationController?.popViewController(animated: true)
         //deleteAllFiles(false)
     }

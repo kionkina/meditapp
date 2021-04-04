@@ -78,19 +78,6 @@ class Post : NSObject {
         self.numComments = numComments
         self.PostImg = PostImg
         self.IdTime = IdTime
-//        if let dict = snapshot.data(){
-//            self.description = (dict["Description"] as? String) ?? ""
-//            self.Name = (dict["Name"] as? String) ?? ""
-//            self.OwnerID = (dict["OwnerID"] as? String) ?? ""
-//            self.RecID = (dict["RecID"] as? String) ?? ""
-//            self.Tags = (dict["Tags"] as? [String]) ?? []
-//            self.Timestamp = (dict["Timestamp"] as? Timestamp) ?? 
-//            self.likedPosts = (dict["likedPosts"] as? [String:Bool]) ?? [String:Bool]()
-//        }
-//        else{
-//            print("ERROR")
-//            return nil
-//        }
     }
     
     required init?(coder aDecoder: NSCoder) {
