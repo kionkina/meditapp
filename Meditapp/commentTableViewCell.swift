@@ -40,6 +40,9 @@ class commentCellTableViewCell: UITableViewCell {
         let imageRef = Storage.storage().reference().child("profilephotos").child(user!.profilePic)
         //sets the image from the path to the UIImageView
         self.userImage.sd_setImage(with: imageRef)
+        self.userImage.layer.cornerRadius = self.userImage.frame.height/2
+        self.userImage.clipsToBounds = true
+        
         self.username.setTitle(user!.username, for: .normal)
         self.time.text = DBViewController.convertTime(stamp: model.Timestamp)
         
