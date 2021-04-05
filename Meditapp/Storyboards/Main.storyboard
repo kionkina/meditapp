@@ -938,7 +938,7 @@
                                                     <rect key="frame" x="64" y="6" width="46" height="30"/>
                                                     <state key="normal" title="Button"/>
                                                 </button>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Comment" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hN3-nV-vpi">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Comment" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hN3-nV-vpi">
                                                     <rect key="frame" x="138.66666666666666" y="11" width="136.99999999999997" height="42"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="137" id="GkO-5m-OP5"/>

@@ -51,6 +51,7 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print("Current directory", getDirectory())
         loadRecordings()
         navigationItem.largeTitleDisplayMode = .never
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard(_:)))
@@ -108,9 +109,9 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
         do {
             let fileURLs = try FileManager.default.contentsOfDirectory(at: documentsUrl, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
             for fileURL in fileURLs {
-                if fileURL.pathExtension == "m4a" {
-                    try FileManager.default.removeItem(at: fileURL)
-                }
+//                if fileURL.pathExtension == "m4a" {
+                try FileManager.default.removeItem(at: fileURL)
+//                }
             }
         } catch  { print(error) }
     }
@@ -181,23 +182,23 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
         
         postImage.image = info[.originalImage] as? UIImage
         
-//        if let url = info[UIImagePickerController.InfoKey.imageURL] as? URL{
-//            curSelectedPhotoURL = url
-//        }
-        
-        let profilePicRef = Storage.storage().reference().child("postphotos")
-        let photoRef = profilePicRef.child(recID)
-
-        //upload image to bucket
-        let uploadImageTask = photoRef.putFile(from: curSelectedPhotoURL!, metadata: nil) { (metadata, err) in
-            if let err = err{
-                print("error uploading pic: ", err.localizedDescription)
-            }
-            else{
-                print("successfully uploaded image")
-            }
+        if let url = info[UIImagePickerController.InfoKey.imageURL] as? URL{
+            curSelectedPhotoURL = url
         }
-        uploadImageTask.resume()
+        
+//        let profilePicRef = Storage.storage().reference().child("postphotos")
+//        let photoRef = profilePicRef.child(recID)
+//
+//        //upload image to bucket
+//        let uploadImageTask = photoRef.putFile(from: curSelectedPhotoURL!, metadata: nil) { (metadata, err) in
+//            if let err = err{
+//                print("error uploading pic: ", err.localizedDescription)
+//            }
+//            else{
+//                print("successfully uploaded image")
+//            }
+//        }
+//        uploadImageTask.resume()
         
         imagePickerController.dismiss(animated: true, completion: nil)
     }
@@ -382,15 +383,16 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
         //append to bucket route
         let audioRef = recordingRef.child(filename)
         
-        let localFile = getDirectory().appendingPathComponent("\(recID).m4a")
+        let localFile = getDirectory().appendingPathComponent("\(filename).m4a")
+        
         
         //specify task. on success, we get info that we can reference to in our documents
         let uploadTask = audioRef.putFile(from: localFile, metadata: nil){ (metadata, err) in
             if let err = err{
-                print(err.localizedDescription)
+                print("error uploading audio", err.localizedDescription)
             }
             else{
-            print("Audio Uploaded")
+                print("Audio Uploaded")
             }
         }
         uploadTask.resume()
@@ -433,29 +435,26 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
         User.current.recordings.append(dbref)
         print(User.current.recordings, "after appending")
 
-//        let profilePicRef = Storage.storage().reference().child("postphotos")
-//        let photoRef = profilePicRef.child(recID)
-//
-//        //upload image to bucket
-//        let uploadImageTask = photoRef.putFile(from: curSelectedPhotoURL!, metadata: nil) { (metadata, err) in
-//            if let err = err{
-//                print("error uploading pic: ", err.localizedDescription)
-//            }
-//            else{
-//                print("successfully uploaded image")
-//            }
-//        }
-//        uploadImageTask.resume()
+        let photoRef = postPhotoReference.child(recID)
 
-        
-        navigationController?.popViewController(animated: true)
-        //deleteAllFiles(false)
+        //upload image to bucket
+        let uploadImageTask = photoRef.putFile(from: curSelectedPhotoURL!, metadata: nil) { (metadata, err) in
+            if let err = err{
+                print("error uploading pic: ", err.localizedDescription)
+            }
+            else{
+                print("successfully uploaded image")
+                self.navigationController?.popViewController(animated: true)
+            }
+        }
+        uploadImageTask.resume()
+        deleteAllFiles()
     }
     
     @IBAction func cancel(_ sender: Any) {
 //        dismiss(animated: true, completion: nil)
         navigationController?.popViewController(animated: true)
-        //deleteAllFiles(true)
+        deleteAllFiles()
     }
     
     //MARK: - Tags delegate protocols
