@@ -126,13 +126,27 @@ class postCellTableViewCell: UITableViewCell {
         self.postTitle.text = model.Name
         self.postDescription.text = model.Description
         //retrieves image from postphotos in storage
-        self.postImage.sd_setImage(with: Storage.storage().reference().child("postphotos").child(model.PostImg))
+        let profilePicRef = Storage.storage().reference().child("profilephotos").child(user!.profilePic)
 //        print("setting     postimage with", model.PostImg)
         
-        self.userImage.sd_setImage(with: Storage.storage().reference().child("profilephotos").child(user!.profilePic))
+//        self.userImage.sd_setImage(with: Storage.storage().reference().child("profilephotos").child(user!.profilePic))
         
-        self.userImage.layer.cornerRadius = self.userImage.frame.height/2
-        self.userImage.clipsToBounds = true
+        let downloadTask = profilePicRef.getData(maxSize: 1024 * 1024 * 12) { (data, error) in
+                    if let error = error{
+                        print("error, (error.localizedDescription)")
+                    }
+                    if let data = data{
+                        let image = UIImage(data: data)
+                        self.userImage.image = image
+                        self.userImage.layer.cornerRadius = self.userImage.frame.height/2
+                        self.userImage.clipsToBounds = true
+                    }
+                    // print(error ?? "NONE")
+                }
+        let imageRef = Storage.storage().reference().child("postphotos").child(model.PostImg)
+        //sets the image from the path to the UIImageView
+        self.postImage.sd_setImage(with: imageRef)
+        
         //fix user image when implement profile picture
         self.username?.setTitle(user!.username, for: .normal)
         self.usernameLabel?.text = user!.username
