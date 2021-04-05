@@ -47,7 +47,7 @@ class DBViewController: UIViewController {
             return(secondsToString(seconds: dv))
         }
     
-    static func getPostsByTags(forLimit limit: Int , forTags tags: [String], success: @escaping ([Post]) -> Void){
+    static func getPostsByTags(forLimit limit: Int , forTags tags: [String], success: @escaping ([Post], _ numFetched: Int) -> Void){
         let db = Firestore.firestore()
         var fetchedPosts = [Post]()
         if tags.isEmpty{
@@ -89,10 +89,11 @@ class DBViewController: UIViewController {
                     
                     if limit - fetchedPosts.count <= 0{
                         print("no need to fetch more posts")
-                        success(fetchedPosts)
+                        success(fetchedPosts, fetchedPosts.count)
                     }
                     else{
                         print("going to fetch more")
+                        let original = fetchedPosts.count
                         let queryRef2 = db.collection("Recordings")
                             .whereField("IdTime", notIn: foundPosts)
                             .order(by: "IdTime", descending: true)
@@ -115,7 +116,7 @@ class DBViewController: UIViewController {
                                         fetchedPosts.append(curPost)
                                     }
                                 }
-                                success(fetchedPosts)
+                                success(fetchedPosts, original)
                             }
                         }
                     }

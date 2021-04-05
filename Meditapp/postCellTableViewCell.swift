@@ -27,6 +27,7 @@ class postCellTableViewCell: UITableViewCell {
     @IBOutlet weak var username:UIButton!
     @IBOutlet weak var usernameLabel: UILabel?
     
+    @IBOutlet weak var sepLine: UIImageView?
     
     
     @IBAction func playButton(_ sender: UIButton) {

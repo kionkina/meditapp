@@ -14,12 +14,13 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
 
 
     @IBOutlet var tableView: UITableView!
-
+    
     var recordings = [Post]()
     var users = [String: User?]()
     var audioPlayer = AVAudioPlayer()
     var queryLimit = 0
     let myRefreshControl = UIRefreshControl()
+    var separator = 0
 
     var isFetchingMore:Bool = false
     var canFetchMore:Bool = true
@@ -77,7 +78,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         print("i'm in loadrecordings")
         queryLimit = 4
         print("about to make call to get posts")
-        DBViewController.getPostsByTags(forLimit: queryLimit, forTags: User.current.tags) { docs in
+        DBViewController.getPostsByTags(forLimit: queryLimit, forTags: User.current.tags) { (docs, numFetched) in
             self.recordings.removeAll()
             for doc in docs{
                 self.recordings.append(doc)
@@ -85,6 +86,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
 //            print(self.recordings.count, "after first load")
             print("successfully appended to datamodel")
 //            self.tableView.reloadData()
+            self.separator = numFetched
             self.myRefreshControl.endRefreshing()
             success()
         }
@@ -93,7 +95,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     func loadMoreRecordings(success: @escaping(() -> Void)) {
         print("load more recordings being called")
         queryLimit += 4
-        DBViewController.getPostsByTags(forLimit: queryLimit, forTags: User.current.tags) { docs in
+        DBViewController.getPostsByTags(forLimit: queryLimit, forTags: User.current.tags) { (docs, numFetched) in
             let prevNumPosts = self.recordings.count
             self.recordings.removeAll()
             for doc in docs{
@@ -102,9 +104,9 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
             //check is prev num post is equal to new amount of post. if so, cant fetch anymore
             if prevNumPosts == self.recordings.count{
                 self.canFetchMore = false
-                print("no more posts to fetch")
             }
             //in case we already have all users in our users dict, if statement wont check and it wont reload.
+            self.separator = numFetched
             self.tableView.reloadData()
             self.isFetchingMore = false
             success()
@@ -208,7 +210,8 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
             }
             cell.postUser = user
         }
-        
+        // add separator
+        cell.sepLine?.isHidden = (Int(indexPath.row) != self.separator - 1)
         return cell
     }
     

@@ -155,6 +155,10 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" image="line" translatesAutoresizingMaskIntoConstraints="NO" id="GM0-AZ-E3G">
+                                                    <rect key="frame" x="-280" y="98" width="972" height="229"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </imageView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="Ya5-sf-YON" firstAttribute="top" secondItem="SJF-Ma-xBT" secondAttribute="bottom" constant="7" id="0C9-5R-Ois"/>
@@ -222,6 +226,7 @@
                                             <outlet property="postDescription" destination="Ya5-sf-YON" id="aVt-4w-iZu"/>
                                             <outlet property="postImage" destination="nG0-tr-g8t" id="SyL-AF-iep"/>
                                             <outlet property="postTitle" destination="SJF-Ma-xBT" id="d1q-CN-mYh"/>
+                                            <outlet property="sepLine" destination="GM0-AZ-E3G" id="29s-zH-xux"/>
                                             <outlet property="time" destination="Ev4-mh-TBH" id="JvM-HP-Dxw"/>
                                             <outlet property="userImage" destination="52w-bp-god" id="VUq-J9-S5V"/>
                                             <outlet property="username" destination="VJT-LA-2lr" id="BoI-aF-b6r"/>
@@ -1313,7 +1318,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="mje-WN-Y7o"/>
+        <segue reference="0Zq-kq-JsZ"/>
         <segue reference="M0n-Hc-e7P"/>
     </inferredMetricsTieBreakers>
     <resources>
@@ -1321,6 +1326,7 @@
         <image name="hand.thumbsup" catalog="system" width="128" height="128"/>
         <image name="hand.thumbsup.fill" catalog="system" width="128" height="121"/>
         <image name="house.fill" catalog="system" width="128" height="106"/>
+        <image name="line" width="500" height="200"/>
         <image name="pencil" catalog="system" width="128" height="113"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
         <image name="photo" width="1400" height="1400"/>
