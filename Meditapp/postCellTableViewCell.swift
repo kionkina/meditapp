@@ -19,7 +19,7 @@ class postCellTableViewCell: UITableViewCell {
     
     @IBOutlet weak var likesCount: UILabel?
     @IBOutlet weak var dislikesCount: UILabel?
-    
+    @IBOutlet weak var time: UILabel?
     @IBOutlet weak var likeButton: UIButton!
     
     
@@ -129,9 +129,13 @@ class postCellTableViewCell: UITableViewCell {
 //        print("setting     postimage with", model.PostImg)
         
         self.userImage.sd_setImage(with: Storage.storage().reference().child("profilephotos").child(user!.profilePic))
+        
+        self.userImage.layer.cornerRadius = self.userImage.frame.height/2
+        self.userImage.clipsToBounds = true
         //fix user image when implement profile picture
         self.username?.setTitle(user!.username, for: .normal)
         self.usernameLabel?.text = user!.username
+        self.time?.text = DBViewController.convertTime(stamp: model.Timestamp)
         
         self.postUser = user
         self.post = model

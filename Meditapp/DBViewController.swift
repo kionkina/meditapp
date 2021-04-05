@@ -17,6 +17,36 @@ class DBViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    static func secondsToString (seconds : Int) -> String {
+            let newSeconds = (seconds % 3600) % 60
+            let minutes = (seconds % 3600) / 60
+            let hours = seconds / 3600
+            let days = hours/24
+
+            if (days > 0) {
+                let day = days == 1 ? "day" : "days"
+                return "\(days) \(day) ago "
+            }
+            else if (hours > 0) {
+                let hour = hours == 1 ? "hour" : "hours"
+                return "\(hours) \(hour) ago"
+            }
+            else if (minutes > 0) {
+                let mins = minutes == 1 ? "minute" : "minutes"
+                return "\(minutes) \(mins) ago"
+            }
+            else {
+                let sec = seconds == 1 ? "second" : "seconds"
+                return "\(newSeconds) \(sec) ago"
+            }
+
+        }
+        
+        static func convertTime(stamp: Timestamp) -> String {
+            let dv = Int(stamp.dateValue().distance(to: Date()))
+            return(secondsToString(seconds: dv))
+        }
+    
     static func getPostsByTags(forLimit limit: Int , forTags tags: [String], success: @escaping ([Post]) -> Void){
         let db = Firestore.firestore()
         var fetchedPosts = [Post]()
@@ -101,12 +131,6 @@ class DBViewController: UIViewController {
         docRef.getDocument { (document, error) in
             if let document = document, document.exists {
                 let user = User(snapshot: document)
-                if (uid == "MDjDMIj87odBpiHi2eihvDuMdj02") {
-                    print("ITS DISLIKE!")
-                    print("pfp: ")
-                    print(user!.profilePic)
-                }
-
                 success(user)
             } else {
                 print("Document does not exist")
