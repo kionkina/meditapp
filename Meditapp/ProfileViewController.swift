@@ -34,7 +34,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             if let cell = button.superview?.superview as? postCellTableViewCell {
                     //print(cell.uid)
                 let vc = segue.destination as! CommentViewController
-                vc.postUser = cell.postUser
+                vc.postUser = self.postUser
                 vc.recording = cell.post
             }
         }
@@ -57,7 +57,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         return Storage.storage().reference().child("recordings")
     }
     
-//    var postUser: User?
+    var postUser: User?
     var recordings: [Post] = []
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -71,8 +71,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         cell.post = recording
         
         //set whether the post has already been liked when displaying cells.
-        if User.current.likedPosts[recording.RecID] != nil{
-            cell.setLiked(User.current.likedPosts[recording.RecID]!, recording.numLikes)
+        if self.postUser!.likedPosts[recording.RecID] != nil{
+            cell.setLiked(self.postUser!.likedPosts[recording.RecID]!, recording.numLikes)
         }
         else{
             cell.setLiked(false, recording.numLikes)
@@ -80,7 +80,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
 //        print("recording from firebase is ", audioReference.child(recording.Name))
         //if user to current post found in dict
         
-        cell.configure(with: recording, for: User.current)
+        cell.configure(with: recording, for: self.postUser!)
         
         cell.playAudio = {
             let downloadPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(recording.RecID)
@@ -104,7 +104,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
             downloadTask.resume()
         }
-        cell.postUser = User.current
+        cell.postUser = self.postUser!
         
         return cell
     }
@@ -112,16 +112,11 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func viewDidLoad() {
         tableView.delegate = self
         tableView.dataSource = self
-        
-        firstName.text = User.current.firstName
-        lastName.text = User.current.lastName
-        userName.text = User.current.username
-        
-        authHandle = AuthService.authListener(viewController: self)
-    
-        print(User.current.recordings, "recordings in profile vc")
-        loadRecordings()
-        configure()
+        UserService.show(forUID: User.current.uid, completion: { (user) in
+            self.postUser = user
+            self.configure()
+        })
+
 
         super.viewDidLoad()
     
@@ -129,14 +124,24 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func configure()
     {
-        let profilePicRef = Storage.storage().reference().child("profilephotos").child(User.current.profilePic)
+        
+        firstName.text = self.postUser!.firstName
+        lastName.text = self.postUser!.lastName
+        userName.text = self.postUser!.username
+        
+        authHandle = AuthService.authListener(viewController: self)
+    
+        print(postUser!.recordings, "recordings in profile vc")
+        loadRecordings()
+        
+        let profilePicRef = Storage.storage().reference().child("profilephotos").child(self.postUser!.profilePic)
         
         self.Pfp.sd_setImage(with: profilePicRef)
         
     }
     
     func loadRecordings(){
-        DBViewController.getRecordings(for: User.current.recordings) { (doc: DocumentSnapshot) in
+        DBViewController.getRecordings(for: self.postUser!.recordings) { (doc: DocumentSnapshot) in
             if(doc != nil){
                 self.recordings.append(Post(snapshot: doc)!)
                 print(self.recordings)
