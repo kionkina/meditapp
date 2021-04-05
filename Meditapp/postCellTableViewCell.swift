@@ -130,7 +130,7 @@ class postCellTableViewCell: UITableViewCell {
         
         self.userImage.sd_setImage(with: Storage.storage().reference().child("profilephotos").child(user!.profilePic))
         //fix user image when implement profile picture
-        self.username.setTitle(user!.username, for: .normal)
+        self.username?.setTitle(user!.username, for: .normal)
         self.usernameLabel?.text = user!.username
         
         self.postUser = user
