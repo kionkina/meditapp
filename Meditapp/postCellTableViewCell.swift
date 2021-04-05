@@ -125,10 +125,8 @@ class postCellTableViewCell: UITableViewCell {
         self.postTitle.text = model.Name
         self.postDescription.text = model.Description
         //retrieves image from postphotos in storage
-        let imageRef = Storage.storage().reference().child("postphotos").child(model.PostImg)
-        //sets the image from the path to the UIImageView
-        self.postImage.sd_setImage(with: imageRef)
-        print("setting postimage with", model.PostImg)
+        self.postImage.sd_setImage(with: Storage.storage().reference().child("postphotos").child(model.PostImg))
+//        print("setting     postimage with", model.PostImg)
         
         self.userImage.sd_setImage(with: Storage.storage().reference().child("profilephotos").child(user!.profilePic))
         //fix user image when implement profile picture

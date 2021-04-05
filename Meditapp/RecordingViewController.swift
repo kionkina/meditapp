@@ -178,30 +178,26 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
     
     //see what img user chose and upload it to firebase
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-//        if let url = info[UIImagePickerController.InfoKey.imageURL] as? URL{
-//            print("Image selected: \(url)")
-//            let postPhotoRef = postPhotoReference
-//            let localFile = url
-//            let photoRef = postPhotoRef.child(url.lastPathComponent)
-//
-//            let uploadTask = photoRef.putFile(from: localFile, metadata: nil) { (metadata, err) in
-//                guard let metadata = metadata
-//                else {
-//                    print(err?.localizedDescription)
-//                    return
-//                }
-//                print("Photo uploaded")
-//                self.postImage.sd_setImage(with: photoRef)
-//                print("img URL: \(String(describing: self.postImage.sd_imageURL?.lastPathComponent))")
-////                print("this is the post image")
-//            }
-//
-//        }
+        
         postImage.image = info[.originalImage] as? UIImage
         
-        if let url = info[UIImagePickerController.InfoKey.imageURL] as? URL{
-            curSelectedPhotoURL = url
+//        if let url = info[UIImagePickerController.InfoKey.imageURL] as? URL{
+//            curSelectedPhotoURL = url
+//        }
+        
+        let profilePicRef = Storage.storage().reference().child("postphotos")
+        let photoRef = profilePicRef.child(recID)
+
+        //upload image to bucket
+        let uploadImageTask = photoRef.putFile(from: curSelectedPhotoURL!, metadata: nil) { (metadata, err) in
+            if let err = err{
+                print("error uploading pic: ", err.localizedDescription)
+            }
+            else{
+                print("successfully uploaded image")
+            }
         }
+        uploadImageTask.resume()
         
         imagePickerController.dismiss(animated: true, completion: nil)
     }
@@ -390,16 +386,13 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
         
         //specify task. on success, we get info that we can reference to in our documents
         let uploadTask = audioRef.putFile(from: localFile, metadata: nil){ (metadata, err) in
-            
-            guard let metadata = metadata
-            
-            else {
-                print(err?.localizedDescription)
-                return
+            if let err = err{
+                print(err.localizedDescription)
             }
+            else{
             print("Audio Uploaded")
+            }
         }
-        
         uploadTask.resume()
         
 //        guard let user = Auth.auth().currentUser else{return}
@@ -440,19 +433,19 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
         User.current.recordings.append(dbref)
         print(User.current.recordings, "after appending")
 
-        let profilePicRef = Storage.storage().reference().child("postphotos")
-        let photoRef = profilePicRef.child(recID)
-
-        //upload image to bucket
-        let uploadImageTask = photoRef.putFile(from: curSelectedPhotoURL!, metadata: nil) { (metadata, err) in
-            if let err = err{
-                print(err.localizedDescription)
-            }
-            else{
-                print("successfully uploaded image")
-            }
-        }
-        uploadImageTask.resume()
+//        let profilePicRef = Storage.storage().reference().child("postphotos")
+//        let photoRef = profilePicRef.child(recID)
+//
+//        //upload image to bucket
+//        let uploadImageTask = photoRef.putFile(from: curSelectedPhotoURL!, metadata: nil) { (metadata, err) in
+//            if let err = err{
+//                print("error uploading pic: ", err.localizedDescription)
+//            }
+//            else{
+//                print("successfully uploaded image")
+//            }
+//        }
+//        uploadImageTask.resume()
 
         
         navigationController?.popViewController(animated: true)

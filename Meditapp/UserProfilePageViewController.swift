@@ -18,7 +18,6 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
     @IBOutlet var lastName: UILabel!
     @IBOutlet var followBotton: UIButton!
     
-    var pfpImage: UIImage?
     var audioPlayer = AVAudioPlayer()
     
     var audioReference: StorageReference{
@@ -44,14 +43,8 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
             
             cell.firstNameLabel.text = postUser?.firstName
             cell.lastNameLabel.text = postUser?.lastName
-            if let pfpImage = pfpImage{
-                cell.profileImageView.image = pfpImage
-                return cell
-            }
-            else{
-                print("did not download image yet")
-                return cell
-            }
+            cell.profileImageView.sd_setImage(with: Storage.storage().reference().child("profilephotos").child(postUser!.profilePic))
+            return cell
         }
         else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! postCellTableViewCell
@@ -130,8 +123,9 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
     }
     
     override func viewDidLoad() {
-        print("loading userprofile vc")
+//        print("loading userprofile vc")
         super.viewDidLoad()
+        
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -148,7 +142,6 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
 //        loadPfp()
         
         //change eventually to user.profileimage
-        loadPfp(forImageName: "default.jpeg")
         loadRecordings()
 //        NotificationCenter.default.addObserver(self, selector: #selector(handleLikes), name: Notification.Name("UpdateLikes"), object: nil)
         
@@ -185,6 +178,7 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
     }
     
     func loadRecordings() {
+        print(postUser!.recordings.count, "users recordings count")
         DBViewController.getRecordings(for: postUser!.recordings) { (doc: DocumentSnapshot) in
             if (doc != nil) {
                 self.recordings.append(Post(snapshot: doc)!)
@@ -194,25 +188,4 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
             }
         }
     }
-    
-    //TODO : CHECK IF USER HAS IMAGE: BOOL.
-    func loadPfp(forImageName imageName: String){
-        let downloadImageRef = pfpReference.child("\(imageName)")
-        
-        let downloadTask = downloadImageRef.getData(maxSize: 1024 * 1024 * 12) { (data, error) in
-            if let error = error{
-                print("error, \(error.localizedDescription)")
-            }
-            if let data = data{
-                print("i have image data")
-                let image = UIImage(data: data)
-                self.pfpImage = image
-                self.tableView.reloadData()
-            }
-            // print(error ?? "NONE")
-        }
-        
-        downloadTask.resume()
-    }
-    
 }

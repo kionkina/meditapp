@@ -119,6 +119,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         authHandle = AuthService.authListener(viewController: self)
     
+        print(User.current.recordings, "recordings in profile vc")
         loadRecordings()
         configure()
 
