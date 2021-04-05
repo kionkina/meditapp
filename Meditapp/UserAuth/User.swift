@@ -50,7 +50,7 @@ class User : NSObject {
             self.tags = (dict["tags"] as? [String]) ?? []
             self.recordings = (dict["content"] as? [DocumentReference]) ?? []
             self.likedPosts = (dict["likedPosts"] as? [String:Bool]) ?? [String:Bool]()
-//            self.profilePic = ( (dict.keys.contains("profilePic") ) ? dict["profilePic"] as! String : "default.jpeg")
+            self.profilePic = ( (dict.keys.contains("profilePic") ) ? dict["profilePic"] as! String : "default.jpeg")
             if dict.keys.contains("profilePic"){
                 self.profilePic = dict["profilePic"] as! String
             }

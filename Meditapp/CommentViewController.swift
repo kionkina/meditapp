@@ -77,6 +77,12 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
             if !users.keys.contains(comment.OwnerID) {
                 DBViewController.getUserById(forUID: comment.OwnerID) { (user) in
                     if let user = user {
+                        if (user.uid == "MDjDMIj87odBpiHi2eihvDuMdj02") {
+                            print("ITS DISLIKE!")
+                            print("pfp2: ")
+                            print(user.profilePic)
+                        }
+
                         self.users[user.uid] = user
                         self.tableView.reloadData()
                     }

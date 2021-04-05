@@ -65,7 +65,9 @@ class commentCellTableViewCell: UITableViewCell {
         //self.time.text = model.Timestamp
         //retrieves image from postphotos in storage
         //fix user image when implement profile picture
-        self.userImage.image = UIImage(named:"profile_pic_1")
+        let imageRef = Storage.storage().reference().child("profilephotos").child(user!.profilePic)
+        //sets the image from the path to the UIImageView
+        self.userImage.sd_setImage(with: imageRef)
         self.username.setTitle(user!.username, for: .normal)
         self.time.text = convertTime(stamp: model.Timestamp)
         

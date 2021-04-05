@@ -95,11 +95,18 @@ class DBViewController: UIViewController {
     }
     
     static func getUserById(forUID uid: String, success: @escaping (User?) -> Void) {
+
         let docRef = Firestore.firestore().collection("users").document(uid)
         
         docRef.getDocument { (document, error) in
             if let document = document, document.exists {
                 let user = User(snapshot: document)
+                if (uid == "MDjDMIj87odBpiHi2eihvDuMdj02") {
+                    print("ITS DISLIKE!")
+                    print("pfp: ")
+                    print(user!.profilePic)
+                }
+
                 success(user)
             } else {
                 print("Document does not exist")

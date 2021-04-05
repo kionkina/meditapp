@@ -939,6 +939,9 @@
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YRb-wp-CAh">
                                                     <rect key="frame" x="61" y="16" width="46" height="30"/>
                                                     <state key="normal" title="Button"/>
+                                                    <connections>
+                                                        <segue destination="ct4-kI-yZX" kind="show" identifier="toProfile1" id="hG9-7F-o0j"/>
+                                                    </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Comment" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hN3-nV-vpi">
                                                     <rect key="frame" x="61" y="40" width="317" height="44"/>
@@ -1393,7 +1396,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="2Jf-FN-KVb"/>
-        <segue reference="oog-CA-QqO"/>
+        <segue reference="hG9-7F-o0j"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="backward.fill" catalog="system" width="128" height="79"/>
