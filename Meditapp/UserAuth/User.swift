@@ -56,7 +56,6 @@ class User : NSObject {
             }
             else{
                 self.profilePic = "default.jpeg"
-                print("user snapshot init makes defualt jpeg as pfp")
             }
         }
         else{
