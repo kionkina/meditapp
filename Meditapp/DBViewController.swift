@@ -61,7 +61,7 @@ class DBViewController: UIViewController {
             //.whereField("OwnerID", notIn: [User.current.uid])
             .whereField("Tags", arrayContainsAny: tags)
             .order(by: "Timestamp", descending: true)
-            .limit(to: 5)
+            .limit(to: limit)
         //get documents from that query
         var foundPosts = [String]()
         queryRef.getDocuments { (querySnapshot, error) in

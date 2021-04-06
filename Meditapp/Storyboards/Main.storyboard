@@ -65,7 +65,7 @@
                                                     </constraints>
                                                     <color key="tintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <state key="normal">
-                                                        <imageReference key="image" image="play.circle" catalog="system" symbolScale="large"/>
+                                                        <imageReference key="image" image="play" symbolScale="large"/>
                                                     </state>
                                                     <connections>
                                                         <action selector="playButton:" destination="St0-jy-Ijf" eventType="touchUpInside" id="imV-AQ-cXw"/>
@@ -223,6 +223,7 @@
                                             <outlet property="commentsCount" destination="kyl-5c-wFl" id="qfg-Zc-ib0"/>
                                             <outlet property="likeButton" destination="XlG-kM-ZjQ" id="S5U-cG-DhB"/>
                                             <outlet property="likesCount" destination="0c2-qU-fqJ" id="a8H-tF-6yH"/>
+                                            <outlet property="playButton" destination="eYg-dL-uB5" id="kZH-iI-Wad"/>
                                             <outlet property="postDescription" destination="Ya5-sf-YON" id="aVt-4w-iZu"/>
                                             <outlet property="postImage" destination="nG0-tr-g8t" id="SyL-AF-iep"/>
                                             <outlet property="postTitle" destination="SJF-Ma-xBT" id="d1q-CN-mYh"/>
@@ -340,7 +341,7 @@
                                                     </constraints>
                                                     <color key="tintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <state key="normal">
-                                                        <imageReference key="image" image="play.circle" catalog="system" symbolScale="large"/>
+                                                        <imageReference key="image" image="play" symbolScale="large"/>
                                                     </state>
                                                     <connections>
                                                         <action selector="playButton:" destination="pwg-Xp-mci" eventType="touchUpInside" id="NaS-fl-S3k"/>
@@ -396,8 +397,8 @@
                                                     </constraints>
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="small"/>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Audio description" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8M2-on-aKS">
-                                                    <rect key="frame" x="148" y="102" width="256" height="16.666666666666657"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Audio description" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8M2-on-aKS">
+                                                    <rect key="frame" x="148" y="102" width="256" height="15.666666666666671"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -488,6 +489,7 @@
                                             <outlet property="commentsCount" destination="7xp-cg-R6q" id="Tgp-QQ-CJu"/>
                                             <outlet property="likeButton" destination="Y4L-DI-KKI" id="x8c-1B-tGu"/>
                                             <outlet property="likesCount" destination="UgU-Ue-xwE" id="fsZ-Ck-GLM"/>
+                                            <outlet property="playButton" destination="wWp-O1-pLw" id="Ofx-gE-yD0"/>
                                             <outlet property="postDescription" destination="8M2-on-aKS" id="joY-Mj-lrP"/>
                                             <outlet property="postImage" destination="VAQ-5x-XRs" id="qjM-Hg-Dx0"/>
                                             <outlet property="postTitle" destination="22b-oQ-w9M" id="CNP-lL-Ch2"/>
@@ -731,7 +733,7 @@
                                                     </constraints>
                                                     <color key="tintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <state key="normal">
-                                                        <imageReference key="image" image="play.circle" catalog="system" symbolScale="large"/>
+                                                        <imageReference key="image" image="play" symbolScale="large"/>
                                                     </state>
                                                     <connections>
                                                         <action selector="playButton:" destination="o1o-Zc-ucB" eventType="touchUpInside" id="LCI-hE-ZU1"/>
@@ -836,6 +838,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="playButton" destination="1Sf-fh-1ro" id="DPR-wJ-E3v"/>
                                             <outlet property="postDescription" destination="oac-FT-4V5" id="xNk-JC-u9W"/>
                                             <outlet property="postImage" destination="AOE-5q-Pp2" id="G5a-OT-ZqH"/>
                                             <outlet property="postTitle" destination="xKB-kA-cdg" id="6II-Ko-9Jr"/>
@@ -1072,7 +1075,7 @@
                                                     </constraints>
                                                     <color key="tintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <state key="normal">
-                                                        <imageReference key="image" image="play.circle" catalog="system" symbolScale="large"/>
+                                                        <imageReference key="image" image="play" symbolScale="large"/>
                                                     </state>
                                                     <connections>
                                                         <action selector="playButton:" destination="iQF-DD-4XJ" eventType="touchUpInside" id="suh-OC-8ch"/>
@@ -1224,6 +1227,7 @@
                                             <outlet property="commentsCount" destination="sPK-be-O06" id="HLG-6b-F95"/>
                                             <outlet property="likeButton" destination="UGr-J9-vEf" id="Z24-mk-Lyc"/>
                                             <outlet property="likesCount" destination="YOa-Ji-YUd" id="xJw-Kc-xQD"/>
+                                            <outlet property="playButton" destination="U9U-bc-Azu" id="sx0-yT-jJy"/>
                                             <outlet property="postDescription" destination="h4T-hB-yCi" id="oOK-tQ-00o"/>
                                             <outlet property="postImage" destination="LqZ-ih-iCL" id="g61-IZ-E8w"/>
                                             <outlet property="postTitle" destination="RCL-xO-GDg" id="K3U-HI-oUC"/>
@@ -1334,7 +1338,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="0Zq-kq-JsZ"/>
+        <segue reference="zfB-l7-Bea"/>
         <segue reference="hG9-7F-o0j"/>
     </inferredMetricsTieBreakers>
     <resources>
@@ -1347,7 +1351,6 @@
         <image name="person.fill" catalog="system" width="128" height="120"/>
         <image name="photo" width="1400" height="1400"/>
         <image name="play" width="52" height="52"/>
-        <image name="play.circle" catalog="system" width="128" height="121"/>
         <image name="profile" width="512" height="512"/>
         <image name="profile_pic_2" width="626" height="626"/>
         <image name="stop" width="52" height="52"/>

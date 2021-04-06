@@ -112,30 +112,7 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
             //if user to current post found in dict
             if let user = postUser{
                 cell.configure(with: self.recording!, for: user )
-                
-                cell.playAudio = {
-                    let downloadPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(self.recording!.RecID)
-                    
-                    print("DOWNLOAD TO URL", downloadPath)
-                    let audioRef = self.audioReference.child(self.recording!.Name)
-                    
-                    let downloadTask = audioRef.write(toFile: downloadPath){ url, error in
-                        if let error = error{
-                            print("Error has occured")
-                        }
-                        else{
-                            do {
-                                self.audioPlayer.stop()
-                                self.audioPlayer = try AVAudioPlayer(contentsOf: url!)
-                                self.audioPlayer.play()
-                            } catch {
-                                print(error)
-                            }
-                        }
-                    }
-                    downloadTask.resume()
-                }
-                //cell.postUser = user
+                cell.postUser = user
             }
             return cell
         }

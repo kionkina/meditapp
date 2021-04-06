@@ -64,23 +64,21 @@ class UploadPicViewController: UIViewController, UIImagePickerControllerDelegate
                 print(err.localizedDescription)
             }
             else{
+                User.current.profilePic = imageID
+                db.collection("users").document(User.current.uid).updateData(["profilePic" : imageID]) { err in
+                    if let err  = err {
+                        print("Error updating document: \(err.localizedDescription)")
+                    }
+                    else {
+                        print("Document successfully updated")
+                    }
+                }
+                print(User.current.profilePic, "after upload")
+                self.delegate?.UploadedPic(forController: self, forImagePath: self.selectedImage!)
+                
+                self.dismiss(animated: true, completion: nil)
                 print("successfully uploaded image")
             }
-        }
-        
-        delegate?.UploadedPic(forController: self, forImagePath: selectedImage!)
-        
-        //update the profilepage field
-        db.collection("users").document(imageID).updateData(["profilePic" : imageID]) { err in
-            if let err  = err {
-                print("Error updating document: \(err.localizedDescription)")
-            }
-            else {
-                User.current.profilePic = imageID
-                print("Document successfully updated")
-            }
-            
-            self.dismiss(animated: true, completion: nil)
         }
     }
     
@@ -129,7 +127,6 @@ class UploadPicViewController: UIViewController, UIImagePickerControllerDelegate
 
     /*
     // MARK: - Navigation
-
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.

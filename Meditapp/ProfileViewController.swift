@@ -77,33 +77,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         else{
             cell.setLiked(false, recording.numLikes)
         }
-//        print("recording from firebase is ", audioReference.child(recording.Name))
-        //if user to current post found in dict
         
         cell.configure(with: recording, for: self.postUser!)
-        
-        cell.playAudio = {
-            let downloadPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(recording.RecID)
-
-            print("DOWNLOAD TO URL", downloadPath)
-            let audioRef = self.audioReference.child(recording.Name)
-
-            let downloadTask = audioRef.write(toFile: downloadPath){ url, error in
-                if let error = error{
-                    print("Error has occured")
-                }
-                else{
-                    do {
-                        self.audioPlayer.stop()
-                        self.audioPlayer = try AVAudioPlayer(contentsOf: url!)
-                        self.audioPlayer.play()
-                    } catch {
-                        print(error)
-                    }
-                }
-            }
-            downloadTask.resume()
-        }
         cell.postUser = self.postUser!
         
         return cell
@@ -139,19 +114,18 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
 //        self.Pfp.sd_setImage(with: profilePicRef)
         
         let downloadTask = profilePicRef.getData(maxSize: 1024 * 1024 * 12) { (data, error) in
-                    if let error = error{
-                        print("error, (error.localizedDescription)")
-                    }
-                    if let data = data{
-                        print("i have image data")
-                        let image = UIImage(data: data)
-                        self.Pfp.image = image
-                        self.Pfp.layer.cornerRadius = self.Pfp.frame.height/2
-                        self.Pfp.clipsToBounds = true
-                    }
-                    // print(error ?? "NONE")
-                }
-        
+            if let error = error{
+                print("error, (error.localizedDescription)")
+            }
+            if let data = data{
+                print("i have image data")
+                let image = UIImage(data: data)
+                self.Pfp.image = image
+                self.Pfp.layer.cornerRadius = self.Pfp.frame.height/2
+                self.Pfp.clipsToBounds = true
+            }
+            // print(error ?? "NONE")
+        }
     }
     
     func loadRecordings(){

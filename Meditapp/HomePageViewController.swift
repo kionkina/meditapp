@@ -22,6 +22,9 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     let myRefreshControl = UIRefreshControl()
     var separator = 0
 
+    static var audioPlayer = AVAudioPlayer()
+    static var playingCell: postCellTableViewCell?
+    
     var isFetchingMore:Bool = false
     var canFetchMore:Bool = true
 
@@ -170,46 +173,22 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! postCellTableViewCell
-        
-        let recording = recordings[indexPath.row]
-        cell.post = recording
-        
-        //set whether the post has already been liked when displaying cells.
-        if User.current.likedPosts[recording.RecID] != nil{
-            cell.setLiked(User.current.likedPosts[recording.RecID]!, recording.numLikes)
-        }
-        else{
-            cell.setLiked(false, recording.numLikes)
-        }
-//        print("recording from firebase is ", audioReference.child(recording.Name))
-        //if user to current post found in dict
-        if let user = users[recording.OwnerID]{
-            cell.configure(with: recording, for: user )
-            
-            cell.playAudio = {
-                let downloadPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(recording.RecID)
-
-                print("DOWNLOAD TO URL", downloadPath)
-                let audioRef = self.audioReference.child(recording.Name)
-
-                let downloadTask = audioRef.write(toFile: downloadPath){ url, error in
-                    if let error = error{
-                        print("Error has occured")
-                    }
-                    else{
-                        do {
-                            self.audioPlayer.stop()
-                            self.audioPlayer = try AVAudioPlayer(contentsOf: url!)
-                            self.audioPlayer.play()
-                        } catch {
-                            print(error)
-                        }
-                    }
+                
+                let recording = recordings[indexPath.row]
+                cell.post = recording
+                
+                //set whether the post has already been liked when displaying cells.
+                if User.current.likedPosts[recording.RecID] != nil{
+                    cell.setLiked(User.current.likedPosts[recording.RecID]!, recording.numLikes)
                 }
-                downloadTask.resume()
-            }
-            cell.postUser = user
-        }
+                else{
+                    cell.setLiked(false, recording.numLikes)
+                }
+                if let user = users[recording.OwnerID]{
+                    cell.configure(with: recording, for: user )
+                    cell.postUser = user
+                }
+        
         // add separator
         cell.sepLine?.isHidden = (Int(indexPath.row) != self.separator - 1)
         return cell

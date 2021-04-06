@@ -71,7 +71,7 @@ class User : NSObject {
             let lastName = aDecoder.decodeObject(forKey: "lastName") as? String,
             let username = aDecoder.decodeObject(forKey: "username") as? String,
             let tags = aDecoder.decodeObject(forKey:"tags") as? [String],
-            let recordings = aDecoder.decodeObject(forKey:"recordings") as? [DocumentReference],
+//            let recordings = aDecoder.decodeObject(forKey:"recordings") as? [DocumentReference],
             let likedPosts = aDecoder.decodeObject(forKey:"likedPosts") as? [String:Bool],
             let profilePic = aDecoder.decodeObject(forKey: "profilePic") as? String
             else { return nil }
@@ -81,7 +81,7 @@ class User : NSObject {
         self.lastName = lastName
         self.username = username
         self.tags = tags
-        self.recordings = recordings
+        self.recordings = []
         self.likedPosts = likedPosts
         self.profilePic = profilePic
         print(self.likedPosts, "IN USERSWIFT")
@@ -117,7 +117,7 @@ extension User: NSCoding {
         aCoder.encode(lastName, forKey: "lastName")
         aCoder.encode(username, forKey: "username")
         aCoder.encode(tags, forKey: "tags")
-        aCoder.encode(recordings, forKey: "recordings")
+//        aCoder.encode(recordings, forKey: "recordings")
         aCoder.encode(likedPosts, forKey: "likedPosts")
         aCoder.encode(profilePic, forKey: "profilePic")
     }

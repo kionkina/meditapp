@@ -63,32 +63,8 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
             }
             
             if let user = postUser{
-    //            cell.configure(with: recording, user: user)
-    //            cell.configure(with: recording)
-                //cell.uid = recordings[indexPath.row].OwnerID
                 cell.configure(with: recording, for: user )
-                cell.playAudio = {
-                    let downloadPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(recording.RecID)
-                    
-                    let audioRef = self.audioReference.child(recording.Name)
-                    
-                    let downloadTask = audioRef.write(toFile: downloadPath){ url, error in
-                        if let error = error{
-                            print("Error has occured")
-                        }
-                        else{
-                            do {
-                                self.audioPlayer.stop()
-                                self.audioPlayer = try AVAudioPlayer(contentsOf: url!)
-                                self.audioPlayer.play()
-                            } catch {
-                                print(error)
-                            }
-                        }
-                    }
-                    downloadTask.resume()
-                }
-                //cell.postUser = user
+                cell.postUser = user
             }
             
             return cell
@@ -153,6 +129,10 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
         recordings.removeAll()
         tableView.reloadData()
         loadRecordings()
+    }
+    
+    deinit {
+        print("destroying userprofile")
     }
     
     @objc func handleLikes(notification: NSNotification) {
