@@ -149,6 +149,12 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
     }
     
 //
+    override func viewWillDisappear(_ animated: Bool) {
+        if HomePageViewController.audioPlayer.isPlaying{
+            print("player needs to stop playing")
+            HomePageViewController.playingCell?.stopPlaying()
+        }
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         print("commentviewcontroller appearing")

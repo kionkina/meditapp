@@ -85,6 +85,7 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
     }
     
     func stopPlaying(){
+        print("stop playing in cell is called")
         HomePageViewController.audioPlayer.stop()
         HomePageViewController.audioPlayer.delegate = nil
         playButton.setImage(UIImage(named: "play.circle"), for: UIControl.State.normal)

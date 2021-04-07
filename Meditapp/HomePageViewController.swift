@@ -129,11 +129,15 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         tableView.reloadData()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        if HomePageViewController.audioPlayer.isPlaying{
+            print("player needs to stop playing")
+            HomePageViewController.playingCell?.stopPlaying()
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        let viewController = self.tabBarController?.viewControllers?[1] as? ProfileViewController
-//            viewController?.delegate = self
         
         tableView.estimatedRowHeight = 10000 // or your estimate
 
@@ -148,7 +152,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         print(User.current.profilePic, "current profile in homepage")
         NotificationCenter.default.addObserver(self, selector: #selector(handleLikes), name: Notification.Name("UpdateLikes"), object: nil)
         
-//        NotificationCenter.default.addObserver(self, selector: #selector(handleComment), name: Notification.Name("UpdateComment"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleComment), name: Notification.Name("UpdateComment"), object: nil)
     }
 
     @objc func handleLikes(notification: NSNotification) {

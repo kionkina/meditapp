@@ -28,7 +28,7 @@ class User : NSObject {
 
     
     //Standard User init()
-    init(uid: String, username: String, firstName: String, lastName: String, profilePic: String = "default.jpeg") {
+    init(uid: String, username: String, firstName: String, lastName: String, profilePic: String) {
         self.uid = uid
         self.firstName = firstName
         self.lastName = lastName

@@ -85,6 +85,13 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         return cell
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        if HomePageViewController.audioPlayer.isPlaying{
+            print("player needs to stop playing")
+            HomePageViewController.playingCell?.stopPlaying()
+        }
+    }
+    
     override func viewDidLoad() {
         print("In profile vc")
         tableView.delegate = self

@@ -93,6 +93,13 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
 
     @IBOutlet weak var Pfp: UIImageView!
     
+    override func viewWillDisappear(_ animated: Bool) {
+        if HomePageViewController.audioPlayer.isPlaying{
+            print("player needs to stop playing")
+            HomePageViewController.playingCell?.stopPlaying()
+        }
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData()
@@ -119,9 +126,9 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
         
         //change eventually to user.profileimage
         loadRecordings()
-//        NotificationCenter.default.addObserver(self, selector: #selector(handleLikes), name: Notification.Name("UpdateLikes"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleLikes), name: Notification.Name("UpdateLikes"), object: nil)
         
-//        NotificationCenter.default.addObserver(self, selector: #selector(handleComment), name: Notification.Name("UpdateComment"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleComment), name: Notification.Name("UpdateComment"), object: nil)
     }
     
     @objc func refreshReload(){
