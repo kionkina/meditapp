@@ -185,9 +185,9 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
         
         self.userImage.sd_setImage(with: Storage.storage().reference().child("profilephotos").child(user!.profilePic))
         
-//        let downloadTask = profilePicRef.getData(maxSize: 1024 * 1024 * 12) { (data, error) in
+//        let downloadTask = profilePicRef.getData(maxSize: 600 * 400 * 12) { (data, error) in
 //            if let error = error{
-//                print("error, (error.localizedDescription)")
+//                print("error, \(error.localizedDescription)")
 //            }
 //            if let data = data{
 //                let image = UIImage(data: data)

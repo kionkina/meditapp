@@ -79,7 +79,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     
     @objc func loadRecordings(success: @escaping(() -> Void)) {
         print("i'm in loadrecordings")
-        queryLimit = 4
+        queryLimit = 8
         print("about to make call to get posts")
         DBViewController.getPostsByTags(forLimit: queryLimit, forTags: User.current.tags) { (docs, numFetched) in
             self.recordings.removeAll()
@@ -97,7 +97,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     
     func loadMoreRecordings(success: @escaping(() -> Void)) {
         print("load more recordings being called")
-        queryLimit += 4
+        queryLimit += 8
         DBViewController.getPostsByTags(forLimit: queryLimit, forTags: User.current.tags) { (docs, numFetched) in
             let prevNumPosts = self.recordings.count
             self.recordings.removeAll()
@@ -133,7 +133,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.estimatedRowHeight = 1000 // or your estimate
+        tableView.estimatedRowHeight = 10000 // or your estimate
 
         myRefreshControl.addTarget(self, action: #selector(refreshReload), for: .valueChanged)
         tableView.refreshControl = myRefreshControl
