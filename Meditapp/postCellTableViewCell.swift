@@ -183,20 +183,21 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
         let profilePicRef = Storage.storage().reference().child("profilephotos").child(user!.profilePic)
 //        print("setting     postimage with", model.PostImg)
         
-//        self.userImage.sd_setImage(with: Storage.storage().reference().child("profilephotos").child(user!.profilePic))
+        self.userImage.sd_setImage(with: Storage.storage().reference().child("profilephotos").child(user!.profilePic))
         
-        let downloadTask = profilePicRef.getData(maxSize: 1024 * 1024 * 12) { (data, error) in
-            if let error = error{
-                print("error, (error.localizedDescription)")
-            }
-            if let data = data{
-                let image = UIImage(data: data)
-                self.userImage.image = image
-                self.userImage.layer.cornerRadius = self.userImage.frame.height/2
-                self.userImage.clipsToBounds = true
-            }
-            // print(error ?? "NONE")
-        }
+//        let downloadTask = profilePicRef.getData(maxSize: 1024 * 1024 * 12) { (data, error) in
+//            if let error = error{
+//                print("error, (error.localizedDescription)")
+//            }
+//            if let data = data{
+//                let image = UIImage(data: data)
+//                self.userImage.image = image
+//                self.userImage.layer.cornerRadius = self.userImage.frame.height/2
+//                self.userImage.clipsToBounds = true
+//            }
+//            // print(error ?? "NONE")
+//        }
+        
         let imageRef = Storage.storage().reference().child("postphotos").child(model.PostImg)
         //sets the image from the path to the UIImageView
         self.postImage.sd_setImage(with: imageRef)

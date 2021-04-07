@@ -85,6 +85,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     override func viewDidLoad() {
+        print("In profile vc")
         tableView.delegate = self
         tableView.dataSource = self
         UserService.show(forUID: User.current.uid, completion: { (user) in
@@ -111,21 +112,21 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         let profilePicRef = Storage.storage().reference().child("profilephotos").child(self.postUser!.profilePic)
         
-//        self.Pfp.sd_setImage(with: profilePicRef)
+        self.Pfp.sd_setImage(with: profilePicRef)
         
-        let downloadTask = profilePicRef.getData(maxSize: 1024 * 1024 * 12) { (data, error) in
-            if let error = error{
-                print("error, (error.localizedDescription)")
-            }
-            if let data = data{
-                print("i have image data")
-                let image = UIImage(data: data)
-                self.Pfp.image = image
-                self.Pfp.layer.cornerRadius = self.Pfp.frame.height/2
-                self.Pfp.clipsToBounds = true
-            }
-            // print(error ?? "NONE")
-        }
+//        let downloadTask = profilePicRef.getData(maxSize: 1024 * 1024 * 12) { (data, error) in
+//            if let error = error{
+//                print("error, (error.localizedDescription)")
+//            }
+//            if let data = data{
+//                print("i have image data")
+//                let image = UIImage(data: data)
+//                self.Pfp.image = image
+//                self.Pfp.layer.cornerRadius = self.Pfp.frame.height/2
+//                self.Pfp.clipsToBounds = true
+//            }
+//            // print(error ?? "NONE")
+//        }
     }
     
     func loadRecordings(){

@@ -53,7 +53,12 @@ class UploadPicViewController: UIViewController, UIImagePickerControllerDelegate
     @IBAction func done(_ sender: Any) {
         let db = Firestore.firestore()
         
-        let imageID:String = User.current.uid
+        
+//        let imageID:String = User.current.uid
+        let imageID:String = UUID().uuidString
+        
+        let oldProfilePicRef = profilePicReference.child(User.current.profilePic)
+        
         
         let profilePicRef = profilePicReference
         let photoRef = profilePicRef.child(imageID)
@@ -61,7 +66,7 @@ class UploadPicViewController: UIViewController, UIImagePickerControllerDelegate
         //upload image to bucket
         let uploadTask = photoRef.putFile(from: curSelectedPhotoURL!, metadata: nil) { (metadata, err) in
             if let err = err{
-                print(err.localizedDescription)
+                print("error uploading pic: ", err.localizedDescription)
             }
             else{
                 User.current.profilePic = imageID
@@ -74,10 +79,18 @@ class UploadPicViewController: UIViewController, UIImagePickerControllerDelegate
                     }
                 }
                 print(User.current.profilePic, "after upload")
-                self.delegate?.UploadedPic(forController: self, forImagePath: self.selectedImage!)
                 
-                self.dismiss(animated: true, completion: nil)
+                self.delegate?.UploadedPic(forController: self, forImagePath: self.selectedImage!)
                 print("successfully uploaded image")
+                
+                oldProfilePicRef.delete { error in
+                    if let error = error {
+                        print("error: ", error.localizedDescription)
+                    } else {
+                        print("Successfully deleted")
+                    }
+                }
+                self.dismiss(animated: true, completion: nil)
             }
         }
     }
