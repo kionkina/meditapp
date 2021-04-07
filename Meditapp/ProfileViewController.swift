@@ -15,6 +15,7 @@ import AVFoundation
 
 class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UploadPicDelegate {
     
+    
     func UploadedPic(forController controller: UploadPicViewController, forImagePath updatedPic: UIImage) {
 //        print("Delegate has been called")
 //        print("image url", updatedPic)

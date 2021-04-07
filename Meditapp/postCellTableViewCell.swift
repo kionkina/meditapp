@@ -48,7 +48,8 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
     func downloadThenPlay(){
         let downloadPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(post!.RecID)
         
-        if !FileManager.default.fileExists(atPath: downloadPath.absoluteString){
+        print(downloadPath, "path for file i gonna play")
+        if !FileManager.default.fileExists(atPath: downloadPath.path){
             let audioRef = Storage.storage().reference().child("recordings").child(post!.RecID)
             
             let downloadTask = audioRef.write(toFile: downloadPath){ url, error in
@@ -56,12 +57,14 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
                     print("Error has occured: ", error.localizedDescription)
                 }
                 else{
+                    print("i have to download")
                     self.playDownloadedAudio(forPath: downloadPath)
                 }
             }
             downloadTask.resume()
         }
         else{
+            print("already downloaded")
             playDownloadedAudio(forPath: downloadPath)
         }
     }

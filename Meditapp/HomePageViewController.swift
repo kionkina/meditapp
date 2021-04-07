@@ -12,7 +12,6 @@ import StreamingKit
 
 class HomePageViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate{
 
-
     @IBOutlet var tableView: UITableView!
     
     var recordings = [Post]()
@@ -133,6 +132,9 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         
+//        let viewController = self.tabBarController?.viewControllers?[1] as? ProfileViewController
+//            viewController?.delegate = self
+        
         tableView.estimatedRowHeight = 10000 // or your estimate
 
         myRefreshControl.addTarget(self, action: #selector(refreshReload), for: .valueChanged)
@@ -185,8 +187,14 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                     cell.setLiked(false, recording.numLikes)
                 }
                 if let user = users[recording.OwnerID]{
-                    cell.configure(with: recording, for: user )
-                    cell.postUser = user
+                    if user?.uid == User.current.uid{
+                        cell.configure(with: recording, for: User.current )
+                        cell.postUser = User.current
+                    }
+                    else{
+                        cell.configure(with: recording, for: user )
+                        cell.postUser = user
+                    }
                 }
         
         // add separator
