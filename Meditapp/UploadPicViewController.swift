@@ -57,7 +57,8 @@ class UploadPicViewController: UIViewController, UIImagePickerControllerDelegate
 //        let imageID:String = User.current.uid
         let imageID:String = UUID().uuidString
         
-        let oldProfilePicRef = profilePicReference.child(User.current.profilePic)
+//        let oldProfilePicRef = profilePicReference.child(User.current.profilePic)
+        let oldPfp = User.current.profilePic
         
         
         let profilePicRef = profilePicReference
@@ -83,11 +84,16 @@ class UploadPicViewController: UIViewController, UIImagePickerControllerDelegate
                 self.delegate?.UploadedPic(forController: self, forImagePath: self.selectedImage!)
                 print("successfully uploaded image")
                 
-                oldProfilePicRef.delete { error in
-                    if let error = error {
-                        print("error: ", error.localizedDescription)
-                    } else {
-                        print("Successfully deleted")
+                User.setCurrent(User.current, writeToUserDefaults: true)
+                //changed
+                if (oldPfp != "default.jpeg"){
+                    let oldProfilePicRef = self.profilePicReference.child(oldPfp)
+                    oldProfilePicRef.delete { error in
+                        if let error = error {
+                            print("error: ", error.localizedDescription)
+                        } else {
+                            print("Successfully deleted")
+                        }
                     }
                 }
                 self.dismiss(animated: true, completion: nil)

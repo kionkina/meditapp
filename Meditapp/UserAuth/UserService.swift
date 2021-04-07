@@ -20,7 +20,7 @@ struct UserService {
                          "recordings": [],
                          "likedPosts": [String:Bool](),
                          "profilePic": "default.jpeg"] as [String : Any]
-        
+        print("in create in userservice")
         let ref = Firestore.firestore().collection("users").document(firUser.uid)
         
         ref.setData(userAttrs) { error in
@@ -43,6 +43,8 @@ struct UserService {
     }
     
     static func show(forUID uid: String, completion: @escaping (User?) -> Void) {
+        
+        print("in show in userservice")
         
         let ref = Firestore.firestore().collection("users").document(uid)
         print("uid: " + uid)
