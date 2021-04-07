@@ -127,6 +127,7 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
             if let user = users[comment.OwnerID]{
                 cell.configure(with: comment, for: user )
             }
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
             return cell
         }
         else {
