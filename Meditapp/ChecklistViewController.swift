@@ -11,7 +11,7 @@ import FirebaseFirestore
 
 class ChecklistViewController: UITableViewController {
     
-    var checklist: [String] = ["Morning", "Evening", "Relaxing", "Energizing", "Mantra", "testCombined"]
+    var checklist: [String] = ["Morning", "Evening", "Relaxing", "Energizing", "Mantra"]
     
     override func viewDidLoad() {
         
@@ -86,7 +86,7 @@ class ChecklistViewController: UITableViewController {
     
     //TODO: move logic to controller
     func updateData(selectedTags: [String]){
-        let docRef = Firestore.firestore().collection("users").document(User.current.uid)
+        let docRef = Firestore.firestore().collection("Users").document(User.current.uid)
 
         docRef.updateData([
             "tags": selectedTags

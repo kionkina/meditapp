@@ -71,7 +71,7 @@ class UploadPicViewController: UIViewController, UIImagePickerControllerDelegate
             }
             else{
                 User.current.profilePic = imageID
-                db.collection("users").document(User.current.uid).updateData(["profilePic" : imageID]) { err in
+                db.collection("Users").document(User.current.uid).updateData(["profilePic" : imageID]) { err in
                     if let err  = err {
                         print("Error updating document: \(err.localizedDescription)")
                     }
