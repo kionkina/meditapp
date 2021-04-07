@@ -16,7 +16,8 @@ class ChecklistViewController: UITableViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-
+        tableView.separatorStyle = .none
+        tableView.showsVerticalScrollIndicator = false
         // Do any additional setup after loading the view.
     }
     
@@ -49,9 +50,13 @@ class ChecklistViewController: UITableViewController {
         -> UITableViewCell {
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: "ChecklistItem",
-                for: indexPath)
+                for: indexPath) as! checklistItemTableViewCell
             let item = checklist[indexPath.row]
             configureText(for: cell, with: item)
+            let genres = checklist[indexPath.row]
+            cell.genreImg.image = UIImage(named: genres)
+            cell.genreView.layer.cornerRadius = cell.genreView.frame.height / 2
+            cell.genreImg.layer.cornerRadius = cell.genreImg.frame.height / 2
 
             return cell
     }

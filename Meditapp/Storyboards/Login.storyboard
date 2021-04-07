@@ -483,7 +483,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="w5b-IS-UgE">
-                            <rect key="frame" x="0.0" y="104" width="375" height="44"/>
+                            <rect key="frame" x="0.0" y="172" width="375" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="Done"/>
                             <connections>
@@ -491,29 +491,52 @@
                             </connections>
                         </button>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ChecklistItem" rowHeight="48" id="4gH-mf-ac1">
-                                <rect key="frame" x="0.0" y="28" width="375" height="48"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ChecklistItem" rowHeight="116" id="4gH-mf-ac1" customClass="checklistItemTableViewCell" customModule="Meditapp" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="116"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="4gH-mf-ac1" id="84F-ch-Fbs">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="48"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="116"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="1000" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Morning" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iNG-fx-BmJ">
-                                            <rect key="frame" x="51" y="11" width="224" height="21"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="1001" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3zy-CK-bQM">
-                                            <rect key="frame" x="317" y="11" width="0.0" height="0.0"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q9l-n6-Z6O">
+                                            <rect key="frame" x="7" y="11" width="361" height="94"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NYm-vk-wb4">
+                                                    <rect key="frame" x="0.0" y="8" width="87" height="72"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="87" id="OTx-oJ-5OM"/>
+                                                        <constraint firstAttribute="height" constant="72" id="c5L-L7-FqK"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="1000" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Morning" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cTP-j7-mOc">
+                                                    <rect key="frame" x="158" y="37" width="65.5" height="21"/>
+                                                    <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="18"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" red="1" green="0.86714914759999995" blue="0.56842068160000003" alpha="0.84705882349999995" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <constraints>
+                                                <constraint firstItem="cTP-j7-mOc" firstAttribute="leading" secondItem="NYm-vk-wb4" secondAttribute="trailing" constant="71" id="0pX-YI-KGY"/>
+                                                <constraint firstAttribute="bottom" secondItem="cTP-j7-mOc" secondAttribute="bottom" constant="36" id="64H-X2-ztN"/>
+                                                <constraint firstItem="NYm-vk-wb4" firstAttribute="leading" secondItem="q9l-n6-Z6O" secondAttribute="leading" id="gss-Ym-WGh"/>
+                                                <constraint firstItem="cTP-j7-mOc" firstAttribute="top" secondItem="q9l-n6-Z6O" secondAttribute="top" constant="37" id="izS-B7-IBD"/>
+                                                <constraint firstAttribute="bottom" secondItem="NYm-vk-wb4" secondAttribute="bottom" constant="14" id="vFl-Fh-vlc"/>
+                                            </constraints>
+                                        </view>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="q9l-n6-Z6O" firstAttribute="top" secondItem="84F-ch-Fbs" secondAttribute="top" constant="11" id="5tJ-js-cYg"/>
+                                        <constraint firstAttribute="bottom" secondItem="q9l-n6-Z6O" secondAttribute="bottom" constant="11" id="DR2-FF-nEX"/>
+                                        <constraint firstAttribute="trailing" secondItem="q9l-n6-Z6O" secondAttribute="trailing" constant="7" id="Zlb-Wf-mWk"/>
+                                        <constraint firstItem="q9l-n6-Z6O" firstAttribute="leading" secondItem="84F-ch-Fbs" secondAttribute="leading" constant="7" id="oQ6-YO-ius"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="genre" destination="cTP-j7-mOc" id="uOf-nx-WdP"/>
+                                    <outlet property="genreImg" destination="NYm-vk-wb4" id="bgH-P6-EQF"/>
+                                    <outlet property="genreView" destination="q9l-n6-Z6O" id="nX9-mo-Tgv"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
