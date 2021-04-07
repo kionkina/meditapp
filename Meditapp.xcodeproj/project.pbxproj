@@ -13,10 +13,16 @@
 		3613CA972602BBC30065D1CE /* RecordingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3613CA932602BBC30065D1CE /* RecordingCell.swift */; };
 		3613CA982602BBC30065D1CE /* Recording.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3613CA942602BBC30065D1CE /* Recording.swift */; };
 		3613CB4626067C460065D1CE /* HomePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3613CB4526067C460065D1CE /* HomePageViewController.swift */; };
+		3626DF992617A1DB005EC4B6 /* profileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3626DF982617A1DB005EC4B6 /* profileCell.swift */; };
+		36ED9EDA26194BDE0015F454 /* UploadPicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ED9ED926194BDE0015F454 /* UploadPicViewController.swift */; };
+		36ED9EFA26194C640015F454 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ED9EF926194C640015F454 /* ProfileViewController.swift */; };
 		60D61B693E64EB1965C57E2B /* Pods_Meditapp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC3A95EE12470508254ED4D5 /* Pods_Meditapp.framework */; };
 		9A60A38E2603F26200E93DB1 /* UserProfilePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A60A38D2603F26200E93DB1 /* UserProfilePageViewController.swift */; };
 		9A60A3DA26051CC400E93DB1 /* DBViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A60A3D926051CC400E93DB1 /* DBViewController.swift */; };
 		9A60A4422607E48400E93DB1 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A60A4412607E48400E93DB1 /* Post.swift */; };
+		9A9970B626127E2A008BAB51 /* CommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9970B526127E29008BAB51 /* CommentViewController.swift */; };
+		9A9970BA2612878E008BAB51 /* commentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9970B92612878E008BAB51 /* commentTableViewCell.swift */; };
+		9A9970BD2612888C008BAB51 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9970BC2612888C008BAB51 /* Comment.swift */; };
 		9AE03F582602958D00715283 /* SelectTagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE03F572602958D00715283 /* SelectTagsViewController.swift */; };
 		9AE03F5B2602959A00715283 /* QuestionanireController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE03F5A2602959900715283 /* QuestionanireController.swift */; };
 		9AE03F752602994900715283 /* ChecklistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE03F742602994800715283 /* ChecklistViewController.swift */; };
@@ -27,7 +33,6 @@
 		9AEA1D1925E5DE3E00C329C8 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9AEA1D1825E5DE3D00C329C8 /* Login.storyboard */; };
 		9AEA1D1C25E5DE4F00C329C8 /* CreateUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D1B25E5DE4F00C329C8 /* CreateUserViewController.swift */; };
 		9AEA1D2125E5DE5500C329C8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D1E25E5DE5500C329C8 /* LoginViewController.swift */; };
-		9AEA1D2225E5DE5500C329C8 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D1F25E5DE5500C329C8 /* ProfileViewController.swift */; };
 		9AEA1D2325E5DE5500C329C8 /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D2025E5DE5500C329C8 /* ForgotPasswordViewController.swift */; };
 		9AEA1D2725E5DE6000C329C8 /* Storyboard+Utility .swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D2525E5DE6000C329C8 /* Storyboard+Utility .swift */; };
 		9AEA1D2825E5DE6000C329C8 /* ViewController+Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D2625E5DE6000C329C8 /* ViewController+Utility.swift */; };
@@ -44,9 +49,15 @@
 		3613CA932602BBC30065D1CE /* RecordingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordingCell.swift; sourceTree = "<group>"; };
 		3613CA942602BBC30065D1CE /* Recording.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recording.swift; sourceTree = "<group>"; };
 		3613CB4526067C460065D1CE /* HomePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		3626DF982617A1DB005EC4B6 /* profileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = profileCell.swift; sourceTree = "<group>"; };
+		36ED9ED926194BDE0015F454 /* UploadPicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadPicViewController.swift; sourceTree = "<group>"; };
+		36ED9EF926194C640015F454 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		9A60A38D2603F26200E93DB1 /* UserProfilePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserProfilePageViewController.swift; path = Meditapp/UserProfilePageViewController.swift; sourceTree = SOURCE_ROOT; };
 		9A60A3D926051CC400E93DB1 /* DBViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		9A60A4412607E48400E93DB1 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Post.swift; path = Meditapp/Post.swift; sourceTree = SOURCE_ROOT; };
+		9A9970B526127E29008BAB51 /* CommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewController.swift; sourceTree = "<group>"; };
+		9A9970B92612878E008BAB51 /* commentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = commentTableViewCell.swift; sourceTree = "<group>"; };
+		9A9970BC2612888C008BAB51 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		9AE03F572602958D00715283 /* SelectTagsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectTagsViewController.swift; sourceTree = "<group>"; };
 		9AE03F5A2602959900715283 /* QuestionanireController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionanireController.swift; sourceTree = "<group>"; };
 		9AE03F742602994800715283 /* ChecklistViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChecklistViewController.swift; sourceTree = "<group>"; };
@@ -59,7 +70,6 @@
 		9AEA1D1825E5DE3D00C329C8 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		9AEA1D1B25E5DE4F00C329C8 /* CreateUserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateUserViewController.swift; sourceTree = "<group>"; };
 		9AEA1D1E25E5DE5500C329C8 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		9AEA1D1F25E5DE5500C329C8 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		9AEA1D2025E5DE5500C329C8 /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
 		9AEA1D2525E5DE6000C329C8 /* Storyboard+Utility .swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Storyboard+Utility .swift"; sourceTree = "<group>"; };
 		9AEA1D2625E5DE6000C329C8 /* ViewController+Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ViewController+Utility.swift"; sourceTree = "<group>"; };
@@ -94,6 +104,7 @@
 				9AEA1D2D25E5DE7200C329C8 /* UserService.swift */,
 				9AEA1D2A25E5DE6800C329C8 /* User.swift */,
 				9A60A4412607E48400E93DB1 /* Post.swift */,
+				9A9970BC2612888C008BAB51 /* Comment.swift */,
 			);
 			path = UserAuth;
 			sourceTree = "<group>";
@@ -137,27 +148,31 @@
 		9AEA1CFE25E5DAC000C329C8 /* Meditapp */ = {
 			isa = PBXGroup;
 			children = (
+				9AEA1CFF25E5DAC000C329C8 /* AppDelegate.swift */,
+				9AEA1D0825E5DAC400C329C8 /* Assets.xcassets */,
+				9AE03F742602994800715283 /* ChecklistViewController.swift */,
+				9A9970B92612878E008BAB51 /* commentTableViewCell.swift */,
+				9A9970B526127E29008BAB51 /* CommentViewController.swift */,
+				9A60A3D926051CC400E93DB1 /* DBViewController.swift */,
+				9AEA1D3525E5DF5100C329C8 /* GoogleService-Info.plist */,
+				3613CB4526067C460065D1CE /* HomePageViewController.swift */,
+				9AEA1D0D25E5DAC400C329C8 /* Info.plist */,
+				9AEA1D0A25E5DAC400C329C8 /* LaunchScreen.storyboard */,
+				03C63C4325EE295A00AD7815 /* postCellTableViewCell.swift */,
+				3626DF982617A1DB005EC4B6 /* profileCell.swift */,
+				36ED9EF926194C640015F454 /* ProfileViewController.swift */,
+				9AE03F5A2602959900715283 /* QuestionanireController.swift */,
 				3613CA942602BBC30065D1CE /* Recording.swift */,
 				3613CA932602BBC30065D1CE /* RecordingCell.swift */,
 				3613CA922602BBC30065D1CE /* RecordingViewController.swift */,
-				3613CA912602BBC30065D1CE /* TagsViewController.swift */,
-				03A2B2B125F62249005239B1 /* Storyboards */,
-				03A2B2AE25F62016005239B1 /* UserAuth */,
-				9AEA1CFF25E5DAC000C329C8 /* AppDelegate.swift */,
-				9AEA1D1F25E5DE5500C329C8 /* ProfileViewController.swift */,
-				9AE03F5A2602959900715283 /* QuestionanireController.swift */,
 				9AE03F572602958D00715283 /* SelectTagsViewController.swift */,
 				9AEA1D2525E5DE6000C329C8 /* Storyboard+Utility .swift */,
-				9AE03F742602994800715283 /* ChecklistViewController.swift */,
-				9AEA1D2625E5DE6000C329C8 /* ViewController+Utility.swift */,
-				9AEA1D0825E5DAC400C329C8 /* Assets.xcassets */,
-				9AEA1D0A25E5DAC400C329C8 /* LaunchScreen.storyboard */,
-				9AEA1D0D25E5DAC400C329C8 /* Info.plist */,
-				9AEA1D3525E5DF5100C329C8 /* GoogleService-Info.plist */,
-				03C63C4325EE295A00AD7815 /* postCellTableViewCell.swift */,
-				9A60A3D926051CC400E93DB1 /* DBViewController.swift */,
+				03A2B2B125F62249005239B1 /* Storyboards */,
+				3613CA912602BBC30065D1CE /* TagsViewController.swift */,
+				03A2B2AE25F62016005239B1 /* UserAuth */,
 				9A60A38D2603F26200E93DB1 /* UserProfilePageViewController.swift */,
-				3613CB4526067C460065D1CE /* HomePageViewController.swift */,
+				36ED9ED926194BDE0015F454 /* UploadPicViewController.swift */,
+				9AEA1D2625E5DE6000C329C8 /* ViewController+Utility.swift */,
 			);
 			path = Meditapp;
 			sourceTree = "<group>";
@@ -292,18 +307,23 @@
 				9AE03F5B2602959A00715283 /* QuestionanireController.swift in Sources */,
 				9AE03F582602958D00715283 /* SelectTagsViewController.swift in Sources */,
 				9A60A3DA26051CC400E93DB1 /* DBViewController.swift in Sources */,
+				36ED9EFA26194C640015F454 /* ProfileViewController.swift in Sources */,
 				9AEA1D0025E5DAC000C329C8 /* AppDelegate.swift in Sources */,
+				3626DF992617A1DB005EC4B6 /* profileCell.swift in Sources */,
 				03C63C4425EE295A00AD7815 /* postCellTableViewCell.swift in Sources */,
 				9AEA1D3025E5DE7200C329C8 /* AuthService.swift in Sources */,
 				9AEA1D2825E5DE6000C329C8 /* ViewController+Utility.swift in Sources */,
+				9A9970BD2612888C008BAB51 /* Comment.swift in Sources */,
 				3613CA962602BBC30065D1CE /* RecordingViewController.swift in Sources */,
+				36ED9EDA26194BDE0015F454 /* UploadPicViewController.swift in Sources */,
 				9AEA1D2725E5DE6000C329C8 /* Storyboard+Utility .swift in Sources */,
 				9AEA1D2F25E5DE7200C329C8 /* UserService.swift in Sources */,
-				9AEA1D2225E5DE5500C329C8 /* ProfileViewController.swift in Sources */,
 				3613CA982602BBC30065D1CE /* Recording.swift in Sources */,
 				9A60A38E2603F26200E93DB1 /* UserProfilePageViewController.swift in Sources */,
 				3613CA972602BBC30065D1CE /* RecordingCell.swift in Sources */,
 				9AEA1D2125E5DE5500C329C8 /* LoginViewController.swift in Sources */,
+				9A9970B626127E2A008BAB51 /* CommentViewController.swift in Sources */,
+				9A9970BA2612878E008BAB51 /* commentTableViewCell.swift in Sources */,
 				3613CB4626067C460065D1CE /* HomePageViewController.swift in Sources */,
 				9AEA1D2B25E5DE6800C329C8 /* User.swift in Sources */,
 				9AE03F752602994900715283 /* ChecklistViewController.swift in Sources */,
@@ -448,6 +468,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = K6ATTQCYHQ;
 				INFOPLIST_FILE = Meditapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -467,6 +488,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = K6ATTQCYHQ;
 				INFOPLIST_FILE = Meditapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

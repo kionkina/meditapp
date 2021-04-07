@@ -10,7 +10,7 @@ class SelectTagsViewController: UIViewController {
     
     let exploreTags: [String] = ["Morning", "Evening",
     "Anxiety-relief", "Breathing", "Visualization", "Energizing",
-    "Gratefulness", "Reflection"]
+    "Gratefulness", "Reflection", "testCombined"]
     
     override func viewDidLoad() {
         super.viewDidLoad()

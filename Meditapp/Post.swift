@@ -19,6 +19,10 @@ class Post : NSObject {
     var Tags: [String]
     let Timestamp: Timestamp
     var numLikes: Int
+    var numComments: Int
+    let PostImg: String
+    let IdTime: String
+    
 //    var dictValue: [String: Any] {
 //        return ["Description" : Description,
 //                "Name" : Name,
@@ -29,7 +33,9 @@ class Post : NSObject {
 //    }
     
     //Standard Post init()
-    init(Description: String, Name: String, OwnerID: String, RecID:String, Tags:[String], Timestamp: Timestamp, numLikes: Int) {
+
+    //add pic param
+    init(Description: String, Name: String, OwnerID: String, RecID:String, Tags:[String], Timestamp: Timestamp, numLikes: Int, numComments: Int = 0, PostImg: String, IdTime:String) {
         self.Description = Description
         self.Name = Name
         self.OwnerID = OwnerID
@@ -37,19 +43,27 @@ class Post : NSObject {
         self.Tags = Tags
         self.Timestamp = Timestamp
         self.numLikes = numLikes
+        self.numComments = numComments
+        self.PostImg = PostImg
+        self.IdTime = IdTime
+        //self.pic
         super.init()
     }
 
     //Post init using Firebase snapshots
     init?(snapshot: DocumentSnapshot!) {
+        print(snapshot.data())
         guard let dict = snapshot.data(),
             let Description = dict["Description"] as? String,
+            let IdTime = dict["IdTime"]! as? String,
             let Name = dict["Name"] as? String,
             let OwnerID = dict["OwnerID"] as? String,
             let RecID = dict["RecID"] as? String,
             let Tags = dict["Tags"] as? [String],
             let Timestamp = dict["Timestamp"] as? Timestamp,
-            let numLikes = dict["numLikes"] as? Int
+            let numLikes = dict["numLikes"] as? Int,
+            let numComments = ( (dict.keys.contains("numComments") ) ? dict["numComments"] as? Int : 0),
+            let PostImg = dict["Image"] as? String
             else {
             print ("returning nil")
             return nil
@@ -61,9 +75,11 @@ class Post : NSObject {
         self.Tags = Tags
         self.Timestamp = Timestamp
         self.numLikes = numLikes
+        self.numComments = numComments
+        self.PostImg = PostImg
+        self.IdTime = IdTime
     }
     
-//    UserDefaults
     required init?(coder aDecoder: NSCoder) {
         guard let Description = aDecoder.decodeObject(forKey: "Description") as? String,
             let Name = aDecoder.decodeObject(forKey: "Name") as? String,
@@ -71,7 +87,10 @@ class Post : NSObject {
             let RecID = aDecoder.decodeObject(forKey: "RecID") as? String,
             let Tags = aDecoder.decodeObject(forKey:"Tags") as? [String],
             let Timestamp = aDecoder.decodeObject(forKey:"timestamp") as? Timestamp,
-            let numLikes = aDecoder.decodeObject(forKey:"numLikes") as? Int
+            let numLikes = aDecoder.decodeObject(forKey:"numLikes") as? Int,
+            let numComments = aDecoder.decodeObject(forKey:"numComments") as? Int,
+            let PostImg = aDecoder.decodeObject(forKey:"PostImg") as? String,
+            let IdTime = aDecoder.decodeObject(forKey:"IdTime") as? String
             else { return nil }
 
         self.Description = Description
@@ -81,10 +100,10 @@ class Post : NSObject {
         self.Tags = Tags
         self.Timestamp = Timestamp
         self.numLikes = numLikes
+        self.numComments = numComments
+        self.PostImg = PostImg
+        self.IdTime = IdTime
     }
-
-
-
 }
 
 extension Post: NSCoding {
@@ -96,5 +115,8 @@ extension Post: NSCoding {
         aCoder.encode(Tags, forKey: "Tags")
         aCoder.encode(Timestamp, forKey: "Timestamp")
         aCoder.encode(numLikes, forKey: "numLikes")
+        aCoder.encode(numComments, forKey: "numComments")
+        aCoder.encode(PostImg, forKey: "PostImg")
+        aCoder.encode(IdTime, forKey: "IdTime")
     }
 }

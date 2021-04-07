@@ -4,16 +4,17 @@
 //
 //  Created by Jackson Lu on 2/28/21.
 //
-
 import UIKit
 import AVFoundation
 import FirebaseAuth
 import FirebaseStorage
 import FirebaseFirestore
+import Photos
+import FirebaseUI
 
 
 
-class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITableViewDelegate, UITextFieldDelegate, UITextViewDelegate, UITableViewDataSource, TagsViewControllerDelegate {
+class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITableViewDelegate, UITextFieldDelegate, UITextViewDelegate, UITableViewDataSource, TagsViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     
     //MARK: - Outlets
@@ -23,15 +24,19 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
     @IBOutlet weak var postDesc: UITextView!
     @IBOutlet weak var charLimit: UILabel!
     @IBOutlet weak var postButton: UIBarButtonItem!
+    @IBOutlet weak var postImage: UIImageView!
     
     
     
     //MARK: - Variables
     var recordingSession: AVAudioSession!
     var audioRecorder: AVAudioRecorder!
-    var audioPlayer = AVAudioPlayer()
+    static var audioPlayer = AVAudioPlayer()
+    static var playingCell: RecordingCell?
     var recordings = [Recording]()
     var postTags = [String]()
+    var imagePickerController = UIImagePickerController()
+    var curSelectedPhotoURL: URL?
     
     
     var checkedIndex: IndexPath!
@@ -40,9 +45,14 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
         return Storage.storage().reference().child("recordings")
     }
     
+    var postPhotoReference: StorageReference{
+        return Storage.storage().reference().child("postphotos")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print("Current directory", getDirectory())
         loadRecordings()
         navigationItem.largeTitleDisplayMode = .never
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard(_:)))
@@ -55,11 +65,13 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
         //Setting up session
         recordingSession = AVAudioSession.sharedInstance()
         
+        //get permission
         AVAudioSession.sharedInstance().requestRecordPermission { (hasPermission) in
             if hasPermission{
                 print("Accepted")
                 do{
                     try self.recordingSession.setCategory(AVAudioSession.Category.playAndRecord)
+                    //set session active
                     try self.recordingSession.setActive(true)
                 } catch{
                     print("Couldn't set Audio session category")
@@ -69,7 +81,11 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
                 print("not granted")
             }
         }
+        
+        imagePickerController.delegate = self
+        checkPermissions()
     }
+    
     
     @objc func dismissKeyboard(_ sender: UITapGestureRecognizer) {
         self.view.endEditing(true)
@@ -96,9 +112,9 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
         do {
             let fileURLs = try FileManager.default.contentsOfDirectory(at: documentsUrl, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
             for fileURL in fileURLs {
-                if fileURL.pathExtension == "m4a" {
-                    try FileManager.default.removeItem(at: fileURL)
-                }
+//                if fileURL.pathExtension == "m4a" {
+                try FileManager.default.removeItem(at: fileURL)
+//                }
             }
         } catch  { print(error) }
     }
@@ -137,7 +153,58 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
         }
     }
     
+    @IBAction func uploadImg(_ sender: Any) {
+        self.imagePickerController.sourceType = .photoLibrary
+        self.present(self.imagePickerController, animated: true, completion: nil)
+        
+    }
     
+    func checkPermissions() {
+       if PHPhotoLibrary.authorizationStatus() != PHAuthorizationStatus.authorized {
+      
+        PHPhotoLibrary.requestAuthorization({ (status: PHAuthorizationStatus) -> Void in ()})}
+        
+        if PHPhotoLibrary.authorizationStatus() == PHAuthorizationStatus.authorized {
+        }
+        else {
+            PHPhotoLibrary.requestAuthorization(requestAuthorizationHandler)
+        }
+    }
+    
+    //photo auth function
+    func requestAuthorizationHandler(status: PHAuthorizationStatus){
+        if PHPhotoLibrary.authorizationStatus() == PHAuthorizationStatus.authorized{
+            print("WE CAN ACCESS PHOTOS NOW")
+        } else {
+            print("PHOTO ACCESS DENIED")
+        }
+    }
+    
+    //see what img user chose and upload it to firebase
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        postImage.image = info[.originalImage] as? UIImage
+        
+        if let url = info[UIImagePickerController.InfoKey.imageURL] as? URL{
+            curSelectedPhotoURL = url
+        }
+        
+//        let profilePicRef = Storage.storage().reference().child("postphotos")
+//        let photoRef = profilePicRef.child(recID)
+//
+//        //upload image to bucket
+//        let uploadImageTask = photoRef.putFile(from: curSelectedPhotoURL!, metadata: nil) { (metadata, err) in
+//            if let err = err{
+//                print("error uploading pic: ", err.localizedDescription)
+//            }
+//            else{
+//                print("successfully uploaded image")
+//            }
+//        }
+//        uploadImageTask.resume()
+        
+        imagePickerController.dismiss(animated: true, completion: nil)
+    }
     
     //MARK: - Actions
     @IBAction func record(_ sender: Any) {
@@ -156,11 +223,12 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
             let settings = [AVFormatIDKey: Int(kAudioFormatMPEG4AAC), AVSampleRateKey: 12000, AVNumberOfChannelsKey: 1, AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue]
             
             do {
-                    audioRecorder = try AVAudioRecorder(url: audioFileName, settings: settings)
-                    audioRecorder.delegate = self
-                    audioRecorder.record()
-
-                    recordButton.setTitle("Stop Recording", for: .normal)
+                audioRecorder = try AVAudioRecorder(url: audioFileName, settings: settings)
+                audioRecorder.delegate = self
+                //begin recording
+                audioRecorder.record()
+                //set title to stop recording
+                recordButton.setTitle("Stop Recording", for: .normal)
             }
             catch {
                 print("Error failed")
@@ -173,9 +241,10 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
             audioRecorder.stop()
             audioRecorder = nil
             
-            //Reload the tableview
+            //Reload the table with the updated recording
             myTableView.reloadData()
             
+            //make recording clickable to open keyboard
             nameofRecording.isUserInteractionEnabled = true
             nameofRecording.text! = ""
             textFieldShouldClear(nameofRecording)
@@ -185,6 +254,7 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
             saveRecordings()
         }
     }
+    
     
     
     
@@ -203,23 +273,26 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
         //  item.checked = false
         configureCheckmark(for: cell, with: item)
         
-        cell.playAudio = { (cell) in
-            do {
-                if !self.audioPlayer.isPlaying{
-                    self.audioPlayer = try AVAudioPlayer(contentsOf: self.getDirectory().appendingPathComponent("\( self.recordings[indexPath.row].recordingName).m4a"))
-                    self.audioPlayer.play()
-                    return false
-                }
-                else{
-                    self.audioPlayer.stop()
-                    return true
-                }
-            }
-            catch {
-                print(error)
-            }
-            return nil
-        }
+//        print(audioPlayer, "my audio player")
+//        cell.audioPlayerRef = RecordingViewController.audioPlayer
+        cell.recordingName = item.recordingName
+//        cell.playAudio = { (cell) in
+//            do {
+//                if !self.audioPlayer.isPlaying{
+//                    self.audioPlayer = try AVAudioPlayer(contentsOf: self.getDirectory().appendingPathComponent("\( self.recordings[indexPath.row].recordingName).m4a"))
+//                    self.audioPlayer.play()
+//                    return false
+//                }
+//                else{
+//                    self.audioPlayer.stop()
+//                    return true
+//                }
+//            }
+//            catch {
+//                print(error)
+//            }
+//            return nil
+//        }
         return cell
     }
     
@@ -293,6 +366,16 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
         return updatedText.count <= charlimit
     }
     
+    func converTimetoToInt(date: Date) -> Int {
+        // using current date and time as an example
+        // convert Date to TimeInterval (typealias for Double)
+        let timeInterval = date.timeIntervalSince1970
+
+        // convert to Integer
+        let myInt = Int(timeInterval)
+        
+        return myInt
+    }
     
     // MARK: -Actions
     @IBAction func postRec(_ sender: Any) {
@@ -301,39 +384,58 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
         //get reference to recordings bucket
         let recordingRef = recordingReference
         
+        let recID = UUID().uuidString
+        
         let filename = recordings[checkedIndex.row].recordingName
         //append to bucket route
-        let audioRef = recordingRef.child(filename)
+        let audioRef = recordingRef.child(recID)
         
         let localFile = getDirectory().appendingPathComponent("\(filename).m4a")
         
+        
         //specify task. on success, we get info that we can reference to in our documents
         let uploadTask = audioRef.putFile(from: localFile, metadata: nil){ (metadata, err) in
-            
-            guard let metadata = metadata
-            
-            else {
-                print(err?.localizedDescription)
-                return
+            if let err = err{
+                print("error uploading audio", err.localizedDescription)
             }
-            print("Audio Uploaded")
+            else{
+                self.deleteAllFiles()
+                print("Audio Uploaded")
+            }
         }
-        
         uploadTask.resume()
+        
+        let photoRef = postPhotoReference.child(recID)
+        //upload image to bucket
+        let uploadImageTask = photoRef.putFile(from: curSelectedPhotoURL!, metadata: nil) { (metadata, err) in
+            if let err = err{
+                print("error uploading pic: ", err.localizedDescription)
+            }
+            else{
+                print("successfully uploaded image")
+                self.navigationController?.popViewController(animated: true)
+            }
+        }
+        uploadImageTask.resume()
         
 //        guard let user = Auth.auth().currentUser else{return}
         
-        let recID = UUID().uuidString
+        let stamp = Timestamp(date: Date())
+        let currTime = converTimetoToInt(date: Date())
         
         let docData: [String: Any] = [
             "Name" : filename,
-            "Timestamp" : Timestamp(date: Date()),
+            "Timestamp" : stamp,
             "RecID" : recID,
 //            "OwnerRef" : db.collection("users").document(User.current.uid),
             "OwnerID" : User.current.uid,
             "Tags" : postTags,
             "Description" : postDesc.text!,
-            "numLikes" : 0
+            "numLikes" : 0,
+            "numComments": 0,
+            "Image" : recID,
+            //combine query for filtering and sorting
+            "IdTime" : String(currTime) + recID
 //            "StorageRef" : audioRef
         ]
         
@@ -346,20 +448,20 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
         }
        
         let dbref: DocumentReference = db.collection("Recordings").document(recID)
+        
         db.collection("users").document(User.current.uid).updateData([
             "content" : FieldValue.arrayUnion([dbref])
         ])
-        User.current.recordings.append(dbref)
         
-//        dismiss(animated: true, completion: nil)
-        navigationController?.popViewController(animated: true)
-        //deleteAllFiles(false)
+        User.current.recordings.append(dbref)
+        print(User.current.recordings, "after appending")
+
     }
     
     @IBAction func cancel(_ sender: Any) {
 //        dismiss(animated: true, completion: nil)
         navigationController?.popViewController(animated: true)
-        //deleteAllFiles(true)
+//        deleteAllFiles()
     }
     
     //MARK: - Tags delegate protocols
@@ -385,6 +487,3 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
         controller.productTagsCollection.tags = postTags
     }
 }
-
-
-    
