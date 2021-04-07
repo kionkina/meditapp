@@ -199,6 +199,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         
         // add separator
         cell.sepLine?.isHidden = (Int(indexPath.row) != self.separator - 1)
+        cell.selectionStyle = UITableViewCell.SelectionStyle.none
         return cell
     }
     
