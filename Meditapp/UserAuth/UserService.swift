@@ -17,7 +17,7 @@ struct UserService {
                          "firstName": firstName,
                          "lastName": lastName,
                          "tags": [],
-                         "recordings": [],
+                         "content": [],
                          "likedPosts": [String:Bool](),
                          "profilePic": "default.jpeg"] as [String : Any]
         print("in create in userservice")
