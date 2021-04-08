@@ -36,7 +36,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             if let cell = button.superview?.superview as? postCellTableViewCell {
                     //print(cell.uid)
                 let vc = segue.destination as! CommentViewController
-                vc.postUser = self.postUser
+                vc.postUser = User.current
                 vc.recording = cell.post
             }
         }
@@ -53,13 +53,15 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var lastName: UILabel!
     @IBOutlet weak var userName: UILabel!
     
+    
     var audioPlayer = AVAudioPlayer()
+    var firstTimeLoaded = false
     
     var audioReference: StorageReference{
         return Storage.storage().reference().child("recordings")
     }
     
-    var postUser: User?
+//    var postUser: User?
     var recordings: [Post] = []
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -73,18 +75,18 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         cell.post = recording
         
         //set whether the post has already been liked when displaying cells.
-        if self.postUser!.likedPosts[recording.RecID] != nil{
-            cell.setLiked(self.postUser!.likedPosts[recording.RecID]!, recording.numLikes)
+        if User.current.likedPosts[recording.RecID] != nil{
+            cell.setLiked(User.current.likedPosts[recording.RecID]!, recording.numLikes)
         }
         else{
             cell.setLiked(false, recording.numLikes)
         }
         
-        cell.configure(with: recording, for: self.postUser!)
+        cell.configure(with: recording, for: User.current)
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
 
         print("displaying cell numero: ", indexPath.row)
-        cell.postUser = self.postUser!
+        cell.postUser = User.current
         
         return cell
     }
@@ -96,10 +98,16 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
 //        print(postUser!.profilePic, "updated pfp")
-        tableView.reloadData()
+        print(recordings.count, "recording count in viewwillappear")
+        print(User.current.recordings.count, "user recording count in viewwillappear")
+        if(recordings.count != 0 && User.current.recordings.count > recordings.count){
+            print("post mustve been added")
+            recordings.removeAll()
+            configure()
+        }
     }
     
     override func viewDidLoad() {
@@ -107,11 +115,13 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         tableView.delegate = self
         tableView.dataSource = self
 //        UserService.show(forUID: User.current.uid, completion: { (user) in
-//            self.postUser = user
+//            User.current = user
 //            self.configure()
 //        })
-        postUser = User.current
+//        postUser = User.current
         configure()
+        
+        print("view did load for profile")
 
         super.viewDidLoad()
     
@@ -120,16 +130,16 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     func configure()
     {
         
-        firstName.text = self.postUser!.firstName
-        lastName.text = self.postUser!.lastName
-        userName.text = self.postUser!.username
+        firstName.text = User.current.firstName
+        lastName.text = User.current.lastName
+        userName.text = User.current.username
         
         authHandle = AuthService.authListener(viewController: self)
     
-        print(postUser!.recordings, "recordings in profile vc")
+//        print(postUser!.recordings, "recordings in profile vc")
         loadRecordings()
         
-        let profilePicRef = Storage.storage().reference().child("profilephotos").child(self.postUser!.profilePic)
+        let profilePicRef = Storage.storage().reference().child("profilephotos").child(User.current.profilePic)
         
         self.Pfp.sd_setImage(with: profilePicRef)
         
@@ -149,7 +159,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func loadRecordings(){
-        DBViewController.getRecordings(for: self.postUser!.recordings) { (doc: DocumentSnapshot) in
+        DBViewController.getRecordings(for: User.current.recordings) { (doc: DocumentSnapshot) in
             if(doc != nil){
                 self.recordings.append(Post(snapshot: doc)!)
                 self.recordings.sort(by: { $0.Timestamp.dateValue() > $1.Timestamp.dateValue() })

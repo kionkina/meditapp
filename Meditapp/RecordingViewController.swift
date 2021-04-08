@@ -399,6 +399,42 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
                 print("error uploading audio", err.localizedDescription)
             }
             else{
+                let stamp = Timestamp(date: Date())
+                let currTime = self.converTimetoToInt(date: Date())
+                
+                let docData: [String: Any] = [
+                    "Name" : filename,
+                    "Timestamp" : stamp,
+                    "RecID" : recID,
+        //            "OwnerRef" : db.collection("users").document(User.current.uid),
+                    "OwnerID" : User.current.uid,
+                    "Tags" : self.postTags,
+                    "Description" : self.postDesc.text!,
+                    "numLikes" : 0,
+                    "numComments": 0,
+                    "Image" : recID,
+                    //combine query for filtering and sorting
+                    "IdTime" : String(currTime) + recID
+        //            "StorageRef" : audioRef
+                ]
+                
+                db.collection("recordings").document(recID).setData(docData) { err in
+                    if let err = err {
+                        print("Error writing document: \(err)")
+                    } else {
+                        print("Document successfully written!")
+                    }
+                }
+               
+                let dbref: DocumentReference = db.collection("recordings").document(recID)
+                
+                db.collection("Users").document(User.current.uid).updateData([
+                    "content" : FieldValue.arrayUnion([dbref])
+                ])
+                
+                User.current.recordings.append(dbref)
+                print(User.current.recordings, "after appending")
+
                 self.deleteAllFiles()
                 print("Audio Uploaded")
             }
@@ -420,41 +456,41 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
         
 //        guard let user = Auth.auth().currentUser else{return}
         
-        let stamp = Timestamp(date: Date())
-        let currTime = converTimetoToInt(date: Date())
-        
-        let docData: [String: Any] = [
-            "Name" : filename,
-            "Timestamp" : stamp,
-            "RecID" : recID,
-//            "OwnerRef" : db.collection("users").document(User.current.uid),
-            "OwnerID" : User.current.uid,
-            "Tags" : postTags,
-            "Description" : postDesc.text!,
-            "numLikes" : 0,
-            "numComments": 0,
-            "Image" : recID,
-            //combine query for filtering and sorting
-            "IdTime" : String(currTime) + recID
-//            "StorageRef" : audioRef
-        ]
-        
-        db.collection("recordings").document(recID).setData(docData) { err in
-            if let err = err {
-                print("Error writing document: \(err)")
-            } else {
-                print("Document successfully written!")
-            }
-        }
-       
-        let dbref: DocumentReference = db.collection("recordings").document(recID)
-        
-        db.collection("Users").document(User.current.uid).updateData([
-            "content" : FieldValue.arrayUnion([dbref])
-        ])
-        
-        User.current.recordings.append(dbref)
-        print(User.current.recordings, "after appending")
+//        let stamp = Timestamp(date: Date())
+//        let currTime = converTimetoToInt(date: Date())
+//
+//        let docData: [String: Any] = [
+//            "Name" : filename,
+//            "Timestamp" : stamp,
+//            "RecID" : recID,
+////            "OwnerRef" : db.collection("users").document(User.current.uid),
+//            "OwnerID" : User.current.uid,
+//            "Tags" : postTags,
+//            "Description" : postDesc.text!,
+//            "numLikes" : 0,
+//            "numComments": 0,
+//            "Image" : recID,
+//            //combine query for filtering and sorting
+//            "IdTime" : String(currTime) + recID
+////            "StorageRef" : audioRef
+//        ]
+//
+//        db.collection("recordings").document(recID).setData(docData) { err in
+//            if let err = err {
+//                print("Error writing document: \(err)")
+//            } else {
+//                print("Document successfully written!")
+//            }
+//        }
+//
+//        let dbref: DocumentReference = db.collection("recordings").document(recID)
+//
+//        db.collection("Users").document(User.current.uid).updateData([
+//            "content" : FieldValue.arrayUnion([dbref])
+//        ])
+//
+//        User.current.recordings.append(dbref)
+//        print(User.current.recordings, "after appending")
 
     }
     
