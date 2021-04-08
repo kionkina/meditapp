@@ -114,6 +114,7 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
                 cell.configure(with: self.recording!, for: user )
                 cell.postUser = user
             }
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
             return cell
         }
         else if (comments.count > 0) {

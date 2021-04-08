@@ -11,12 +11,13 @@ import FirebaseFirestore
 
 class ChecklistViewController: UITableViewController {
     
-    var checklist: [String] = ["Morning", "Evening", "Relaxing", "Energizing", "Mantra", "testCombined"]
+    var checklist: [String] = ["Morning", "Evening", "Relaxing", "Energizing", "Mantra"]
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
-
+        tableView.separatorStyle = .none
+        tableView.showsVerticalScrollIndicator = false
         // Do any additional setup after loading the view.
     }
     
@@ -49,9 +50,13 @@ class ChecklistViewController: UITableViewController {
         -> UITableViewCell {
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: "ChecklistItem",
-                for: indexPath)
+                for: indexPath) as! checklistItemTableViewCell
             let item = checklist[indexPath.row]
             configureText(for: cell, with: item)
+            let genres = checklist[indexPath.row]
+            cell.genreImg.image = UIImage(named: genres)
+            cell.genreView.layer.cornerRadius = cell.genreView.frame.height / 2
+            cell.genreImg.layer.cornerRadius = cell.genreImg.frame.height / 2
 
             return cell
     }
@@ -81,7 +86,7 @@ class ChecklistViewController: UITableViewController {
     
     //TODO: move logic to controller
     func updateData(selectedTags: [String]){
-        let docRef = Firestore.firestore().collection("users").document(User.current.uid)
+        let docRef = Firestore.firestore().collection("Users").document(User.current.uid)
 
         docRef.updateData([
             "tags": selectedTags

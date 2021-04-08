@@ -50,11 +50,12 @@ class User : NSObject {
             self.tags = (dict["tags"] as? [String]) ?? []
             self.recordings = (dict["content"] as? [DocumentReference]) ?? []
             self.likedPosts = (dict["likedPosts"] as? [String:Bool]) ?? [String:Bool]()
-            self.profilePic = ( (dict.keys.contains("profilePic") ) ? dict["profilePic"] as! String : "default.jpeg")
+//            self.profilePic = ( (dict.keys.contains("profilePic") ) ? dict["profilePic"] as! String : "default.jpeg")
             if dict.keys.contains("profilePic"){
                 self.profilePic = dict["profilePic"] as! String
             }
             else{
+                print("initiallizing with snapshot")
                 self.profilePic = "default.jpeg"
             }
         }
@@ -84,6 +85,7 @@ class User : NSObject {
         self.recordings = []
         self.likedPosts = likedPosts
         self.profilePic = profilePic
+        print(self.profilePic, "PROFILEPIC")
         print(self.likedPosts, "IN USERSWIFT")
     }
     

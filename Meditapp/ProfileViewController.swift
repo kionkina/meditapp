@@ -21,6 +21,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
 //        print("image url", updatedPic)
         DispatchQueue.main.async {
             self.Pfp.image = updatedPic
+            self.tableView.reloadData()
         }
     }
     
@@ -80,6 +81,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
         
         cell.configure(with: recording, for: self.postUser!)
+        cell.selectionStyle = UITableViewCell.SelectionStyle.none
+
+        print("displaying cell numero: ", indexPath.row)
         cell.postUser = self.postUser!
         
         return cell
@@ -92,15 +96,22 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+//        print(postUser!.profilePic, "updated pfp")
+        tableView.reloadData()
+    }
+    
     override func viewDidLoad() {
         print("In profile vc")
         tableView.delegate = self
         tableView.dataSource = self
-        UserService.show(forUID: User.current.uid, completion: { (user) in
-            self.postUser = user
-            self.configure()
-        })
-
+//        UserService.show(forUID: User.current.uid, completion: { (user) in
+//            self.postUser = user
+//            self.configure()
+//        })
+        postUser = User.current
+        configure()
 
         super.viewDidLoad()
     
@@ -141,6 +152,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         DBViewController.getRecordings(for: self.postUser!.recordings) { (doc: DocumentSnapshot) in
             if(doc != nil){
                 self.recordings.append(Post(snapshot: doc)!)
+                self.recordings.sort(by: { $0.Timestamp.dateValue() > $1.Timestamp.dateValue() })
                 print(self.recordings)
                 self.tableView.reloadData()
             }

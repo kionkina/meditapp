@@ -439,7 +439,7 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
 //            "StorageRef" : audioRef
         ]
         
-        db.collection("Recordings").document(recID).setData(docData) { err in
+        db.collection("recordings").document(recID).setData(docData) { err in
             if let err = err {
                 print("Error writing document: \(err)")
             } else {
@@ -447,9 +447,9 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
             }
         }
        
-        let dbref: DocumentReference = db.collection("Recordings").document(recID)
+        let dbref: DocumentReference = db.collection("recordings").document(recID)
         
-        db.collection("users").document(User.current.uid).updateData([
+        db.collection("Users").document(User.current.uid).updateData([
             "content" : FieldValue.arrayUnion([dbref])
         ])
         
