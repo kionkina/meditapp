@@ -184,7 +184,7 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
         self.postTitle.text = model.Name
         self.postDescription.text = model.Description
         //retrieves image from postphotos in storage
-        let profilePicRef = Storage.storage().reference().child("profilephotos").child(user!.profilePic)
+//        let profilePicRef = Storage.storage().reference().child("profilephotos").child(user!.profilePic)
 //        print("setting     postimage with", model.PostImg)
         
         self.userImage.sd_setImage(with: Storage.storage().reference().child("profilephotos").child(user!.profilePic))

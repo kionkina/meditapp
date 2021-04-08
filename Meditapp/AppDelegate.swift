@@ -33,7 +33,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate {
     func configureInitialRootViewController(for window: UIWindow?) {
         let defaults = UserDefaults.standard
-        let initialViewController: UIViewController
         
         if Auth.auth().currentUser != nil,
             let userData = defaults.object(forKey: "currentUser") as? Data,
@@ -49,16 +48,27 @@ extension AppDelegate {
                 print("No user liked posts object")
             }
             
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            initialViewController = storyboard.instantiateViewController(withIdentifier: "tabController")
+            let docRef = Firestore.firestore().collection("Users").document(user.uid)
+
+            docRef.getDocument { (document, error) in
+                if let document = document, document.exists {
+                    User.current.recordings = document.get("content") as! [DocumentReference]
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    let initialViewController = storyboard.instantiateViewController(withIdentifier: "tabController")
+                    window?.rootViewController = initialViewController
+                    window?.makeKeyAndVisible()
+                }
+                else {
+                    print("Document does not exist")
+                }
+            }
         }
         else {
             let storyboard = UIStoryboard(name: "Login", bundle: nil)
             // Look into using UINavigationController
-            initialViewController = storyboard.instantiateViewController(withIdentifier:"LoginViewController")
+            let initialViewController = storyboard.instantiateViewController(withIdentifier:"LoginViewController")
+            window?.rootViewController = initialViewController
+            window?.makeKeyAndVisible()
         }
-        
-        window?.rootViewController = initialViewController
-        window?.makeKeyAndVisible()
     }
 }
