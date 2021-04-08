@@ -244,7 +244,7 @@ class DBViewController: UIViewController {
             if let error = error {
                 print("Error updating population: \(error)")
             } else {
-                print("Population increased to \(object!)")
+//                print("Population increased to \(object!)")
             }
         }
     }

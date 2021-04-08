@@ -159,7 +159,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     }
 
     @objc func handleLikes(notification: NSNotification) {
-        print("like fired off handler in homepage")
+//        print("like fired off handler in homepage")
         if let dict = notification.object as? [String:Any] {
             for post in recordings{
                 if post.RecID == dict["updateRecID"] as! String{
@@ -169,7 +169,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     @objc func handleComment(notification: NSNotification) {
-        print("like fired off comment handler in homepage")
+//        print("like fired off comment handler in homepage")
         if let dict = notification.object as? [String:Any] {
             for post in recordings{
                 if post.RecID == dict["updateRecID"] as! String{
