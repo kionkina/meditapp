@@ -81,6 +81,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
         
         cell.configure(with: recording, for: self.postUser!)
+        cell.selectionStyle = UITableViewCell.SelectionStyle.none
+
         print("displaying cell numero: ", indexPath.row)
         cell.postUser = self.postUser!
         
@@ -150,6 +152,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         DBViewController.getRecordings(for: self.postUser!.recordings) { (doc: DocumentSnapshot) in
             if(doc != nil){
                 self.recordings.append(Post(snapshot: doc)!)
+                self.recordings.sort(by: { $0.Timestamp.dateValue() > $1.Timestamp.dateValue() })
                 print(self.recordings)
                 self.tableView.reloadData()
             }

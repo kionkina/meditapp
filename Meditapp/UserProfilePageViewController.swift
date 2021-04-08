@@ -67,6 +67,7 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
                 cell.postUser = user
             }
             
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
             return cell
         }
     }
@@ -169,7 +170,7 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
         DBViewController.getRecordings(for: postUser!.recordings) { (doc: DocumentSnapshot) in
             if (doc != nil) {
                 self.recordings.append(Post(snapshot: doc)!)
-//                print(self.recordings)
+                self.recordings.sort(by: { $0.Timestamp.dateValue() > $1.Timestamp.dateValue() })
                 self.tableView.reloadData()
                 self.myRefreshControl.endRefreshing()
             }
