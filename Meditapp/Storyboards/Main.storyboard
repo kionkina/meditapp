@@ -760,6 +760,9 @@
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FZz-iq-red">
                                                     <rect key="frame" x="85" y="32" width="227" height="31"/>
                                                     <state key="normal" title="Button"/>
+                                                    <connections>
+                                                        <segue destination="ct4-kI-yZX" kind="show" identifier="toProfile2" id="UVP-eA-d7y"/>
+                                                    </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Timestamp" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aTD-dc-7CO">
                                                     <rect key="frame" x="336.66666666666669" y="36" width="67.333333333333314" height="29"/>
@@ -1339,7 +1342,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="mje-WN-Y7o"/>
-        <segue reference="M0n-Hc-e7P"/>
+        <segue reference="UVP-eA-d7y"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="default-img" width="185" height="170"/>
