@@ -567,7 +567,9 @@
                                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ceq-1g-KP2">
                                                     <rect key="frame" x="316" y="3" width="36" height="36"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <state key="normal" image="play"/>
+                                                    <state key="normal">
+                                                        <imageReference key="image" image="play" symbolScale="large"/>
+                                                    </state>
                                                     <state key="selected" image="stop"/>
                                                     <connections>
                                                         <action selector="playTap:" destination="QHX-aw-dXA" eventType="touchUpInside" id="Su7-qU-6Vy"/>
@@ -1512,7 +1514,9 @@
                                                         <constraint firstAttribute="width" constant="32" id="Tm2-ea-YiS"/>
                                                         <constraint firstAttribute="height" constant="32" id="ZBn-o2-zGc"/>
                                                     </constraints>
-                                                    <state key="normal" image="play"/>
+                                                    <state key="normal">
+                                                        <imageReference key="image" image="play" symbolScale="large"/>
+                                                    </state>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U7c-7r-fLE">
                                                     <rect key="frame" x="290" y="156" width="21" height="22"/>
