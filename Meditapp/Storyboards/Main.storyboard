@@ -514,7 +514,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DDL-AZ-dJO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2203" y="1035"/>
+            <point key="canvasLocation" x="-1159" y="1198"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="dQc-0s-lSW">
@@ -925,7 +925,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EGe-PH-YTl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2204" y="1767"/>
+            <point key="canvasLocation" x="-346" y="1198"/>
         </scene>
         <!--Tags View Controller-->
         <scene sceneID="rKr-Bd-z0q">
@@ -1482,6 +1482,9 @@
                                                         <constraint firstAttribute="width" constant="237" id="Zho-OK-KDY"/>
                                                     </constraints>
                                                     <state key="normal" title="Button"/>
+                                                    <connections>
+                                                        <segue destination="ct4-kI-yZX" kind="show" identifier="toProfile" id="fr6-nX-hcl"/>
+                                                    </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Timestamp" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6pk-Si-sCr">
                                                     <rect key="frame" x="326" y="42" width="68" height="16"/>
@@ -1538,6 +1541,7 @@
                                                     <state key="normal" image="text.bubble" catalog="system"/>
                                                     <connections>
                                                         <action selector="commentButton:" destination="n4B-nx-TUb" eventType="touchUpInside" id="f62-5P-0nn"/>
+                                                        <segue destination="8RN-Os-wco" kind="show" identifier="toComments" id="nDd-sM-fwI"/>
                                                     </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I9R-80-bsc">
@@ -1629,8 +1633,8 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="0Zq-kq-JsZ"/>
-        <segue reference="M0n-Hc-e7P"/>
+        <segue reference="nDd-sM-fwI"/>
+        <segue reference="fr6-nX-hcl"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="arrow.right" catalog="system" width="128" height="98"/>
