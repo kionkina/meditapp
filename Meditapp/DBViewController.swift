@@ -300,5 +300,142 @@ class DBViewController: UIViewController {
             }
         }
     }
+ 
+    //Followers
+    static func follow(for uid: String, success: @escaping (Int) -> Void){
+        let db = Firestore.firestore()
+        let currUserRef = db.collection("Users").document(User.current.uid)
+        let userRef = db.collection("Users").document(uid)
+        
+        let oldNumFollowing = User.current.numFollowing
+        
+        db.runTransaction({ (transaction, errorPointer) -> Any? in
+            let postDoc: DocumentSnapshot
+            do {
+                try postDoc = transaction.getDocument(userRef)
+            } catch let fetchError as NSError {
+                errorPointer?.pointee = fetchError
+                return nil
+            }
+
+            guard let oldNumFollowers = postDoc.data()?["numFollowers"] as? Int else {
+                let error = NSError(
+                    domain: "AppErrorDomain",
+                    code: -1,
+                    userInfo: [
+                        NSLocalizedDescriptionKey: "Unable to retrieve population from snapshot \(postDoc)"
+                    ]
+                )
+                errorPointer?.pointee = error
+                return nil
+            }
+            
+            // Note: this could be done without a transaction
+            //       by updating the population using FieldValue.increment()
+            let newNumFollowers = oldNumFollowers + 1
+            guard newNumFollowers <= 1000000 else {
+                let error = NSError(
+                    domain: "AppErrorDomain",
+                    code: -2,
+                    userInfo: [NSLocalizedDescriptionKey: "likes \(newNumFollowers) too big"]
+                )
+                errorPointer?.pointee = error
+                return nil
+            }
+
+            transaction.updateData(["numFollowers": newNumFollowers], forDocument: userRef)
+            transaction.updateData(["numFollowing": (User.current.numFollowing + 1)], forDocument: currUserRef)
+            User.current.numFollowing += 1
+            User.current.following[uid] = true
+            
+            transaction.updateData(["followers.\(User.current.uid)":true], forDocument: userRef)
+            transaction.updateData(["following.\(uid)":true], forDocument: currUserRef)
+            
+            
+            success(newNumFollowers)
+            return newNumFollowers
+        }) { (object, error) in
+            if let error = error {
+                print("Error updating population: \(error)")
+            } else {
+//                print("Population increased to \(object!)")
+            }
+        }
+    }
     
+    static func unfollow(for uid: String, success: @escaping (Int) -> Void){
+        let db = Firestore.firestore()
+        let currUserRef = db.collection("Users").document(User.current.uid)
+        let userRef = db.collection("Users").document(uid)
+        
+        let oldNumFollowing = User.current.numFollowing
+        
+        db.runTransaction({ (transaction, errorPointer) -> Any? in
+            let postDoc: DocumentSnapshot
+            do {
+                try postDoc = transaction.getDocument(userRef)
+            } catch let fetchError as NSError {
+                errorPointer?.pointee = fetchError
+                return nil
+            }
+
+            guard let oldNumFollowers = postDoc.data()?["numFollowers"] as? Int else {
+                let error = NSError(
+                    domain: "AppErrorDomain",
+                    code: -1,
+                    userInfo: [
+                        NSLocalizedDescriptionKey: "Unable to retrieve population from snapshot \(postDoc)"
+                    ]
+                )
+                errorPointer?.pointee = error
+                return nil
+            }
+            
+            // Note: this could be done without a transaction
+            //       by updating the population using FieldValue.increment()
+            let newNumFollowers = oldNumFollowers - 1
+            guard newNumFollowers <= 1000000 else {
+                let error = NSError(
+                    domain: "AppErrorDomain",
+                    code: -2,
+                    userInfo: [NSLocalizedDescriptionKey: "likes \(newNumFollowers) too big"]
+                )
+                errorPointer?.pointee = error
+                return nil
+            }
+
+            transaction.updateData(["numFollowers": newNumFollowers], forDocument: userRef)
+            transaction.updateData(["numFollowing": (User.current.numFollowing - 1)], forDocument: currUserRef)
+            User.current.following[uid] = true
+            
+            transaction.updateData(["followers.\(User.current.uid)":FieldValue.delete()], forDocument: userRef)
+            transaction.updateData(["following.\(uid)":FieldValue.delete()], forDocument: currUserRef)
+            
+            
+            success(newNumFollowers)
+            return newNumFollowers
+        }) { (object, error) in
+            if let error = error {
+                print("Error updating population: \(error)")
+            } else {
+//                print("Population increased to \(object!)")
+            }
+        }
+    }
+    
+    static func loadTenUsers(for users: [String], success: @escaping ([User]) -> Void) {
+        print("in db")
+        print(users)
+
+        let db = Firestore.firestore()
+        db.collection("Users").whereField(FieldPath.documentID(), in: users).getDocuments { (qs: QuerySnapshot?, _: Error?) in
+            print("Returning")
+            print(qs)
+            var ret: [User] = []
+            for doc in qs!.documents {
+                ret.append(User(snapshot: doc)!)
+            }
+            success(ret)
+        }
+    }
 }

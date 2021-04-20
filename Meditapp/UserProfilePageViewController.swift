@@ -13,10 +13,6 @@ import AVFoundation
 class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UITableViewDataSource {
    
     @IBOutlet var tableView: UITableView!
-    @IBOutlet var username: UILabel!
-    @IBOutlet var firstName: UILabel!
-    @IBOutlet var lastName: UILabel!
-    @IBOutlet var followBotton: UIButton!
     
     var audioPlayer = AVAudioPlayer()
     
@@ -25,15 +21,42 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == "toComments") {
+        if (segue.identifier == "toFollowing") {
             let button = sender as! UIButton
-            if let cell = button.superview?.superview as? postCellTableViewCell {
+            if let cell = button.superview?.superview as? profileCell {
                     //print(cell.uid)
-                    let vc = segue.destination as! CommentViewController
-                    vc.postUser = self.postUser
-                    vc.recording = cell.post
+                    let vc = segue.destination as! followersViewController
+                    vc.followers = false
+                    vc.userIds = postUser!.following
+                    vc.numIds = postUser!.numFollowing
             }
         }
+        else if (segue.identifier == "toFollowers") {
+            let button = sender as! UIButton
+            if let cell = button.superview?.superview as? profileCell {
+                    //print(cell.uid)
+                    let vc = segue.destination as! followersViewController
+                    vc.followers = true
+                    print("followers in segue")
+                print(postUser!.followers)
+                    vc.userIds = postUser!.followers
+                    vc.numIds = postUser!.numFollowers
+            }
+        }
+    }
+    
+    func addFollower() -> Void {
+        postUser?.followers[User.current.uid] = true
+        postUser?.numFollowers += 1
+        tableView.reloadData()
+        return
+    }
+    
+    func removeFollower()-> Void {
+        postUser?.followers.removeValue(forKey: User.current.uid)
+        postUser?.numFollowers -= 1
+        tableView.reloadData()
+        return
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -41,9 +64,30 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
         if indexPath.row == 0{
             let cell = tableView.dequeueReusableCell(withIdentifier: "profileCell", for: indexPath) as! profileCell
             
-            cell.firstNameLabel.text = postUser?.firstName
-            cell.lastNameLabel.text = postUser?.lastName
+            cell.fullName.text = postUser!.firstName + " " + postUser!.lastName
+            cell.username.text = postUser?.username
+            print("numFollowers")
+            print(postUser?.numFollowers)
+            print("numFollowing")
+            print(postUser?.numFollowing)
+            cell.numFollowers.text = String(postUser!.numFollowers)
+            cell.numFollowing.text = String(postUser!.numFollowing)
+            cell.uid = postUser!.uid
+            print(User.current.following)
+            print("FOLLOWING")
+            if (User.current.following[postUser!.uid] == true) {
+                print("setting set follow to true")
+                cell.setFollow(isFollowing: true)
+            } else {
+                cell.setFollow(isFollowing: false)
+            }
+            
+            cell.followHandler =  addFollower
+            cell.unfollowHandler = removeFollower
+           
+            
             cell.profileImageView.sd_setImage(with: Storage.storage().reference().child("profilephotos").child(postUser!.profilePic))
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
             return cell
         }
         else{
@@ -94,12 +138,7 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
 
     @IBOutlet weak var Pfp: UIImageView!
     
-    override func viewWillDisappear(_ animated: Bool) {
-        if HomePageViewController.audioPlayer.isPlaying{
-            print("player needs to stop playing")
-            HomePageViewController.playingCell?.stopPlaying()
-        }
-    }
+
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

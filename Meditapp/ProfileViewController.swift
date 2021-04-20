@@ -40,7 +40,19 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 vc.recording = cell.post
             }
         }
-    }
+        else if (segue.identifier == "toFollowers") {
+                    let vc = segue.destination as! followersViewController
+                    vc.followers = true
+                    vc.userIds = User.current.followers
+                    vc.numIds = User.current.numFollowers
+            }
+            else if (segue.identifier == "toFollowing") {
+                    let vc = segue.destination as! followersViewController
+                    vc.followers = false
+                    vc.userIds = User.current.following
+                    vc.numIds = User.current.numFollowing
+            }
+        }
     
     
     //VARIABLES
@@ -53,6 +65,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var lastName: UILabel!
     @IBOutlet weak var userName: UILabel!
     
+    @IBOutlet weak var numFollowers: UILabel!
+    @IBOutlet weak var numFollowing: UILabel!
     
     var audioPlayer = AVAudioPlayer()
     var firstTimeLoaded = false
@@ -133,6 +147,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         firstName.text = User.current.firstName
         lastName.text = User.current.lastName
         userName.text = User.current.username
+        numFollowers.text = String(User.current.numFollowers)
+        numFollowing.text = String(User.current.numFollowing)
         
         authHandle = AuthService.authListener(viewController: self)
     

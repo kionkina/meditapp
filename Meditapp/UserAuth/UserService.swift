@@ -19,7 +19,11 @@ struct UserService {
                          "tags": [],
                          "content": [],
                          "likedPosts": [String:Bool](),
-                         "profilePic": "default.jpeg"] as [String : Any]
+                         "following": [String:Bool](),
+                         "followers": [String:Bool](),
+                         "profilePic": "default.jpeg",
+                        "numFollowers": 0,
+                        "numFollowing" : 0] as [String : Any]
         print("in create in userservice")
         let ref = Firestore.firestore().collection("Users").document(firUser.uid)
         
@@ -54,6 +58,8 @@ struct UserService {
                     return
                 }
             let user = User(snapshot: snapshot)
+            print("showing: ")
+            print(user?.numFollowing)
             completion(user)
         }
     }

@@ -20,6 +20,8 @@
 		36ED9EDA26194BDE0015F454 /* UploadPicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ED9ED926194BDE0015F454 /* UploadPicViewController.swift */; };
 		36ED9EFA26194C640015F454 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ED9EF926194C640015F454 /* ProfileViewController.swift */; };
 		60D61B693E64EB1965C57E2B /* Pods_Meditapp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC3A95EE12470508254ED4D5 /* Pods_Meditapp.framework */; };
+		9A2750B0262E06A60058F821 /* FollowersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2750AF262E06A60058F821 /* FollowersViewController.swift */; };
+		9A2750B3262E08880058F821 /* followerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2750B2262E08880058F821 /* followerCell.swift */; };
 		9A60A38E2603F26200E93DB1 /* UserProfilePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A60A38D2603F26200E93DB1 /* UserProfilePageViewController.swift */; };
 		9A60A3DA26051CC400E93DB1 /* DBViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A60A3D926051CC400E93DB1 /* DBViewController.swift */; };
 		9A60A4422607E48400E93DB1 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A60A4412607E48400E93DB1 /* Post.swift */; };
@@ -58,6 +60,8 @@
 		3626DF982617A1DB005EC4B6 /* profileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = profileCell.swift; sourceTree = "<group>"; };
 		36ED9ED926194BDE0015F454 /* UploadPicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadPicViewController.swift; sourceTree = "<group>"; };
 		36ED9EF926194C640015F454 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		9A2750AF262E06A60058F821 /* FollowersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowersViewController.swift; sourceTree = "<group>"; };
+		9A2750B2262E08880058F821 /* followerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = followerCell.swift; sourceTree = "<group>"; };
 		9A60A38D2603F26200E93DB1 /* UserProfilePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserProfilePageViewController.swift; path = Meditapp/UserProfilePageViewController.swift; sourceTree = SOURCE_ROOT; };
 		9A60A3D926051CC400E93DB1 /* DBViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		9A60A4412607E48400E93DB1 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Post.swift; path = Meditapp/Post.swift; sourceTree = SOURCE_ROOT; };
@@ -162,10 +166,12 @@
 				9A60A3D926051CC400E93DB1 /* DBViewController.swift */,
 				9AEA1D3525E5DF5100C329C8 /* GoogleService-Info.plist */,
 				3613CB4526067C460065D1CE /* HomePageViewController.swift */,
+				9A2750AF262E06A60058F821 /* FollowersViewController.swift */,
 				9AEA1D0D25E5DAC400C329C8 /* Info.plist */,
 				9AEA1D0A25E5DAC400C329C8 /* LaunchScreen.storyboard */,
 				03C63C4325EE295A00AD7815 /* postCellTableViewCell.swift */,
 				3626DF982617A1DB005EC4B6 /* profileCell.swift */,
+				9A2750B2262E08880058F821 /* followerCell.swift */,
 				36ED9EF926194C640015F454 /* ProfileViewController.swift */,
 				9AE03F5A2602959900715283 /* QuestionanireController.swift */,
 				3613CA942602BBC30065D1CE /* Recording.swift */,
@@ -333,7 +339,9 @@
 				3613CA972602BBC30065D1CE /* RecordingCell.swift in Sources */,
 				9AEA1D2125E5DE5500C329C8 /* LoginViewController.swift in Sources */,
 				035CE7B12627C06C00BE5F4C /* GenreCollectionViewCell.swift in Sources */,
+				9A2750B3262E08880058F821 /* followerCell.swift in Sources */,
 				9A9970B626127E2A008BAB51 /* CommentViewController.swift in Sources */,
+				9A2750B0262E06A60058F821 /* FollowersViewController.swift in Sources */,
 				0375DBA2261E1D320013BF82 /* checklistItemTableViewCell.swift in Sources */,
 				9A9970BA2612878E008BAB51 /* commentTableViewCell.swift in Sources */,
 				3613CB4626067C460065D1CE /* HomePageViewController.swift in Sources */,
