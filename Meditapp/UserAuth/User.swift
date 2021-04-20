@@ -25,6 +25,8 @@ class User : NSObject {
     var recordings: [DocumentReference]
     var likedPosts: [String:Bool]
     var profilePic: String
+    var likedGenres: [String:Int]
+
 
     
     //Standard User init()
@@ -37,6 +39,7 @@ class User : NSObject {
         self.recordings = []
         self.likedPosts = [String:Bool]()
         self.profilePic = profilePic
+        self.likedGenres = [String:Int]()
         super.init()
     }
     
@@ -51,6 +54,7 @@ class User : NSObject {
             self.recordings = (dict["content"] as? [DocumentReference]) ?? []
             self.likedPosts = (dict["likedPosts"] as? [String:Bool]) ?? [String:Bool]()
 //            self.profilePic = ( (dict.keys.contains("profilePic") ) ? dict["profilePic"] as! String : "default.jpeg")
+            self.likedGenres = (dict["likedGenres"] as? [String:Int]) ?? [String:Int]()
             if dict.keys.contains("profilePic"){
                 self.profilePic = dict["profilePic"] as! String
             }
@@ -74,7 +78,8 @@ class User : NSObject {
             let tags = aDecoder.decodeObject(forKey:"tags") as? [String],
 //            let recordings = aDecoder.decodeObject(forKey:"recordings") as? [DocumentReference],
             let likedPosts = aDecoder.decodeObject(forKey:"likedPosts") as? [String:Bool],
-            let profilePic = aDecoder.decodeObject(forKey: "profilePic") as? String
+            let profilePic = aDecoder.decodeObject(forKey: "profilePic") as? String,
+            let likedGenres = aDecoder.decodeObject(forKey:"likedGenres") as? [String:Int]
             else { return nil }
         
         self.uid = uid
@@ -85,6 +90,7 @@ class User : NSObject {
         self.recordings = []
         self.likedPosts = likedPosts
         self.profilePic = profilePic
+        self.likedGenres = likedGenres
         print(self.profilePic, "PROFILEPIC")
         print(self.likedPosts, "IN USERSWIFT")
     }
@@ -122,5 +128,6 @@ extension User: NSCoding {
 //        aCoder.encode(recordings, forKey: "recordings")
         aCoder.encode(likedPosts, forKey: "likedPosts")
         aCoder.encode(profilePic, forKey: "profilePic")
+        aCoder.encode(likedGenres, forKey: "likedGenres")
     }
 }

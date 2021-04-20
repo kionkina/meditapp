@@ -5,6 +5,7 @@
 //
 
 import UIKit
+import TaggerKit
 import UserNotifications
 import FirebaseStorage
 import AVFoundation
@@ -21,6 +22,8 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var playButton: UIButton!
     
+    
+    @IBOutlet weak var tags: UIView?
     
     @IBOutlet weak var commentsCount: UILabel?
     @IBOutlet weak var username:UIButton!
@@ -128,11 +131,14 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
         let defaults = UserDefaults.standard
 
         if(like){
-            DBViewController.createLike(for: post!.RecID){ numofLikes in
+            DBViewController.createLike(for: post!){ numofLikes in
                 //update user likepost then store it back in userdefault.
                 User.current.likedPosts.updateValue(true, forKey: self.post!.RecID)
                 self.setLiked(true, numofLikes)
                 
+                for tag in self.post!.Tags{
+                    User.current.likedGenres[tag]! += 1
+                }
                 let updateDict = [
                     "updateRecID":self.post!.RecID,
                     "updateLikes":numofLikes
@@ -146,10 +152,13 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
             }
         }
         else{
-            DBViewController.destroyLike(for: post!.RecID){ numofLikes in
+            DBViewController.destroyLike(for: post!){ numofLikes in
                 User.current.likedPosts.removeValue(forKey: self.post!.RecID)
                 self.setLiked(false, numofLikes)
-
+                
+                for tag in self.post!.Tags{
+                    User.current.likedGenres[tag]! += 1
+                }
                 let updateDict = [
                     "updateRecID":self.post!.RecID,
                     "updateLikes":numofLikes
@@ -167,10 +176,10 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
     @IBAction func commentButton(_ sender: UIButton) {
     }
     
-//    var uid: String = ""
     var postUser: User?
     var post: Post?
     var liked: Bool = false
+//    var tagCollection = TKCollectionView()
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -181,6 +190,8 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
     func configure(with model: Post, for user: User?){
         self.commentsCount?.text = "\(model.numComments)"
         
+//        tags.addSubview(tagCollection.view)
+//        tagCollection.tags = post!.Tags
         self.postTitle.text = model.Name
         self.postDescription.text = model.Description
         //retrieves image from postphotos in storage

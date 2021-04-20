@@ -8,9 +8,7 @@ import UIKit
 
 class SelectTagsViewController: UIViewController {
     
-    let exploreTags: [String] = ["Morning", "Evening",
-    "Anxiety-relief", "Breathing", "Visualization", "Energizing",
-    "Gratefulness", "Reflection", "testCombined"]
+    let exploreTags: [String] = ["Morning", "Evening", "Energizing", "Relaxing", "meditation", "Mantra"]
     
     override func viewDidLoad() {
         super.viewDidLoad()

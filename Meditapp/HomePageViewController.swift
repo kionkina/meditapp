@@ -9,6 +9,7 @@ import UIKit
 import FirebaseFirestore
 import FirebaseStorage
 import StreamingKit
+import TaggerKit
 
 class HomePageViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate{
 
@@ -183,26 +184,33 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! postCellTableViewCell
                 
-                let recording = recordings[indexPath.row]
-                cell.post = recording
-                
-                //set whether the post has already been liked when displaying cells.
-                if User.current.likedPosts[recording.RecID] != nil{
-                    cell.setLiked(User.current.likedPosts[recording.RecID]!, recording.numLikes)
-                }
-                else{
-                    cell.setLiked(false, recording.numLikes)
-                }
-                if let user = users[recording.OwnerID]{
-                    if user?.uid == User.current.uid{
-                        cell.configure(with: recording, for: User.current )
-                        cell.postUser = User.current
-                    }
-                    else{
-                        cell.configure(with: recording, for: user )
-                        cell.postUser = user
-                    }
-                }
+        let recording = recordings[indexPath.row]
+        cell.post = recording
+        DispatchQueue.main.async {
+            let tagCollection = TKCollectionView()
+            cell.tags!.addSubview(tagCollection.view)
+            tagCollection.tags = recording.Tags
+        }
+//        let tagCollection = TKCollectionView()
+//        cell.tags.addSubview(tagCollection.view)
+//        tagCollection.tags = recording.Tags
+        //set whether the post has already been liked when displaying cells.
+        if User.current.likedPosts[recording.RecID] != nil{
+            cell.setLiked(User.current.likedPosts[recording.RecID]!, recording.numLikes)
+        }
+        else{
+            cell.setLiked(false, recording.numLikes)
+        }
+        if let user = users[recording.OwnerID]{
+            if user?.uid == User.current.uid{
+                cell.configure(with: recording, for: User.current )
+                cell.postUser = User.current
+            }
+            else{
+                cell.configure(with: recording, for: user )
+                cell.postUser = user
+            }
+        }
         
         // add separator
         cell.sepLine?.isHidden = (Int(indexPath.row) != self.separator - 1)

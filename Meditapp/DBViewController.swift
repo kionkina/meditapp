@@ -197,7 +197,8 @@ class DBViewController: UIViewController {
         }
     }
 
-    static func createLike(for postID: String, success: @escaping (Int) -> Void){
+    static func createLike(for post: Post, success: @escaping (Int) -> Void){
+        let postID = post.RecID
         let db = Firestore.firestore()
         let postRef = db.collection("recordings").document(postID)
         let userRef = db.collection("Users").document(User.current.uid)
@@ -238,6 +239,9 @@ class DBViewController: UIViewController {
             transaction.updateData(["numLikes": newLikes], forDocument: postRef)
             //messed up b4
             transaction.updateData(["likedPosts.\(postID)":true], forDocument: userRef)
+            for tag in post.Tags{
+                transaction.updateData(["likedGenres.\(tag)": FieldValue.increment(Int64(1))], forDocument: userRef)
+            }
             success(newLikes)
             return newLikes
         }) { (object, error) in
@@ -249,7 +253,8 @@ class DBViewController: UIViewController {
         }
     }
     
-    static func destroyLike(for postID: String, success: @escaping (Int) -> Void){
+    static func destroyLike(for post: Post, success: @escaping (Int) -> Void){
+        let postID = post.RecID
         let db = Firestore.firestore()
         let postRef = db.collection("recordings").document(postID)
         let userRef = db.collection("Users").document(User.current.uid)
@@ -290,6 +295,9 @@ class DBViewController: UIViewController {
             transaction.updateData(["numLikes": newLikes], forDocument: postRef)
             //messed up b4
             transaction.updateData(["likedPosts.\(postID)": FieldValue.delete()], forDocument: userRef)
+            for tag in post.Tags{
+                transaction.updateData(["likedGenres.\(tag)": FieldValue.increment(Int64(-1))], forDocument: userRef)
+            }
             success(newLikes)
             return newLikes
         }) { (object, error) in

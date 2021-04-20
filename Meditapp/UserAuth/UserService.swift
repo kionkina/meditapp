@@ -19,7 +19,9 @@ struct UserService {
                          "tags": [],
                          "content": [],
                          "likedPosts": [String:Bool](),
-                         "profilePic": "default.jpeg"] as [String : Any]
+                         "profilePic": "default.jpeg",
+                         "likedGenres": [String:Int]()
+        ] as [String : Any]
         print("in create in userservice")
         let ref = Firestore.firestore().collection("Users").document(firUser.uid)
         

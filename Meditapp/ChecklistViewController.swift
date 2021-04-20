@@ -66,16 +66,20 @@ class ChecklistViewController: UITableViewController {
     @IBAction func done() {
         
         var userSelection: [String] = []
+        var userGenres = [String:Int]()
         //unwrap optional
         if let selectedRows = tableView.indexPathsForSelectedRows {
-            
             for item: IndexPath in selectedRows {
                 userSelection.append(checklist[item.row])
+                userGenres[checklist[item.row]] = 5
             }
         }
         
         User.current.tags = userSelection
+        User.current.likedGenres = userGenres
+        print("user liked genres in checklist = \(userGenres)")
         updateData(selectedTags: userSelection)
+        updatelikedGenres(forGenres: userGenres)
         //send this to db
         
         //TODO: check that at least one is selected
@@ -94,7 +98,23 @@ class ChecklistViewController: UITableViewController {
             if let err = err {
                 print("Error updating document: \(err)")
             } else {
+                User.setCurrent(User.current, writeToUserDefaults: true)
                 print("Document successfully updated")
+            }
+        }
+    }
+    
+    func updatelikedGenres(forGenres genres: [String:Int]){
+        let docRef = Firestore.firestore().collection("Users").document(User.current.uid)
+
+        docRef.updateData([
+            "likedGenres": genres
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+                User.setCurrent(User.current, writeToUserDefaults: true)
             }
         }
         

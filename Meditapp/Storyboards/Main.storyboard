@@ -20,11 +20,12 @@
                     <connections>
                         <segue destination="xEb-PT-1cq" kind="relationship" relationship="viewControllers" id="Zcf-9t-TY5"/>
                         <segue destination="wni-IA-jJR" kind="relationship" relationship="viewControllers" id="OVs-eN-YiK"/>
+                        <segue destination="pZg-BV-D9y" kind="relationship" relationship="viewControllers" id="Aha-dx-byc"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Zg-mi-cX0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-346" y="-484"/>
+            <point key="canvasLocation" x="-222" y="-484"/>
         </scene>
         <!--Home Page View Controller-->
         <scene sceneID="5Ut-sW-PkO">
@@ -159,6 +160,11 @@
                                                         <action selector="playButton:" destination="St0-jy-Ijf" eventType="touchUpInside" id="imV-AQ-cXw"/>
                                                     </connections>
                                                 </button>
+                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RtE-vf-A0H">
+                                                    <rect key="frame" x="25" y="181" width="380" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                </view>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="Ya5-sf-YON" firstAttribute="top" secondItem="SJF-Ma-xBT" secondAttribute="bottom" constant="7" id="0C9-5R-Ois"/>
@@ -227,6 +233,7 @@
                                             <outlet property="postImage" destination="nG0-tr-g8t" id="SyL-AF-iep"/>
                                             <outlet property="postTitle" destination="SJF-Ma-xBT" id="d1q-CN-mYh"/>
                                             <outlet property="sepLine" destination="GM0-AZ-E3G" id="29s-zH-xux"/>
+                                            <outlet property="tags" destination="RtE-vf-A0H" id="gh2-4p-3fy"/>
                                             <outlet property="time" destination="Ev4-mh-TBH" id="JvM-HP-Dxw"/>
                                             <outlet property="userImage" destination="52w-bp-god" id="VUq-J9-S5V"/>
                                             <outlet property="username" destination="VJT-LA-2lr" id="BoI-aF-b6r"/>
@@ -991,6 +998,44 @@
             </objects>
             <point key="canvasLocation" x="-1226" y="2736"/>
         </scene>
+        <!--Explore Page View Controller-->
+        <scene sceneID="mRM-Do-7ZE">
+            <objects>
+                <viewController id="q3c-j0-UEy" customClass="ExplorePageViewController" customModule="Meditapp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="4Zn-ou-8gm"/>
+                        <viewControllerLayoutGuide type="bottom" id="VvE-cX-9xp"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="GCC-xz-sIs">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="2pt-pB-D4O">
+                                <rect key="frame" x="0.0" y="44" width="414" height="643"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="q3c-j0-UEy" id="HdG-Px-WIX"/>
+                                    <outlet property="delegate" destination="q3c-j0-UEy" id="jIR-GF-uAM"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="VvE-cX-9xp" firstAttribute="top" secondItem="2pt-pB-D4O" secondAttribute="bottom" id="ScM-De-0Jt"/>
+                            <constraint firstItem="2pt-pB-D4O" firstAttribute="top" secondItem="4Zn-ou-8gm" secondAttribute="bottom" id="adc-NC-4Lh"/>
+                            <constraint firstAttribute="trailing" secondItem="2pt-pB-D4O" secondAttribute="trailing" id="cex-66-vHt"/>
+                            <constraint firstItem="2pt-pB-D4O" firstAttribute="leading" secondItem="GCC-xz-sIs" secondAttribute="leading" id="e9M-Cj-zUn"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="2cJ-NC-L6q"/>
+                    <connections>
+                        <outlet property="tableView" destination="2pt-pB-D4O" id="Be6-tT-Cfh"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WPv-67-eNr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1855.072463768116" y="-484.23913043478262"/>
+        </scene>
         <!--My Profile-->
         <scene sceneID="Znm-nH-2hQ">
             <objects>
@@ -1332,9 +1377,28 @@
             </objects>
             <point key="canvasLocation" x="176.81159420289856" y="296.73913043478262"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="WMi-Sa-am2">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="pZg-BV-D9y" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="" image="magnifyingglass" catalog="system" id="FP2-EP-cG0"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="hyi-cZ-32R">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="q3c-j0-UEy" kind="relationship" relationship="rootViewController" id="DSW-YU-qkc"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7xs-NM-kfR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="947.82608695652186" y="-484.23913043478262"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="zfB-l7-Bea"/>
+        <segue reference="0Zq-kq-JsZ"/>
         <segue reference="M0n-Hc-e7P"/>
     </inferredMetricsTieBreakers>
     <resources>
@@ -1343,6 +1407,7 @@
         <image name="hand.thumbsup.fill" catalog="system" width="128" height="121"/>
         <image name="house.fill" catalog="system" width="128" height="106"/>
         <image name="line" width="500" height="200"/>
+        <image name="magnifyingglass" catalog="system" width="128" height="115"/>
         <image name="pencil" catalog="system" width="128" height="113"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
         <image name="photo" width="1400" height="1400"/>
