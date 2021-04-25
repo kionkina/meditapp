@@ -302,13 +302,13 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RRx-ba-EOw">
-                                                    <rect key="frame" x="150" y="196" width="36" height="17"/>
+                                                    <rect key="frame" x="155" y="196" width="36" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lBq-aq-ojU">
-                                                    <rect key="frame" x="238" y="196" width="36" height="17"/>
+                                                    <rect key="frame" x="233" y="196" width="36" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -342,11 +342,10 @@
                                                 <constraint firstItem="RRx-ba-EOw" firstAttribute="top" secondItem="fql-G0-hwA" secondAttribute="bottom" constant="49" id="Ezk-nX-ivC"/>
                                                 <constraint firstItem="oEy-aL-4vG" firstAttribute="top" secondItem="fql-G0-hwA" secondAttribute="bottom" constant="12" id="Ij7-5g-mOZ"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="RRx-ba-EOw" secondAttribute="bottom" constant="34" id="KS1-zP-JWA"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="lBq-aq-ojU" secondAttribute="trailing" constant="120" id="LdN-HW-49s"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="lBq-aq-ojU" secondAttribute="trailing" constant="125" id="LdN-HW-49s"/>
                                                 <constraint firstItem="Kie-Kr-Bfy" firstAttribute="leading" secondItem="yfr-AH-cja" secondAttribute="leadingMargin" constant="86" id="N3e-dY-Cak"/>
-                                                <constraint firstItem="RRx-ba-EOw" firstAttribute="leading" secondItem="yfr-AH-cja" secondAttribute="leadingMargin" constant="130" id="OrS-Pt-p4I"/>
+                                                <constraint firstItem="RRx-ba-EOw" firstAttribute="leading" secondItem="yfr-AH-cja" secondAttribute="leadingMargin" constant="135" id="OrS-Pt-p4I"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="7QL-TR-Db9" secondAttribute="bottom" constant="-11" id="Ph4-Ex-JN1"/>
-                                                <constraint firstItem="lBq-aq-ojU" firstAttribute="leading" secondItem="RRx-ba-EOw" secondAttribute="trailing" constant="52" id="PzI-s8-LGg"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="Kie-Kr-Bfy" secondAttribute="trailing" constant="86" id="QP9-ZH-ihR"/>
                                                 <constraint firstAttribute="trailing" secondItem="7QL-TR-Db9" secondAttribute="trailing" id="Qi8-NL-G7m"/>
                                                 <constraint firstItem="Kie-Kr-Bfy" firstAttribute="top" secondItem="yfr-AH-cja" secondAttribute="topMargin" constant="8" id="XsE-zO-IuA"/>
@@ -1825,9 +1824,9 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="zfB-l7-Bea"/>
-        <segue reference="WoX-UU-taf"/>
-        <segue reference="zeM-An-4Xy"/>
+        <segue reference="0Zq-kq-JsZ"/>
+        <segue reference="pGk-au-85h"/>
+        <segue reference="M0n-Hc-e7P"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="arrow.right" catalog="system" width="128" height="98"/>

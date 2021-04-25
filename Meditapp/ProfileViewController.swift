@@ -141,6 +141,16 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        print("view did appear")
+        if (numFollowing.text != String(User.current.numFollowing)) {
+            numFollowing.text = String(User.current.numFollowing)
+        }
+        if (numFollowers.text != String(User.current.numFollowers)) {
+            numFollowers.text = String(User.current.numFollowers)
+        }
+    }
+    
     func configure()
     {
         

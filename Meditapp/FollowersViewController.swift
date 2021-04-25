@@ -40,17 +40,14 @@ class followersViewController: UIViewController, UITableViewDelegate, UITableVie
     
     @objc func loadTenUsers(success: @escaping (Bool) -> Void) -> Void {
         if (userIds != nil) {
-            print("userIds")
-            print(userIds)
             //takes 10 user ids from current index
             let keys = userIds?.keys
             var idArr = [String](userIds!.keys)
-            print("idArR:")
-            print(idArr)
+
             var updateIndex: Bool = false
             // there are less than 10 more users to pull
             if (keys!.count > 0) {
-                if (keys!.count - (curr_index + 1) > 11) {
+                if (keys!.count - (curr_index + 1) > 10) {
                     updateIndex = true
                     idArr = [String](idArr[curr_index + 1...curr_index + 10])
                 } else {
@@ -73,7 +70,12 @@ class followersViewController: UIViewController, UITableViewDelegate, UITableVie
         tableView.reloadData()
         if (updateIndex) {
             curr_index += 10
+            loadTenUsers(success: doneLoadingUsers)
         }
+        else {
+            return
+        }
+
     }
     
     
@@ -102,14 +104,10 @@ class followersViewController: UIViewController, UITableViewDelegate, UITableVie
 
         
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("RELOADING")
-
         let cell = tableView.dequeueReusableCell(withIdentifier: "followerCell", for: indexPath) as! followerCell
         
         let user = self.users[indexPath.row]
-        print("index is")
         print(indexPath.row)
-        print("configuring for ")
         print(user.username)
         cell.configure(for: user)
         
