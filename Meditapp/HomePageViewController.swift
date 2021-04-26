@@ -20,9 +20,16 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     var queryLimit = 0
     let myRefreshControl = UIRefreshControl()
     var separator = 0
+    
+    var curr_index = -1
+    var following: [User] = []
+    var userIds: [String:Bool] = [:]
+    var numIds: Int = 0
 
     static var audioPlayer = AVAudioPlayer()
     static var playingCell: postCellTableViewCell?
+    
+    
     
     var isFetchingMore:Bool = false
     var canFetchMore:Bool = true
@@ -32,6 +39,47 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
 
     }
     
+    @objc func loadTenUsers(success: @escaping (Bool) -> Void) -> Void {
+        if (userIds != nil) {
+            //takes 10 user ids from current index
+            let keys = userIds.keys
+            var idArr = [String](userIds.keys)
+
+            var updateIndex: Bool = false
+            // there are less than 10 more users to pull
+            if (keys.count > 0) {
+                if (keys.count - (curr_index + 1) > 10) {
+                    updateIndex = true
+                    idArr = [String](idArr[curr_index + 1...curr_index + 10])
+                } else {
+                    idArr = [String](idArr[(curr_index + 1)...(keys.count - 1)])
+                }
+
+                DBViewController.loadTenUsers(for: idArr) { (users: [User]) in
+                    for newUser in users {
+                        self.following.append(newUser)
+                        print(users)
+                    }
+                    success(updateIndex)
+                }
+            }
+        }
+    }
+
+    func doneLoadingUsers(updateIndex: Bool){
+        print("in done loading users")
+        tableView.reloadData()
+        if (updateIndex) {
+            curr_index += 10
+            loadTenUsers(success: doneLoadingUsers)
+        }
+        else {
+            print("loaded all da following")
+            print(self.following)
+            return
+        }
+
+    }
     
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -148,6 +196,8 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         tableView.refreshControl = myRefreshControl
 
         loadRecordings(success: loadUsers)
+        self.userIds = User.current.following
+        loadTenUsers(success: doneLoadingUsers)
 
         print(User.current.uid, "i am the current user")
         print(User.current.tags, "my current tags")
