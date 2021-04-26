@@ -7,27 +7,55 @@
 
 import UIKit
 
+protocol RecommendationsDelegate: class {
+    func userDidTap(forTags tags:[String])
+}
+
 class RecommendationsTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return recordings.count
+        return recordings.count + 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if indexPath.row == recordings.count{
+            delegate!.userDidTap(forTags: toplikedGenres)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecommendationsCollectionViewCell.identifier, for: indexPath) as! RecommendationsCollectionViewCell
-        
-        let recording = recordings[indexPath.row]
-        if let user = users[recording.OwnerID]{
-            cell.configure(withPost: recording, forUser: user!)
+        if indexPath.row < recordings.count{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecommendationsCollectionViewCell.identifier, for: indexPath) as! RecommendationsCollectionViewCell
+            
+            let recording = recordings[indexPath.row]
+            if let user = users[recording.OwnerID]{
+                cell.configure(withPost: recording, forUser: user!)
+            }
+            cell.layer.borderColor = UIColor.black.cgColor
+            cell.layer.borderWidth = 1
+            return cell
         }
-        cell.layer.borderColor = UIColor.black.cgColor
-        cell.layer.borderWidth = 1
+        else{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LoadMoreCollectionViewCell.identifier, for: indexPath) as! LoadMoreCollectionViewCell
+            if !displayMoreCell{
+                cell.viewMore.isEnabled = false
+            }
+            else{
+                cell.viewMore.isEnabled = true
+            }
+            return cell
+        }
 
-        return cell
+
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 380, height: 210)
+        if indexPath.row == recordings.count{
+            return CGSize(width: 210, height: 250)
+        }
+        else{
+            return CGSize(width: 380, height: 210)
+        }
     }
 
     static let identifier = "RecommendationsTableViewCell"
@@ -38,11 +66,21 @@ class RecommendationsTableViewCell: UITableViewCell, UICollectionViewDelegate, U
     
     @IBOutlet var collectionView:UICollectionView!
     
+    weak var delegate: RecommendationsDelegate?
+
     var recordings = [Post]()
     var users = [String: User?]()
+    var toplikedGenres:[String] = {
+        let topGenresDicts = User.current.likedGenres.sorted { $0.value > $1.value }.prefix(3)
+        var topGenres = [String]()
+        for dict in topGenresDicts{
+            topGenres.append(dict.key)
+        }
+        return topGenres
+    }()
     
     var queryLimit = 0
-    
+    var displayMoreCell = false
     deinit {
         print("Recommendations table view cell destroyed")
     }
@@ -53,18 +91,12 @@ class RecommendationsTableViewCell: UITableViewCell, UICollectionViewDelegate, U
         collectionView.delegate = self
         
         collectionView.register(RecommendationsCollectionViewCell.nib(), forCellWithReuseIdentifier: RecommendationsCollectionViewCell.identifier)
+        collectionView.register(LoadMoreCollectionViewCell.nib(), forCellWithReuseIdentifier: LoadMoreCollectionViewCell.identifier)
         
 //        print("Recommendations table view cell generated")
         //get users top 3 liked genres
-        let topGenresDicts = User.current.likedGenres.sorted { $0.value > $1.value }.prefix(3)
-        var topGenres = [String]()
-        for dict in topGenresDicts{
-            topGenres.append(dict.key)
-        }
-        
-        print(topGenres, " top genres selected")
         //get recordings
-        loadRecordings(forTags: topGenres, success: loadUsers)
+        loadRecordings(forTags: toplikedGenres, success: loadUsers)
     }
 
     func loadRecordings(forTags tags:[String], success: @escaping(() -> Void)) {

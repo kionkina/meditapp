@@ -1,42 +1,28 @@
 //
-//  HomePageViewController.swift
+//  ViewMoreViewController.swift
 //  Meditapp
 //
-//  Created by Jackson Lu on 3/20/21.
+//  Created by Jackson Lu on 4/26/21.
 //
-import AVFoundation
+
 import UIKit
-import FirebaseFirestore
-import FirebaseStorage
-import StreamingKit
 import TaggerKit
+class ViewMoreViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-class HomePageViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate{
-
-    @IBOutlet var tableView: UITableView!
+    @IBOutlet weak var tableView: UITableView!
+    
+    var viewforTags = [String]()
     
     var recordings = [Post]()
     var users = [String: User?]()
-//    var audioPlayer = AVAudioPlayer()
+    var tagTaggerKits = [TKCollectionView]()
+    
     var queryLimit = 0
     let myRefreshControl = UIRefreshControl()
-    var separator = 0
-
-    static var audioPlayer = AVAudioPlayer()
-    static var playingCell: postCellTableViewCell?
-    
-    var tagTaggerKits = [TKCollectionView]()
     
     var isFetchingMore:Bool = false
     var canFetchMore:Bool = true
-
-    var audioReference: StorageReference{
-        return Storage.storage().reference().child("recordings")
-
-    }
     
-    
-
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "toProfile") {
             let button = sender as! UIButton
@@ -63,7 +49,6 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         //because if we dont remove users, in the loadusers post, all our users already stored, so it wont get to point of reloading data, since if statement never checks in loaduser since we run the loop on recordings we already fetched where it checks if ownerid exists in dict we had prior before we removed. The table then tries to load the cell before table has been reloading so it tries to load the row from data model that is no longer dere.
         recordings.removeAll()
         users.removeAll()
-        tagTaggerKits.removeAll()
         tableView.reloadData()
         loadRecordings(success: loadUsers)
     }
@@ -84,10 +69,8 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @objc func loadRecordings(success: @escaping(() -> Void)) {
-        print("i'm in loadrecordings")
         queryLimit = 8
-        print("about to make call to get posts")
-        DBViewController.getPostsByTags(forLimit: queryLimit, forTags: User.current.tags) { (docs, numFetched) in
+        DBViewController.getPostsExplore(forLimit: queryLimit, forTags: viewforTags) { (docs, numFetched) in
             self.recordings.removeAll()
             for doc in docs{
                 let tagger = TKCollectionView()
@@ -95,19 +78,15 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                 self.tagTaggerKits.append(tagger)
                 self.recordings.append(doc)
             }
-//            print(self.recordings.count, "after first load")
-            print("successfully appended to datamodel")
 //            self.tableView.reloadData()
-            self.separator = numFetched
             self.myRefreshControl.endRefreshing()
             success()
         }
     }
     
     func loadMoreRecordings(success: @escaping(() -> Void)) {
-        print("load more recordings being called")
         queryLimit += 8
-        DBViewController.getPostsByTags(forLimit: queryLimit, forTags: User.current.tags) { (docs, numFetched) in
+        DBViewController.getPostsExplore(forLimit: queryLimit, forTags: viewforTags) { (docs, numFetched) in
             let prevNumPosts = self.recordings.count
             self.recordings.removeAll()
             for doc in docs{
@@ -121,25 +100,19 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                 self.canFetchMore = false
             }
             //in case we already have all users in our users dict, if statement wont check and it wont reload.
-            self.separator = numFetched
             self.tableView.reloadData()
             self.isFetchingMore = false
             success()
         }
     }
     
+    
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row + 1 == recordings.count{
             if !isFetchingMore && canFetchMore{
-                print("fetching more")
                 loadMoreRecordings(success: loadUsers)
             }
         }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        tableView.reloadData()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -151,18 +124,13 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        tableView.estimatedRowHeight = 10000 // or your estimate
 
+        tableView.estimatedRowHeight = 10000
         myRefreshControl.addTarget(self, action: #selector(refreshReload), for: .valueChanged)
         tableView.refreshControl = myRefreshControl
 
         loadRecordings(success: loadUsers)
-
-        print(User.current.uid, "i am the current user")
-        print(User.current.tags, "my current tags")
-        print(User.current.recordings , "my recordings")
-        print(User.current.profilePic, "current profile in homepage")
+        
         NotificationCenter.default.addObserver(self, selector: #selector(handleLikes), name: Notification.Name("UpdateLikes"), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleComment), name: Notification.Name("UpdateComment"), object: nil)
@@ -188,7 +156,6 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
             }
         }
     }
-        
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! postCellTableViewCell
@@ -216,11 +183,9 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         }
         
         // add separator
-        cell.sepLine?.isHidden = (Int(indexPath.row) != self.separator - 1)
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
         return cell
     }
-    
     
     // MARK: - Table view data source
 
@@ -229,7 +194,4 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         return recordings.count
     }
     
-    
-
 }
-

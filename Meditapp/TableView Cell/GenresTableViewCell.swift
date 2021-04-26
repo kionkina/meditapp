@@ -7,9 +7,19 @@
 
 import UIKit
 
+protocol GenresDelegate: class {
+    func userDidTap(forTags tags:[String])
+}
+
 class GenresTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         genres.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        var arr = [String]()
+//        arr.append(genres[indexPath.row])
+        delegate!.userDidTap(forTags: Array(arrayLiteral: genres[indexPath.row]))
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -23,6 +33,7 @@ class GenresTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollecti
         return CGSize(width: 250, height: 210)
     }
     
+    
 
     static let identifier = "GenresTableViewCell"
     
@@ -34,9 +45,8 @@ class GenresTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollecti
     
     let genres = ["Morning", "Evening", "Energizing", "Relaxing", "meditation", "Mantra"]
     
-    deinit {
-        print("Genres table view cell destroyed")
-    }
+    weak var delegate: GenresDelegate?
+
     
     override func awakeFromNib() {
         super.awakeFromNib()

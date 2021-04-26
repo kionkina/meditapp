@@ -7,7 +7,21 @@
 
 import UIKit
 
-class ExplorePageViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ExplorePageViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, RecommendationsDelegate, GenresDelegate {
+//    func userDidTap(forTag tag: String) {
+//        performSegue(withIdentifier: "viewMoreGenre", sender: tag)
+//    }
+    
+    func userDidTap(forTags tags:[String]) {
+        performSegue(withIdentifier: "viewMore", sender: tags)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "viewMore"{
+            let vc = segue.destination as! ViewMoreViewController
+            vc.viewforTags = sender as! [String]
+        }
+    }
     
     @IBOutlet weak var tableView: UITableView!
     var titles = ["Recommendations", "Genres"]
@@ -43,11 +57,13 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
         if indexPath.section == 0{
             print("At indexpath section 0")
             let cell = tableView.dequeueReusableCell(withIdentifier: RecommendationsTableViewCell.identifier, for: indexPath) as! RecommendationsTableViewCell
+            cell.delegate = self
             return cell
         }
         else{
             print("At indexpath \(indexPath.section)")
             let cell = tableView.dequeueReusableCell(withIdentifier: GenresTableViewCell.identifier, for: indexPath) as! GenresTableViewCell
+            cell.delegate = self
             return cell
         }
     }

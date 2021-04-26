@@ -125,6 +125,34 @@ class DBViewController: UIViewController {
         }
     }
     
+    static func getPostsExplore(forLimit limit: Int , forTags tags: [String], success: @escaping ([Post], _ numFetched: Int) -> Void){
+        let db = Firestore.firestore()
+        var fetchedPosts = [Post]()
+        let queryRef = db.collection("recordings")
+            //.whereField("OwnerID", notIn: [User.current.uid])
+            .whereField("Tags", arrayContainsAny: tags)
+            .order(by: "Timestamp", descending: true)
+            .limit(to: limit)
+        //get documents from that query
+        queryRef.getDocuments { (querySnapshot, error) in
+            if let error = error{
+                print("Error getting documents: \(error.localizedDescription)")
+            }
+            else{
+                //querysnapshot can contain multiple documents
+                if querySnapshot!.documents.count <= 0{
+                    print("no documents fetched")
+                }
+                else{
+                    for snapshot in querySnapshot!.documents{
+                        let curPost = Post(snapshot: snapshot)!
+                        fetchedPosts.append(curPost)
+                    }
+                    success(fetchedPosts, fetchedPosts.count)
+                }
+            }
+        }
+    }
     static func getUserById(forUID uid: String, success: @escaping (User?) -> Void) {
 
         let docRef = Firestore.firestore().collection("Users").document(uid)
