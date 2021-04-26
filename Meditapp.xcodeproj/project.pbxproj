@@ -24,6 +24,7 @@
 		36B9F7FD262E0A3F0010BFCD /* RecommendationsCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36B9F7FB262E0A3F0010BFCD /* RecommendationsCollectionViewCell.xib */; };
 		36B9F801262E0D950010BFCD /* GenresCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B9F7FF262E0D950010BFCD /* GenresCollectionViewCell.swift */; };
 		36B9F802262E0D950010BFCD /* GenresCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36B9F800262E0D950010BFCD /* GenresCollectionViewCell.xib */; };
+		36B9F811262F2DB60010BFCD /* HeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B9F810262F2DB60010BFCD /* HeaderTableViewCell.swift */; };
 		36ED9EDA26194BDE0015F454 /* UploadPicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ED9ED926194BDE0015F454 /* UploadPicViewController.swift */; };
 		36ED9EFA26194C640015F454 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ED9EF926194C640015F454 /* ProfileViewController.swift */; };
 		60D61B693E64EB1965C57E2B /* Pods_Meditapp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC3A95EE12470508254ED4D5 /* Pods_Meditapp.framework */; };
@@ -70,6 +71,7 @@
 		36B9F7FB262E0A3F0010BFCD /* RecommendationsCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecommendationsCollectionViewCell.xib; sourceTree = "<group>"; };
 		36B9F7FF262E0D950010BFCD /* GenresCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenresCollectionViewCell.swift; sourceTree = "<group>"; };
 		36B9F800262E0D950010BFCD /* GenresCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GenresCollectionViewCell.xib; sourceTree = "<group>"; };
+		36B9F810262F2DB60010BFCD /* HeaderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderTableViewCell.swift; sourceTree = "<group>"; };
 		36ED9ED926194BDE0015F454 /* UploadPicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadPicViewController.swift; sourceTree = "<group>"; };
 		36ED9EF926194C640015F454 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		9A60A38D2603F26200E93DB1 /* UserProfilePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserProfilePageViewController.swift; path = Meditapp/UserProfilePageViewController.swift; sourceTree = SOURCE_ROOT; };
@@ -160,6 +162,14 @@
 			path = "TableView Cell";
 			sourceTree = "<group>";
 		};
+		36B9F807262F2BEF0010BFCD /* Section headers */ = {
+			isa = PBXGroup;
+			children = (
+				36B9F810262F2DB60010BFCD /* HeaderTableViewCell.swift */,
+			);
+			path = "Section headers";
+			sourceTree = "<group>";
+		};
 		82E79FF1E6DD832BBC1D75F5 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -190,6 +200,7 @@
 		9AEA1CFE25E5DAC000C329C8 /* Meditapp */ = {
 			isa = PBXGroup;
 			children = (
+				36B9F807262F2BEF0010BFCD /* Section headers */,
 				36B9F7EF262E074F0010BFCD /* TableView Cell */,
 				36B9F7EE262E07450010BFCD /* CollectionView Cell */,
 				9AEA1CFF25E5DAC000C329C8 /* AppDelegate.swift */,
@@ -365,6 +376,7 @@
 				36B9F7F2262E0A0E0010BFCD /* RecommendationsTableViewCell.swift in Sources */,
 				9AEA1D3025E5DE7200C329C8 /* AuthService.swift in Sources */,
 				9AEA1D2825E5DE6000C329C8 /* ViewController+Utility.swift in Sources */,
+				36B9F811262F2DB60010BFCD /* HeaderTableViewCell.swift in Sources */,
 				9A9970BD2612888C008BAB51 /* Comment.swift in Sources */,
 				3613CA962602BBC30065D1CE /* RecordingViewController.swift in Sources */,
 				36B9F801262E0D950010BFCD /* GenresCollectionViewCell.swift in Sources */,

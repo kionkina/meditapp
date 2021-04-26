@@ -25,6 +25,8 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     static var audioPlayer = AVAudioPlayer()
     static var playingCell: postCellTableViewCell?
     
+    var tagTaggerKits = [TKCollectionView]()
+    
     var isFetchingMore:Bool = false
     var canFetchMore:Bool = true
 
@@ -61,6 +63,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         //because if we dont remove users, in the loadusers post, all our users already stored, so it wont get to point of reloading data, since if statement never checks in loaduser since we run the loop on recordings we already fetched where it checks if ownerid exists in dict we had prior before we removed. The table then tries to load the cell before table has been reloading so it tries to load the row from data model that is no longer dere.
         recordings.removeAll()
         users.removeAll()
+        tagTaggerKits.removeAll()
         tableView.reloadData()
         loadRecordings(success: loadUsers)
     }
@@ -87,6 +90,9 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         DBViewController.getPostsByTags(forLimit: queryLimit, forTags: User.current.tags) { (docs, numFetched) in
             self.recordings.removeAll()
             for doc in docs{
+                let tagger = TKCollectionView()
+                tagger.tags = doc.Tags
+                self.tagTaggerKits.append(tagger)
                 self.recordings.append(doc)
             }
 //            print(self.recordings.count, "after first load")
@@ -105,6 +111,9 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
             let prevNumPosts = self.recordings.count
             self.recordings.removeAll()
             for doc in docs{
+                let tagger = TKCollectionView()
+                tagger.tags = doc.Tags
+                self.tagTaggerKits.append(tagger)
                 self.recordings.append(doc)
             }
             //check is prev num post is equal to new amount of post. if so, cant fetch anymore
@@ -186,14 +195,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                 
         let recording = recordings[indexPath.row]
         cell.post = recording
-        DispatchQueue.main.async {
-            let tagCollection = TKCollectionView()
-            cell.tags!.addSubview(tagCollection.view)
-            tagCollection.tags = recording.Tags
-        }
-//        let tagCollection = TKCollectionView()
-//        cell.tags.addSubview(tagCollection.view)
-//        tagCollection.tags = recording.Tags
+
         //set whether the post has already been liked when displaying cells.
         if User.current.likedPosts[recording.RecID] != nil{
             cell.setLiked(User.current.likedPosts[recording.RecID]!, recording.numLikes)
@@ -201,13 +203,14 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         else{
             cell.setLiked(false, recording.numLikes)
         }
+        
         if let user = users[recording.OwnerID]{
             if user?.uid == User.current.uid{
-                cell.configure(with: recording, for: User.current )
+                cell.configure(with: recording, for: User.current, tagger: tagTaggerKits[indexPath.row])
                 cell.postUser = User.current
             }
             else{
-                cell.configure(with: recording, for: user )
+                cell.configure(with: recording, for: user, tagger: tagTaggerKits[indexPath.row] )
                 cell.postUser = user
             }
         }

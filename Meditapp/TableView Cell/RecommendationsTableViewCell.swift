@@ -20,7 +20,9 @@ class RecommendationsTableViewCell: UITableViewCell, UICollectionViewDelegate, U
         if let user = users[recording.OwnerID]{
             cell.configure(withPost: recording, forUser: user!)
         }
-        
+        cell.layer.borderColor = UIColor.black.cgColor
+        cell.layer.borderWidth = 1
+
         return cell
     }
     
@@ -71,8 +73,8 @@ class RecommendationsTableViewCell: UITableViewCell, UICollectionViewDelegate, U
             self.recordings.removeAll()
             for doc in docs{
                 self.recordings.append(doc)
-                self.collectionView.reloadData()
             }
+            self.collectionView.reloadData()
             success()
         }
     }
@@ -83,6 +85,7 @@ class RecommendationsTableViewCell: UITableViewCell, UICollectionViewDelegate, U
                 DBViewController.getUserById(forUID: recording.OwnerID) { (user) in
                     if let user = user {
                         self.users[user.uid] = user
+                        self.collectionView.reloadData()
                     }
                 }
             }

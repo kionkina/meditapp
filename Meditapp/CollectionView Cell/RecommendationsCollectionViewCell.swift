@@ -36,7 +36,7 @@ class RecommendationsCollectionViewCell: UICollectionViewCell {
     
     public func configure(withPost userPost:Post, forUser postUser:User){
         postTitle.text = userPost.Name
-        postDesc.text = userPost.description
+        postDesc.text = userPost.Description
         
         let postImageRef = Storage.storage().reference().child("postphotos").child(userPost.PostImg)
         

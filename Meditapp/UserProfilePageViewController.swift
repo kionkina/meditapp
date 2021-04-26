@@ -63,7 +63,7 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
             }
             
             if let user = postUser{
-                cell.configure(with: recording, for: user )
+                cell.configure(with: recording, for: user, tagger: nil )
                 cell.postUser = user
             }
             

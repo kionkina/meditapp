@@ -160,7 +160,7 @@
                                                         <action selector="playButton:" destination="St0-jy-Ijf" eventType="touchUpInside" id="imV-AQ-cXw"/>
                                                     </connections>
                                                 </button>
-                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RtE-vf-A0H">
+                                                <view tag="100" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RtE-vf-A0H">
                                                     <rect key="frame" x="25" y="181" width="380" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -998,7 +998,7 @@
             </objects>
             <point key="canvasLocation" x="-1226" y="2736"/>
         </scene>
-        <!--Explore Page View Controller-->
+        <!--Explore-->
         <scene sceneID="mRM-Do-7ZE">
             <objects>
                 <viewController id="q3c-j0-UEy" customClass="ExplorePageViewController" customModule="Meditapp" customModuleProvider="target" sceneMemberID="viewController">
@@ -1013,6 +1013,28 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="2pt-pB-D4O">
                                 <rect key="frame" x="0.0" y="44" width="414" height="643"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="HeaderTableViewCell" rowHeight="44" id="6d9-h3-Hjb" customClass="HeaderTableViewCell" customModule="Meditapp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="6d9-h3-Hjb" id="YkT-iI-psw">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ivt-rt-8QG">
+                                                    <rect key="frame" x="20" y="15" width="374" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="HiraMaruProN-W4" family="Hiragino Maru Gothic ProN" pointSize="17"/>
+                                                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="headerLabel" destination="ivt-rt-8QG" id="Hb9-JJ-OaG"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="q3c-j0-UEy" id="HdG-Px-WIX"/>
                                     <outlet property="delegate" destination="q3c-j0-UEy" id="jIR-GF-uAM"/>
@@ -1027,7 +1049,7 @@
                             <constraint firstItem="2pt-pB-D4O" firstAttribute="leading" secondItem="GCC-xz-sIs" secondAttribute="leading" id="e9M-Cj-zUn"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="2cJ-NC-L6q"/>
+                    <navigationItem key="navigationItem" title="Explore" id="2cJ-NC-L6q"/>
                     <connections>
                         <outlet property="tableView" destination="2pt-pB-D4O" id="Be6-tT-Cfh"/>
                     </connections>
@@ -1386,6 +1408,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="hyi-cZ-32R">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.87668538829999998" green="0.65670324800000002" blue="0.40360656230000003" alpha="0.84705882349999995" colorSpace="custom" customColorSpace="displayP3"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>

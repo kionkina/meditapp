@@ -16,14 +16,17 @@ class GenresCollectionViewCell: UICollectionViewCell {
     }
     
     @IBOutlet weak var genreImage:UIImageView!
+    @IBOutlet weak var genreText:UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
     
-    func configure(forGenre Genre:String){
-        genreImage.image = UIImage(named: Genre)
+    func configure(forGenre genre:String){
+        genreImage.image = UIImage(named: genre)
         genreImage.contentMode = .scaleAspectFill
+        genreImage.layer.cornerRadius = 12
+        genreText.text = genre
     }
 }

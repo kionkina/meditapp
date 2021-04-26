@@ -11,6 +11,7 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
     
     @IBOutlet weak var tableView: UITableView!
     var titles = ["Recommendations", "Genres"]
+    var sectionHeaderHeight:CGFloat = 0
     
     //will eventually be 3 sections
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -23,9 +24,18 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
         return 1
     }
     
-    //titles for each header in section
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return titles[section]
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return sectionHeaderHeight
+    }
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "HeaderTableViewCell") as! HeaderTableViewCell
+        if section == 0{
+            cell.configure(forHeader: "Recommended", withAlign: false)
+        }
+        else{
+            cell.configure(forHeader: "Genres", withAlign: true)
+        }
+        return cell.contentView
     }
     
     //
@@ -52,6 +62,9 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
         super.viewDidLoad()
         tableView.register(RecommendationsTableViewCell.nib(), forCellReuseIdentifier: RecommendationsTableViewCell.identifier)
         tableView.register(GenresTableViewCell.nib(), forCellReuseIdentifier: GenresTableViewCell.identifier)
+        
+        sectionHeaderHeight = tableView.dequeueReusableCell(withIdentifier: "HeaderTableViewCell")?.contentView.bounds.height ?? 0
+        
         print(User.current.likedGenres, "user liked genres")
         print(User.current.tags)
     }
