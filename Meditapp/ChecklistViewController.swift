@@ -86,7 +86,7 @@ class ChecklistViewController: UITableViewController {
     
     //TODO: move logic to controller
     func updateData(selectedTags: [String]){
-        let docRef = Firestore.firestore().collection("users1").document(User.current.uid)
+        let docRef = Firestore.firestore().collection("user1").document(User.current.uid)
 
         docRef.updateData([
             "tags": selectedTags

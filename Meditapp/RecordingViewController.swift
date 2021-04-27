@@ -434,7 +434,10 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
                     "content" : FieldValue.arrayUnion([dictVal])
                 ])
                 
-                User.current.recordings.append(dictVal)
+                var dict: [Timestamp:DocumentReference] = [Timestamp:DocumentReference]()
+                dict[stamp] = dbref
+                
+                User.current.recordings.append(dict)
                 print(User.current.recordings, "after appending")
 
                 self.deleteAllFiles()

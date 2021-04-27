@@ -48,7 +48,7 @@ extension AppDelegate {
                 print("No user liked posts object")
             }
             
-            let docRef = Firestore.firestore().collection("users1").document(user.uid)
+            let docRef = Firestore.firestore().collection("user1").document(user.uid)
 
             docRef.getDocument { (document, error) in
                 if let document = document, document.exists {
