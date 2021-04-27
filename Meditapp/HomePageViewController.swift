@@ -92,19 +92,21 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
 //        print(minTimestamp, "timestamp")
         var counter = 0
         var followingRef:User?
-        while(canFetchMoreFollowing && !currentlyFetching && counter < queryLimit){
+        while(canFetchMoreFollowing && counter < queryLimit){
             let prevCount = recordings.count
-            print("inside while loop, followings", followings)
-            for following in followings{
-                print("following loop", following.recordings)
-                if following.recordings.count > 0{
-                    print("line 100", following.recordings[0])
-                    let userRecordings = following.recordings[following.recordings.count - 1]
-                    let currTimestamp = DBViewController.stringToTime(time: Array(userRecordings.keys)[0] )
-                    if currTimestamp.dateValue() > maxTimestamp.dateValue(){
-                        maxTimestamp = currTimestamp
-                        recentPost = userRecordings[DBViewController.timeToString(stamp: maxTimestamp)]
-                        followingRef = following
+            if !currentlyFetching{
+                print("inside while loop, followings", followings)
+                for following in followings{
+                    print("following loop", following.recordings)
+                    if following.recordings.count > 0{
+                        print("line 100", following.recordings[0])
+                        let userRecordings = following.recordings[following.recordings.count - 1]
+                        let currTimestamp = DBViewController.stringToTime(time: Array(userRecordings.keys)[0] )
+                        if currTimestamp.dateValue() > maxTimestamp.dateValue(){
+                            maxTimestamp = currTimestamp
+                            recentPost = userRecordings[DBViewController.timeToString(stamp: maxTimestamp)]
+                            followingRef = following
+                        }
                     }
                 }
             }
@@ -118,6 +120,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                     recentPost = nil
                     followingRef = nil
                     currentlyFetching = false
+                    print("Resetting timestamp")
                     maxTimestamp = Timestamp(seconds: 0, nanoseconds:0)
                     if  self.recordings.count == prevCount{
                         self.canFetchMoreFollowing = false
