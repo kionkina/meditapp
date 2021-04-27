@@ -427,15 +427,17 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
                 }
                
                 let dbref: DocumentReference = db.collection("recordings1").document(recID)
-                
+          
                 let dictVal = [stamp:dbref]
                 
-                db.collection("user1").document(User.current.uid).updateData([
-                    "content" : FieldValue.arrayUnion([dictVal])
-                ])
-                
+
                 var dict: [Timestamp:DocumentReference] = [Timestamp:DocumentReference]()
                 dict[stamp] = dbref
+                
+                db.collection("user1").document(User.current.uid).updateData([
+                    "content" : FieldValue.arrayUnion([dict])
+                ])
+                
                 
                 User.current.recordings.append(dict)
                 print(User.current.recordings, "after appending")
