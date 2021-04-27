@@ -87,11 +87,12 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         myRefreshControl.endRefreshing()
         queryLimit = limit
         var recentPost:DocumentReference?
+        var currentlyFetching = false
         var maxTimestamp = Timestamp(seconds: 0, nanoseconds:0)
 //        print(minTimestamp, "timestamp")
         var counter = 0
         var followingRef:User?
-        while(canFetchMoreFollowing && counter < queryLimit){
+        while(canFetchMoreFollowing && !currentlyFetching && counter < queryLimit){
             let prevCount = recordings.count
             print("inside while loop, followings", followings)
             for following in followings{
@@ -108,6 +109,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                 }
             }
             if recentPost != nil, followingRef != nil{
+                currentlyFetching = true
                 DBViewController.getRecording(for: recentPost!) { (snapshot) in
                     self.recordings.append(Post(snapshot: snapshot)!)
                     self.tableView.reloadData()
@@ -115,11 +117,12 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                     counter += 1
                     recentPost = nil
                     followingRef = nil
+                    currentlyFetching = false
                     maxTimestamp = Timestamp(seconds: 0, nanoseconds:0)
+                    if  self.recordings.count == prevCount{
+                        self.canFetchMoreFollowing = false
+                    }
                 }
-            }
-            if  recordings.count == prevCount{
-                canFetchMoreFollowing = false
             }
         }
     }
@@ -153,7 +156,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         users.removeAll()
         tableView.reloadData()
         canFetchMoreFollowing = true
-        loadRecordings(forLimit: 10)
+        loadTenUsers(success: doneLoadingUsers)
     }
     
     @objc func loadUsers() -> Void {
