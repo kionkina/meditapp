@@ -40,6 +40,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @objc func loadTenUsers(success: @escaping (Bool) -> Void) -> Void {
+        followings.removeAll()
         if (userIds != nil) {
             //takes 10 user ids from current index
             let keys = userIds.keys
@@ -74,8 +75,8 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
             loadTenUsers(success: doneLoadingUsers)
         }
         else {
-            loadRecordings(forLimit: 10)
             print("loaded all da following", self.followings)
+            loadRecordings(forLimit: 10)
         }
     }
     
@@ -86,46 +87,50 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     @objc func loadRecordings(forLimit limit:Int) {
         myRefreshControl.endRefreshing()
         queryLimit = limit
+        var fetchPosts = [DocumentReference]()
         var recentPost:DocumentReference?
-        var currentlyFetching = false
         var maxTimestamp = Timestamp(seconds: 0, nanoseconds:0)
 //        print(minTimestamp, "timestamp")
-        var counter = 0
+        var numPosts = 0
         var followingRef:User?
-        while(canFetchMoreFollowing && counter < queryLimit){
+        while(canFetchMoreFollowing && numPosts < queryLimit){
             let prevCount = recordings.count
-            if !currentlyFetching{
-                print("inside while loop, followings", followings)
-                for following in followings{
-                    print("following loop", following.recordings)
-                    if following.recordings.count > 0{
-                        print("line 100", following.recordings[0])
-                        let userRecordings = following.recordings[following.recordings.count - 1]
-                        let currTimestamp = DBViewController.stringToTime(time: Array(userRecordings.keys)[0] )
-                        if currTimestamp.dateValue() > maxTimestamp.dateValue(){
-                            maxTimestamp = currTimestamp
-                            recentPost = userRecordings[DBViewController.timeToString(stamp: maxTimestamp)]
-                            followingRef = following
-                        }
+            for following in followings{
+                print("following loop", following.recordings)
+                if following.recordings.count > 0{
+                    print("line 100", following.recordings[0])
+                    let userRecordings = following.recordings[following.recordings.count - 1]
+                    let currTimestamp = DBViewController.stringToTime(time: Array(userRecordings.keys)[0] )
+                    if currTimestamp.dateValue() > maxTimestamp.dateValue(){
+                        print("found a more recent post")
+                        maxTimestamp = currTimestamp
+                        recentPost = userRecordings[DBViewController.timeToString(stamp: maxTimestamp)]
+                        followingRef = following
                     }
                 }
             }
             if recentPost != nil, followingRef != nil{
-                currentlyFetching = true
-                DBViewController.getRecording(for: recentPost!) { (snapshot) in
-                    self.recordings.append(Post(snapshot: snapshot)!)
-                    self.tableView.reloadData()
-                    followingRef?.recordings.removeLast(1)
-                    counter += 1
-                    recentPost = nil
-                    followingRef = nil
-                    currentlyFetching = false
-                    print("Resetting timestamp")
-                    maxTimestamp = Timestamp(seconds: 0, nanoseconds:0)
-                    if  self.recordings.count == prevCount{
-                        self.canFetchMoreFollowing = false
-                    }
-                }
+                fetchPosts.append(recentPost!)
+                followingRef!.recordings.removeLast(1)
+                numPosts += 1
+                recentPost = nil
+                followingRef = nil
+                maxTimestamp = Timestamp(seconds: 0, nanoseconds:0)
+            }
+            else{
+                print("one is nil")
+                canFetchMoreFollowing = false
+            }
+        }
+//        print(numPosts, "After while loop and the fetchedposts", fetchPosts)
+        DBViewController.getRec(for: fetchPosts) { (snapshot) in
+//            print(snapshot, "the snapshots array")
+//            self.recordings.append(Post(snapshot: snapshot)!)
+            self.recordings.insert(Post(snapshot: snapshot)!, at: 0)
+//            print("After db call", self.recordings.count)
+            self.recordings.sort(by: { $0.Timestamp.dateValue() > $1.Timestamp.dateValue() })
+            if self.recordings.count == numPosts{
+                self.tableView.reloadData()
             }
         }
     }

@@ -169,13 +169,14 @@ class DBViewController: UIViewController {
         }
     }
     
-    static func getRecording(for reference: DocumentReference, success: @escaping (DocumentSnapshot) -> Void){
-        
-        reference.getDocument { (document, error) in
-            if let document = document, document.exists {
-                success(document)
-            } else {
-                print("Document does not exist")
+    static func getRec(for references: [DocumentReference], success: @escaping (DocumentSnapshot) -> Void){
+        for reference in references{
+            reference.getDocument { (document, error) in
+                if let document = document, document.exists {
+                    success(document)
+                } else {
+                    print("Document does not exist")
+                }
             }
         }
     }
