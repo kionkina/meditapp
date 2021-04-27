@@ -47,6 +47,18 @@ class DBViewController: UIViewController {
             return(secondsToString(seconds: dv))
         }
     
+    static func timeToString(stamp: Timestamp) -> String {
+        let dv = String(stamp.seconds)
+        return dv
+    }
+    
+    static func stringToTime(time: String) -> Timestamp {
+        let seconds = Int64(time)
+        let stamp = Timestamp(seconds: seconds!, nanoseconds: 0)
+        
+        return stamp
+    }
+    
     static func getPostsByTags(forLimit limit: Int , forTags tags: [String], success: @escaping ([Post], _ numFetched: Int) -> Void){
         let db = Firestore.firestore()
         var fetchedPosts = [Post]()

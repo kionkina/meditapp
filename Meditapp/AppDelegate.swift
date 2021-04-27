@@ -52,7 +52,7 @@ extension AppDelegate {
 
             docRef.getDocument { (document, error) in
                 if let document = document, document.exists {
-                    User.current.recordings = document.get("content") as! [[Timestamp:DocumentReference]]
+                    User.current.recordings = document.get("content") as! [[String:DocumentReference]]
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
                     let initialViewController = storyboard.instantiateViewController(withIdentifier: "tabController")
                     window?.rootViewController = initialViewController

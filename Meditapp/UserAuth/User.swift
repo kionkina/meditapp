@@ -22,7 +22,7 @@ class User : NSObject {
                 "username" : username]
     }
     var tags: [String]
-    var recordings: [[Timestamp:DocumentReference]]
+    var recordings: [[String:DocumentReference]]
     var likedPosts: [String:Bool]
     var profilePic: String
     var numFollowers: Int
@@ -57,7 +57,7 @@ class User : NSObject {
             self.lastName = (dict["lastName"] as? String) ?? ""
             self.username = (dict["username"] as? String) ?? ""
             self.tags = (dict["tags"] as? [String]) ?? []
-            self.recordings = (dict["content"] as? [[Timestamp:DocumentReference]]) ?? []
+            self.recordings = (dict["content"] as? [[String:DocumentReference]]) ?? []
             self.likedPosts = (dict["likedPosts"] as? [String:Bool]) ?? [String:Bool]()
             self.followers = (dict["followers"] as? [String:Bool]) ?? [String:Bool]()
             self.following = (dict["following"] as? [String:Bool]) ?? [String:Bool]()

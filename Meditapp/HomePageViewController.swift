@@ -98,10 +98,10 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                 if following.recordings.count >= 0{
                     print("following condition")
                     let userRecordings = following.recordings[recordings.count - 1]
-                    let currTimestamp = Array(userRecordings.keys)[0] as! Timestamp
+                    let currTimestamp = DBViewController.stringToTime(time: Array(userRecordings.keys)[0] )
                     if currTimestamp.dateValue() > maxTimestamp.dateValue(){
                         maxTimestamp = currTimestamp
-                        recentPost = userRecordings[maxTimestamp]
+                        recentPost = userRecordings[DBViewController.timeToString(stamp: maxTimestamp)]
                         followingRef = following
                     }
                 }
