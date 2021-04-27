@@ -55,9 +55,9 @@ class DBViewController: UIViewController {
         }
         print("FETCHING BY TAGS", tags)
         print("about to run query")
-        //let userRef = db.collection("users").document(User.current.uid)
+        //let userRef = db.collection("user1").document(User.current.uid)
         //returns a firquery. using orderby requires creating index
-        let queryRef = db.collection("recordings")
+        let queryRef = db.collection("recordings1")
             //.whereField("OwnerID", notIn: [User.current.uid])
             .whereField("Tags", arrayContainsAny: tags)
             .order(by: "Timestamp", descending: true)
@@ -94,7 +94,7 @@ class DBViewController: UIViewController {
                     else{
                         print("going to fetch more")
                         let original = fetchedPosts.count
-                        let queryRef2 = db.collection("recordings")
+                        let queryRef2 = db.collection("recordings1")
                             .whereField("IdTime", notIn: foundPosts)
                             .order(by: "IdTime", descending: true)
                             .limit(to: limit - fetchedPosts.count)
@@ -127,7 +127,7 @@ class DBViewController: UIViewController {
     
     static func getUserById(forUID uid: String, success: @escaping (User?) -> Void) {
 
-        let docRef = Firestore.firestore().collection("Users").document(uid)
+        let docRef = Firestore.firestore().collection("user1").document(uid)
         
         docRef.getDocument { (document, error) in
             if let document = document, document.exists {
@@ -157,16 +157,27 @@ class DBViewController: UIViewController {
         }
     }
     
+    static func getRecording(for reference: DocumentReference, success: @escaping (DocumentSnapshot) -> Void){
+        
+        reference.getDocument { (document, error) in
+            if let document = document, document.exists {
+                success(document)
+            } else {
+                print("Document does not exist")
+            }
+        }
+    }
+    
     static func getCommentsById(forPost: String, success: @escaping (([DocumentSnapshot]) -> Void)) {
         let db = Firestore.firestore()
-        db.collection("recordings").document(forPost).collection("Comments").order(by: "Timestamp", descending: true).getDocuments{ (qs: QuerySnapshot?, err) in
+        db.collection("recordings1").document(forPost).collection("Comments").order(by: "Timestamp", descending: true).getDocuments{ (qs: QuerySnapshot?, err) in
             success(qs!.documents)
         }
     }
     
     static func insertComment(postID: String, comment: Comment, oldNumComments: Int, success: @escaping (Int)  -> Void) {
         let db = Firestore.firestore()
-        let recRef = db.collection("recordings").document(postID)
+        let recRef = db.collection("recordings1").document(postID)
         let commentRef = recRef.collection("Comments")
         let newDocRef = commentRef.document()
         let newNumComments = oldNumComments + 1
@@ -199,8 +210,8 @@ class DBViewController: UIViewController {
 
     static func createLike(for postID: String, success: @escaping (Int) -> Void){
         let db = Firestore.firestore()
-        let postRef = db.collection("recordings").document(postID)
-        let userRef = db.collection("Users").document(User.current.uid)
+        let postRef = db.collection("recordings1").document(postID)
+        let userRef = db.collection("user1").document(User.current.uid)
 
         db.runTransaction({ (transaction, errorPointer) -> Any? in
             let postDoc: DocumentSnapshot
@@ -251,8 +262,8 @@ class DBViewController: UIViewController {
     
     static func destroyLike(for postID: String, success: @escaping (Int) -> Void){
         let db = Firestore.firestore()
-        let postRef = db.collection("recordings").document(postID)
-        let userRef = db.collection("Users").document(User.current.uid)
+        let postRef = db.collection("recordings1").document(postID)
+        let userRef = db.collection("user1").document(User.current.uid)
 
         db.runTransaction({ (transaction, errorPointer) -> Any? in
             let postDoc: DocumentSnapshot
@@ -304,8 +315,8 @@ class DBViewController: UIViewController {
     //Followers
     static func follow(for uid: String, success: @escaping (Int) -> Void){
         let db = Firestore.firestore()
-        let currUserRef = db.collection("Users").document(User.current.uid)
-        let userRef = db.collection("Users").document(uid)
+        let currUserRef = db.collection("user1").document(User.current.uid)
+        let userRef = db.collection("user1").document(uid)
         
         let oldNumFollowing = User.current.numFollowing
         
@@ -365,8 +376,8 @@ class DBViewController: UIViewController {
     
     static func unfollow(for uid: String, success: @escaping (Int) -> Void){
         let db = Firestore.firestore()
-        let currUserRef = db.collection("Users").document(User.current.uid)
-        let userRef = db.collection("Users").document(uid)
+        let currUserRef = db.collection("user1").document(User.current.uid)
+        let userRef = db.collection("user1").document(uid)
         
         let oldNumFollowing = User.current.numFollowing
         
@@ -428,7 +439,7 @@ class DBViewController: UIViewController {
         print(users)
 
         let db = Firestore.firestore()
-        db.collection("Users").whereField(FieldPath.documentID(), in: users).getDocuments { (qs: QuerySnapshot?, _: Error?) in
+        db.collection("user1").whereField(FieldPath.documentID(), in: users).getDocuments { (qs: QuerySnapshot?, _: Error?) in
             print("Returning")
             print(qs)
             var ret: [User] = []

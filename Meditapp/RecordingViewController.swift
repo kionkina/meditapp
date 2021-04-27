@@ -406,7 +406,7 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
                     "Name" : filename,
                     "Timestamp" : stamp,
                     "RecID" : recID,
-        //            "OwnerRef" : db.collection("users").document(User.current.uid),
+        //            "OwnerRef" : db.collection("user1").document(User.current.uid),
                     "OwnerID" : User.current.uid,
                     "Tags" : self.postTags,
                     "Description" : self.postDesc.text!,
@@ -418,7 +418,7 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
         //            "StorageRef" : audioRef
                 ]
                 
-                db.collection("recordings").document(recID).setData(docData) { err in
+                db.collection("recordings1").document(recID).setData(docData) { err in
                     if let err = err {
                         print("Error writing document: \(err)")
                     } else {
@@ -426,15 +426,15 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
                     }
                 }
                
-                let dbref: DocumentReference = db.collection("recordings").document(recID)
+                let dbref: DocumentReference = db.collection("recordings1").document(recID)
                 
-                let dictVal = [stamp: dbref]
+                let dictVal = [stamp:dbref]
                 
-                db.collection("Users").document(User.current.uid).updateData([
+                db.collection("user1").document(User.current.uid).updateData([
                     "content" : FieldValue.arrayUnion([dictVal])
                 ])
                 
-                User.current.recordings.append(dbref)
+                User.current.recordings.append(dictVal)
                 print(User.current.recordings, "after appending")
 
                 self.deleteAllFiles()
@@ -465,7 +465,7 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
 //            "Name" : filename,
 //            "Timestamp" : stamp,
 //            "RecID" : recID,
-////            "OwnerRef" : db.collection("users").document(User.current.uid),
+////            "OwnerRef" : db.collection("user1").document(User.current.uid),
 //            "OwnerID" : User.current.uid,
 //            "Tags" : postTags,
 //            "Description" : postDesc.text!,
@@ -477,7 +477,7 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
 ////            "StorageRef" : audioRef
 //        ]
 //
-//        db.collection("recordings").document(recID).setData(docData) { err in
+//        db.collection("recordings1").document(recID).setData(docData) { err in
 //            if let err = err {
 //                print("Error writing document: \(err)")
 //            } else {
@@ -485,9 +485,9 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
 //            }
 //        }
 //
-//        let dbref: DocumentReference = db.collection("recordings").document(recID)
+//        let dbref: DocumentReference = db.collection("recordings1").document(recID)
 //
-//        db.collection("Users").document(User.current.uid).updateData([
+//        db.collection("user1").document(User.current.uid).updateData([
 //            "content" : FieldValue.arrayUnion([dbref])
 //        ])
 //

@@ -185,7 +185,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func loadRecordings(){
-        DBViewController.getRecordings(for: User.current.recordings) { (doc: DocumentSnapshot) in
+        let userRecs = User.current.recordings.map{ Array($0.values)[0] }
+
+        DBViewController.getRecordings(for: userRecs) { (doc: DocumentSnapshot) in
             if(doc != nil){
                 self.recordings.append(Post(snapshot: doc)!)
                 self.recordings.sort(by: { $0.Timestamp.dateValue() > $1.Timestamp.dateValue() })

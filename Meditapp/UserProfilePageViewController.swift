@@ -205,8 +205,8 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
     }
     
     func loadRecordings() {
-        print(postUser!.recordings.count, "users recordings count")
-        DBViewController.getRecordings(for: postUser!.recordings) { (doc: DocumentSnapshot) in
+        let userRecs = postUser!.recordings.map{ Array($0.values)[0] }
+        DBViewController.getRecordings(for: userRecs) { (doc: DocumentSnapshot) in
             if (doc != nil) {
                 self.recordings.append(Post(snapshot: doc)!)
                 self.recordings.sort(by: { $0.Timestamp.dateValue() > $1.Timestamp.dateValue() })

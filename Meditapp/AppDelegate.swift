@@ -48,11 +48,11 @@ extension AppDelegate {
                 print("No user liked posts object")
             }
             
-            let docRef = Firestore.firestore().collection("Users").document(user.uid)
+            let docRef = Firestore.firestore().collection("users1").document(user.uid)
 
             docRef.getDocument { (document, error) in
                 if let document = document, document.exists {
-                    User.current.recordings = document.get("content") as! [DocumentReference]
+                    User.current.recordings = document.get("content") as! [[Timestamp:DocumentReference]]
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
                     let initialViewController = storyboard.instantiateViewController(withIdentifier: "tabController")
                     window?.rootViewController = initialViewController

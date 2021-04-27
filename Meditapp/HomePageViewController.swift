@@ -22,7 +22,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     var separator = 0
     
     var curr_index = -1
-    var following: [User] = []
+    var followings: [User] = []
     var userIds: [String:Bool] = [:]
     var numIds: Int = 0
 
@@ -32,7 +32,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     
     
     var isFetchingMore:Bool = false
-    var canFetchMore:Bool = true
+    var canFetchMoreFollowing:Bool = true
 
     var audioReference: StorageReference{
         return Storage.storage().reference().child("recordings")
@@ -57,8 +57,8 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
 
                 DBViewController.loadTenUsers(for: idArr) { (users: [User]) in
                     for newUser in users {
-                        self.following.append(newUser)
-                        print(users)
+                        self.followings.append(newUser)
+                        self.users[newUser.uid] = newUser
                     }
                     success(updateIndex)
                 }
@@ -75,10 +75,51 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         }
         else {
             print("loaded all da following")
-            print(self.following)
-            return
+            print(self.followings)
         }
-
+    }
+    
+    func getCurrentMillis()->Int64{
+        return  Int64(NSDate().timeIntervalSince1970 * 1)
+    }
+    
+    @objc func loadRecordings(forLimit limit:Int) {
+        queryLimit = limit
+        var recentPost:DocumentReference?
+        var maxTimestamp = Timestamp(seconds: 0, nanoseconds:0)
+//        print(minTimestamp, "timestamp")
+        var counter = 0
+        var followingRef:User?
+        while(canFetchMoreFollowing && counter < queryLimit){
+            let prevCount = recordings.count
+            print("inside while loop")
+            for following in followings{
+                print("following loop")
+                if following.recordings.count >= 0{
+                    print("following condition")
+                    let userRecordings = following.recordings[recordings.count - 1]
+                    let currTimestamp = Array(userRecordings.keys)[0] as! Timestamp
+                    if currTimestamp.dateValue() > maxTimestamp.dateValue(){
+                        maxTimestamp = currTimestamp
+                        recentPost = userRecordings[maxTimestamp]
+                        followingRef = following
+                    }
+                }
+            }
+            if recentPost != nil, followingRef != nil{
+                DBViewController.getRecording(for: recentPost!) { (snapshot) in
+                    self.recordings.append(Post(snapshot: snapshot)!)
+                    followingRef?.recordings.removeLast(1)
+                    counter += 1
+                    recentPost = nil
+                    followingRef = nil
+                    maxTimestamp = Timestamp(seconds: 0, nanoseconds:0)
+                }
+            }
+            if recordings.count == prevCount{
+                canFetchMoreFollowing = false
+            }
+        }
     }
     
 
@@ -104,12 +145,12 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     
     @objc func refreshReload(){
         print("i have refreshed")
-        canFetchMore = true
+//        canFetchMore = true
         //because if we dont remove users, in the loadusers post, all our users already stored, so it wont get to point of reloading data, since if statement never checks in loaduser since we run the loop on recordings we already fetched where it checks if ownerid exists in dict we had prior before we removed. The table then tries to load the cell before table has been reloading so it tries to load the row from data model that is no longer dere.
         recordings.removeAll()
         users.removeAll()
         tableView.reloadData()
-        loadRecordings(success: loadUsers)
+        loadRecordings(forLimit: 10)
     }
     
     @objc func loadUsers() -> Void {
@@ -127,51 +168,13 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
-    @objc func loadRecordings(success: @escaping(() -> Void)) {
-        print("i'm in loadrecordings")
-        queryLimit = 8
-        print("about to make call to get posts")
-        DBViewController.getPostsByTags(forLimit: queryLimit, forTags: User.current.tags) { (docs, numFetched) in
-            self.recordings.removeAll()
-            for doc in docs{
-                self.recordings.append(doc)
-            }
-//            print(self.recordings.count, "after first load")
-            print("successfully appended to datamodel")
-//            self.tableView.reloadData()
-            self.separator = numFetched
-            self.myRefreshControl.endRefreshing()
-            success()
-        }
-    }
-    
-    func loadMoreRecordings(success: @escaping(() -> Void)) {
-        print("load more recordings being called")
-        queryLimit += 8
-        DBViewController.getPostsByTags(forLimit: queryLimit, forTags: User.current.tags) { (docs, numFetched) in
-            let prevNumPosts = self.recordings.count
-            self.recordings.removeAll()
-            for doc in docs{
-                self.recordings.append(doc)
-            }
-            //check is prev num post is equal to new amount of post. if so, cant fetch anymore
-            if prevNumPosts == self.recordings.count{
-                self.canFetchMore = false
-            }
-            //in case we already have all users in our users dict, if statement wont check and it wont reload.
-            self.separator = numFetched
-            self.tableView.reloadData()
-            self.isFetchingMore = false
-            success()
-        }
-    }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row + 1 == recordings.count{
-            if !isFetchingMore && canFetchMore{
-                print("fetching more")
-                loadMoreRecordings(success: loadUsers)
-            }
+//            if !isFetchingMore && canFetchMore{
+//                print("fetching more")
+//                loadRecordings(forLimit: queryLimit + 10)
+//            }
         }
     }
     
@@ -195,14 +198,10 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         myRefreshControl.addTarget(self, action: #selector(refreshReload), for: .valueChanged)
         tableView.refreshControl = myRefreshControl
 
-        loadRecordings(success: loadUsers)
+        loadRecordings(forLimit: 10)
         self.userIds = User.current.following
         loadTenUsers(success: doneLoadingUsers)
 
-        print(User.current.uid, "i am the current user")
-        print(User.current.tags, "my current tags")
-        print(User.current.recordings , "my recordings")
-        print(User.current.profilePic, "current profile in homepage")
         NotificationCenter.default.addObserver(self, selector: #selector(handleLikes), name: Notification.Name("UpdateLikes"), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleComment), name: Notification.Name("UpdateComment"), object: nil)
