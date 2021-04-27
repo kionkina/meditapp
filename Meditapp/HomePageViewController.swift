@@ -74,8 +74,8 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
             loadTenUsers(success: doneLoadingUsers)
         }
         else {
-            print("loaded all da following")
-            print(self.followings)
+            loadRecordings(forLimit: 10)
+            print("loaded all da following", self.followings)
         }
     }
     
@@ -84,6 +84,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @objc func loadRecordings(forLimit limit:Int) {
+        myRefreshControl.endRefreshing()
         queryLimit = limit
         var recentPost:DocumentReference?
         var maxTimestamp = Timestamp(seconds: 0, nanoseconds:0)
@@ -92,12 +93,12 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         var followingRef:User?
         while(canFetchMoreFollowing && counter < queryLimit){
             let prevCount = recordings.count
-            print("inside while loop")
+            print("inside while loop, followings", followings)
             for following in followings{
-                print("following loop")
-                if following.recordings.count >= 0{
-                    print("following condition")
-                    let userRecordings = following.recordings[recordings.count - 1]
+                print("following loop", following.recordings)
+                if following.recordings.count > 0{
+                    print("line 100", following.recordings[0])
+                    let userRecordings = following.recordings[following.recordings.count - 1]
                     let currTimestamp = DBViewController.stringToTime(time: Array(userRecordings.keys)[0] )
                     if currTimestamp.dateValue() > maxTimestamp.dateValue(){
                         maxTimestamp = currTimestamp
@@ -109,6 +110,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
             if recentPost != nil, followingRef != nil{
                 DBViewController.getRecording(for: recentPost!) { (snapshot) in
                     self.recordings.append(Post(snapshot: snapshot)!)
+                    self.tableView.reloadData()
                     followingRef?.recordings.removeLast(1)
                     counter += 1
                     recentPost = nil
@@ -116,7 +118,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                     maxTimestamp = Timestamp(seconds: 0, nanoseconds:0)
                 }
             }
-            if recordings.count == prevCount{
+            if  recordings.count == prevCount{
                 canFetchMoreFollowing = false
             }
         }
@@ -150,6 +152,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         recordings.removeAll()
         users.removeAll()
         tableView.reloadData()
+        canFetchMoreFollowing = true
         loadRecordings(forLimit: 10)
     }
     
@@ -170,12 +173,12 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row + 1 == recordings.count{
+//        if indexPath.row + 1 == recordings.count{
 //            if !isFetchingMore && canFetchMore{
 //                print("fetching more")
 //                loadRecordings(forLimit: queryLimit + 10)
 //            }
-        }
+//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -193,15 +196,15 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print("I am following", User.current.following)
         tableView.estimatedRowHeight = 10000 // or your estimate
 
         myRefreshControl.addTarget(self, action: #selector(refreshReload), for: .valueChanged)
         tableView.refreshControl = myRefreshControl
 
-        loadRecordings(forLimit: 10)
         self.userIds = User.current.following
         loadTenUsers(success: doneLoadingUsers)
-
+//        loadRecordings(forLimit: 10)
         NotificationCenter.default.addObserver(self, selector: #selector(handleLikes), name: Notification.Name("UpdateLikes"), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleComment), name: Notification.Name("UpdateComment"), object: nil)

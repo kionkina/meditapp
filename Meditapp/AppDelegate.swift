@@ -64,6 +64,7 @@ extension AppDelegate {
             }
         }
         else {
+            print("i am not logged in")
             let storyboard = UIStoryboard(name: "Login", bundle: nil)
             // Look into using UINavigationController
             let initialViewController = storyboard.instantiateViewController(withIdentifier:"LoginViewController")
