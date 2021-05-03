@@ -254,7 +254,8 @@ class DBViewController: UIViewController {
         let db = Firestore.firestore()
         let postRef = db.collection("recordings1").document(postID)
         let userRef = db.collection("user1").document(User.current.uid)
-
+        let postuserRef = db.collection("user1").document(post.OwnerID)
+        
         db.runTransaction({ (transaction, errorPointer) -> Any? in
             let postDoc: DocumentSnapshot
             do {
@@ -291,6 +292,8 @@ class DBViewController: UIViewController {
             transaction.updateData(["numLikes": newLikes], forDocument: postRef)
             //messed up b4
             transaction.updateData(["likedPosts.\(postID)":true], forDocument: userRef)
+            transaction.updateData(["totalLikes": FieldValue.increment(Int64(1))], forDocument: postuserRef)
+            
             for tag in post.Tags{
                 transaction.updateData(["likedGenres.\(tag)": FieldValue.increment(Int64(1))], forDocument: userRef)
             }
@@ -310,7 +313,7 @@ class DBViewController: UIViewController {
         let db = Firestore.firestore()
         let postRef = db.collection("recordings1").document(postID)
         let userRef = db.collection("user1").document(User.current.uid)
-
+        let postuserRef = db.collection("user1").document(post.OwnerID)
         db.runTransaction({ (transaction, errorPointer) -> Any? in
             let postDoc: DocumentSnapshot
             do {
@@ -347,6 +350,7 @@ class DBViewController: UIViewController {
             transaction.updateData(["numLikes": newLikes], forDocument: postRef)
             //messed up b4
             transaction.updateData(["likedPosts.\(postID)": FieldValue.delete()], forDocument: userRef)
+            transaction.updateData(["totalLikes": FieldValue.increment(Int64(-1))], forDocument: postuserRef)
             for tag in post.Tags{
                 transaction.updateData(["likedGenres.\(tag)": FieldValue.increment(Int64(-1))], forDocument: userRef)
             }
@@ -497,5 +501,38 @@ class DBViewController: UIViewController {
             }
             success(ret)
         }
+    }
+    
+    static func getTopFiveUsers(success: @escaping ([User]) -> Void) {
+        print("in db")
+        
+        var usersToReturn = [User]()
+        
+        let db = Firestore.firestore()
+        let queryRef2 = db.collection("user1")
+            .order(by: "totalLikes", descending: true)
+            .limit(to: 5)
+        queryRef2.getDocuments { (querySnapshot, error) in
+            if let error = error{
+                print("Error getting documents: \(error.localizedDescription)")
+            }
+            else{
+                //querysnapshot can contain multiple documents
+                if querySnapshot!.documents.count <= 0{
+                    print("no top user found")
+//                    return nil
+                }
+                else{
+                    for snapshot in querySnapshot!.documents{
+                        
+                        let user = User(snapshot: snapshot)!
+                        usersToReturn.append(user)
+                    }
+                }
+                // Completion Handler
+                success(usersToReturn)
+            }
+        }
+        
     }
 }

@@ -24,18 +24,23 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     @IBOutlet weak var tableView: UITableView!
-    var titles = ["Recommendations", "Genres"]
+    var titles = ["Recommendations", "Genres", "On The Rise"]
     var sectionHeaderHeight:CGFloat = 0
+    var topUsers = [User]()
     
     //will eventually be 3 sections
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 3
     }
     
     //one row each section, collection view
     //will change for on the rise feature, maybe another tableview for that feature
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        if (section == 0) || (section == 1) {
+            return 1
+        } else {
+            return topUsers.count
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -46,8 +51,10 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
         if section == 0{
             cell.configure(forHeader: "Recommended", withAlign: false)
         }
-        else{
+        else if section == 1{
             cell.configure(forHeader: "Genres", withAlign: true)
+        } else {
+            cell.configure(forHeader: "On The Rise", withAlign: true)
         }
         return cell.contentView
     }
@@ -60,17 +67,27 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
             cell.delegate = self
             return cell
         }
-        else{
+        else if indexPath.section == 1{
             print("At indexpath \(indexPath.section)")
             let cell = tableView.dequeueReusableCell(withIdentifier: GenresTableViewCell.identifier, for: indexPath) as! GenresTableViewCell
             cell.delegate = self
+            return cell
+        } else {
+            print("At section \(indexPath.section)")
+            let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+            // cell.image?.downloadedfrom("")
+            cell.textLabel?.text = topUsers[indexPath.row].username
             return cell
         }
     }
     
     //each row height of 250
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 250.0
+        if (indexPath.section == 0) || (indexPath.section == 1){
+            return 250.0
+        } else {
+            return 44.0
+        }
     }
     
     //register the tableview cells
@@ -80,6 +97,15 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
         tableView.register(GenresTableViewCell.nib(), forCellReuseIdentifier: GenresTableViewCell.identifier)
         
         sectionHeaderHeight = tableView.dequeueReusableCell(withIdentifier: "HeaderTableViewCell")?.contentView.bounds.height ?? 0
+        
+        DBViewController.getTopFiveUsers { (users) in
+            for users in users {
+                self.topUsers.append(users)
+            }
+            self.tableView.reloadSections([2], with: .none)
+        }
+        
+        
         
         print(User.current.likedGenres, "user liked genres")
         print(User.current.tags)

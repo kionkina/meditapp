@@ -131,7 +131,11 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         DBViewController.getRec(for: fetchPosts) { (snapshot) in
 //            print(snapshot, "the snapshots array")
 //            self.recordings.append(Post(snapshot: snapshot)!)
-            self.recordings.insert(Post(snapshot: snapshot)!, at: 0)
+            let post = Post(snapshot: snapshot)!
+                        self.recordings.insert(post, at: 0)
+                        let tagsForPost = TKCollectionView()
+                        tagsForPost.tags = post.Tags
+            self.tagTaggerKits.append(tagsForPost)
 //            print("After db call", self.recordings.count)
             self.recordings.sort(by: { $0.Timestamp.dateValue() > $1.Timestamp.dateValue() })
             if self.recordings.count == numPosts{
