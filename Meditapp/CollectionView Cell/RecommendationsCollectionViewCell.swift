@@ -22,7 +22,7 @@ class RecommendationsCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var postDesc: UILabel!
     @IBOutlet weak var postImage: UIImageView!
     
-    @IBOutlet weak var userName: UILabel!
+    @IBOutlet weak var userName: UIButton!
     @IBOutlet weak var userImage: UIImageView!
     
     @IBOutlet weak var playButton: UIButton!
@@ -42,7 +42,7 @@ class RecommendationsCollectionViewCell: UICollectionViewCell {
         
         postImage.sd_setImage(with: postImageRef)
         
-        userName.text = postUser.username
+        userName.setTitle(postUser.username, for: .normal) 
         let userPfpRef = Storage.storage().reference().child("profilephotos").child(postUser.profilePic)
         
         userImage.sd_setImage(with: userPfpRef)
