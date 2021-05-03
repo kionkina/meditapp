@@ -53,6 +53,7 @@ extension AppDelegate {
             docRef.getDocument { (document, error) in
                 if let document = document, document.exists {
                     User.current.recordings = document.get("content") as! [[String:DocumentReference]]
+                    User.current.likedGenres = document.get("likedGenres") as! [String:Int]
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
                     let initialViewController = storyboard.instantiateViewController(withIdentifier: "tabController")
                     window?.rootViewController = initialViewController

@@ -9,6 +9,7 @@ import UIKit
 import FirebaseFirestore
 import FirebaseStorage
 import StreamingKit
+import TaggerKit
 
 class HomePageViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate{
 
@@ -16,7 +17,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     
     var recordings = [Post]()
     var users = [String: User?]()
-    var audioPlayer = AVAudioPlayer()
+//    var audioPlayer = AVAudioPlayer()
     var queryLimit = 0
     let myRefreshControl = UIRefreshControl()
     var separator = 0
@@ -29,7 +30,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     static var audioPlayer = AVAudioPlayer()
     static var playingCell: postCellTableViewCell?
     
-    
+    var tagTaggerKits = [TKCollectionView]()
     
     var isFetchingMore:Bool = false
     var canFetchMoreFollowing:Bool = true
@@ -166,6 +167,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         //because if we dont remove users, in the loadusers post, all our users already stored, so it wont get to point of reloading data, since if statement never checks in loaduser since we run the loop on recordings we already fetched where it checks if ownerid exists in dict we had prior before we removed. The table then tries to load the cell before table has been reloading so it tries to load the row from data model that is no longer dere.
         recordings.removeAll()
         users.removeAll()
+        tagTaggerKits.removeAll()
         tableView.reloadData()
         self.userIds = User.current.following
         canFetchMoreFollowing = true
@@ -187,6 +189,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
+
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 //        if indexPath.row + 1 == recordings.count{
@@ -251,26 +254,27 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! postCellTableViewCell
                 
-                let recording = recordings[indexPath.row]
-                cell.post = recording
-                
-                //set whether the post has already been liked when displaying cells.
-                if User.current.likedPosts[recording.RecID] != nil{
-                    cell.setLiked(User.current.likedPosts[recording.RecID]!, recording.numLikes)
-                }
-                else{
-                    cell.setLiked(false, recording.numLikes)
-                }
-                if let user = users[recording.OwnerID]{
-                    if user?.uid == User.current.uid{
-                        cell.configure(with: recording, for: User.current )
-                        cell.postUser = User.current
-                    }
-                    else{
-                        cell.configure(with: recording, for: user )
-                        cell.postUser = user
-                    }
-                }
+        let recording = recordings[indexPath.row]
+        cell.post = recording
+
+        //set whether the post has already been liked when displaying cells.
+        if User.current.likedPosts[recording.RecID] != nil{
+            cell.setLiked(User.current.likedPosts[recording.RecID]!, recording.numLikes)
+        }
+        else{
+            cell.setLiked(false, recording.numLikes)
+        }
+        
+        if let user = users[recording.OwnerID]{
+            if user?.uid == User.current.uid{
+                cell.configure(with: recording, for: User.current, tagger: tagTaggerKits[indexPath.row])
+                cell.postUser = User.current
+            }
+            else{
+                cell.configure(with: recording, for: user, tagger: tagTaggerKits[indexPath.row] )
+                cell.postUser = user
+            }
+        }
         
         // add separator
         cell.sepLine?.isHidden = (Int(indexPath.row) != self.separator - 1)

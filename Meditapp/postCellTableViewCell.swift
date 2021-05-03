@@ -5,12 +5,22 @@
 //
 
 import UIKit
+import TaggerKit
 import UserNotifications
 import FirebaseStorage
 import AVFoundation
 
 class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
     
+//    lazy var tagCollection:TKCollectionView = {
+//        var tagsView = TKCollectionView()
+////        tagsView.tags = self.post!.Tags
+//        self.tags?.addSubview(tagsView.view)
+//        return tagsView
+//    }()
+    
+    //            cell.tags!.addSubview(tagCollection.view)
+    //            tagCollection.tags = recording.Tags
     @IBOutlet weak var postTitle: UILabel!
     @IBOutlet weak var postDescription: UILabel!
     @IBOutlet weak var postImage: UIImageView!
@@ -22,12 +32,25 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
     @IBOutlet weak var playButton: UIButton!
     
     
+    @IBOutlet weak var tags: UIView?
+    
     @IBOutlet weak var commentsCount: UILabel?
     @IBOutlet weak var username:UIButton!
     @IBOutlet weak var usernameLabel: UILabel?
     
     @IBOutlet weak var sepLine: UIImageView?
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+//        print("prepare for reuse", tagCollection.tags)
+//        tagCollection.tags = []
+//        print("tags in prepare for reuse", tagCollection.tags)
+        if tags != nil{
+            for view in tags!.subviews{
+                view.removeFromSuperview()
+            }
+        }
+    }
     
     func playDownloadedAudio(forPath path: URL){
         do{
@@ -128,11 +151,14 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
         let defaults = UserDefaults.standard
 
         if(like){
-            DBViewController.createLike(for: post!.RecID){ numofLikes in
+            DBViewController.createLike(for: post!){ numofLikes in
                 //update user likepost then store it back in userdefault.
                 User.current.likedPosts.updateValue(true, forKey: self.post!.RecID)
                 self.setLiked(true, numofLikes)
                 
+                for tag in self.post!.Tags{
+                    User.current.likedGenres[tag]! += 1
+                }
                 let updateDict = [
                     "updateRecID":self.post!.RecID,
                     "updateLikes":numofLikes
@@ -146,10 +172,13 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
             }
         }
         else{
-            DBViewController.destroyLike(for: post!.RecID){ numofLikes in
+            DBViewController.destroyLike(for: post!){ numofLikes in
                 User.current.likedPosts.removeValue(forKey: self.post!.RecID)
                 self.setLiked(false, numofLikes)
-
+                
+                for tag in self.post!.Tags{
+                    User.current.likedGenres[tag]! += 1
+                }
                 let updateDict = [
                     "updateRecID":self.post!.RecID,
                     "updateLikes":numofLikes
@@ -167,52 +196,36 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
     @IBAction func commentButton(_ sender: UIButton) {
     }
     
-//    var uid: String = ""
     var postUser: User?
     var post: Post?
     var liked: Bool = false
+//    var tagCollection = TKCollectionView()
 
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
 
-    //removed extra param: , user: User?
-    func configure(with model: Post, for user: User?){
+    func configure(with model: Post, for user: User?, tagger tagView:TKCollectionView?){
         self.commentsCount?.text = "\(model.numComments)"
-        
         self.postTitle.text = model.Name
         self.postDescription.text = model.Description
-        //retrieves image from postphotos in storage
-//        let profilePicRef = Storage.storage().reference().child("profilephotos").child(user!.profilePic)
-//        print("setting     postimage with", model.PostImg)
-        
-        self.userImage.sd_setImage(with: Storage.storage().reference().child("profilephotos").child(user!.profilePic))
-        
-//        let downloadTask = profilePicRef.getData(maxSize: 600 * 400 * 12) { (data, error) in
-//            if let error = error{
-//                print("error, \(error.localizedDescription)")
-//            }
-//            if let data = data{
-//                let image = UIImage(data: data)
-//                self.userImage.image = image
-//                self.userImage.layer.cornerRadius = self.userImage.frame.height/2
-//                self.userImage.clipsToBounds = true
-//            }
-//            // print(error ?? "NONE")
-//        }
-        
+        if tagView != nil{
+            self.tags?.addSubview(tagView!.view)
+        }
         let imageRef = Storage.storage().reference().child("postphotos").child(model.PostImg)
-        //sets the image from the path to the UIImageView
         self.postImage.sd_setImage(with: imageRef)
+        
+        self.post = model
         
         //fix user image when implement profile picture
         self.username?.setTitle(user!.username, for: .normal)
         self.usernameLabel?.text = user!.username
         self.time?.text = DBViewController.convertTime(stamp: model.Timestamp)
         
+        self.userImage.sd_setImage(with: Storage.storage().reference().child("profilephotos").child(user!.profilePic))
+        
         self.postUser = user
-        self.post = model
     }
 
     

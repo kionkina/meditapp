@@ -29,7 +29,7 @@ class TagsViewController: UIViewController, TKCollectionViewDelegate {
         add(allTagsCollection, toView: containerView)
         add(productTagsCollection, toView: containerView2)
         
-        allTagsCollection.tags = ["Sleep", "Relaxing", "Anxiety"]
+        allTagsCollection.tags = ["Sleep", "Relaxing", "Anxiety", "Mantra", "Zen"]
         productTagsCollection.action     = .removeTag
         
         textField.sender = allTagsCollection

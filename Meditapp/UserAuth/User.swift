@@ -29,8 +29,8 @@ class User : NSObject {
     var numFollowing: Int
     var following: [String:Bool]
     var followers: [String:Bool]
+    var likedGenres: [String:Int]
 
-    
     //Standard User init()
     init(uid: String, username: String, firstName: String, lastName: String, profilePic: String) {
         self.uid = uid
@@ -45,7 +45,7 @@ class User : NSObject {
         self.numFollowing = 0
         self.followers = [String:Bool]()
         self.following = [String:Bool]()
-            
+        self.likedGenres = [String:Int]()
         super.init()
     }
     
@@ -63,8 +63,8 @@ class User : NSObject {
             self.following = (dict["following"] as? [String:Bool]) ?? [String:Bool]()
             self.numFollowing = (dict["numFollowing"] as? Int) ?? 0
             self.numFollowers = (dict["numFollowers"] as? Int) ?? 0
-            
 //            self.profilePic = ( (dict.keys.contains("profilePic") ) ? dict["profilePic"] as! String : "default.jpeg")
+            self.likedGenres = (dict["likedGenres"] as? [String:Int]) ?? [String:Int]()
             if dict.keys.contains("profilePic"){
                 self.profilePic = dict["profilePic"] as! String
             }
@@ -92,7 +92,8 @@ class User : NSObject {
             let numFollowers = aDecoder.decodeObject(forKey: "numFollowers") as? Int,
             let numFollowing = aDecoder.decodeObject(forKey: "numFollowing") as? Int,
             let following = aDecoder.decodeObject(forKey: "following") as? [String:Bool],
-            let followers = aDecoder.decodeObject(forKey: "followers") as? [String:Bool]
+            let followers = aDecoder.decodeObject(forKey: "followers") as? [String:Bool],
+            let likedGenres = aDecoder.decodeObject(forKey:"likedGenres") as? [String:Int]
             else { return nil }
         
         self.uid = uid
@@ -107,6 +108,7 @@ class User : NSObject {
         self.numFollowers = numFollowers
         self.following = following
         self.followers = followers
+        self.likedGenres = likedGenres
         print(self.profilePic, "PROFILEPIC")
         print(self.likedPosts, "IN USERSWIFT")
     }
@@ -146,6 +148,6 @@ extension User: NSCoding {
         aCoder.encode(profilePic, forKey: "profilePic")
         aCoder.encode(numFollowing, forKey: "numFollowing")
         aCoder.encode(numFollowers, forKey: "numFollowers")
-        
+        aCoder.encode(likedGenres, forKey: "likedGenres")
     }
 }

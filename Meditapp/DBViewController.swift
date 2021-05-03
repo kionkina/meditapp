@@ -137,6 +137,34 @@ class DBViewController: UIViewController {
         }
     }
     
+    static func getPostsExplore(forLimit limit: Int , forTags tags: [String], success: @escaping ([Post], _ numFetched: Int) -> Void){
+        let db = Firestore.firestore()
+        var fetchedPosts = [Post]()
+        let queryRef = db.collection("recordings1")
+            //.whereField("OwnerID", notIn: [User.current.uid])
+            .whereField("Tags", arrayContainsAny: tags)
+            .order(by: "Timestamp", descending: true)
+            .limit(to: limit)
+        //get documents from that query
+        queryRef.getDocuments { (querySnapshot, error) in
+            if let error = error{
+                print("Error getting documents: \(error.localizedDescription)")
+            }
+            else{
+                //querysnapshot can contain multiple documents
+                if querySnapshot!.documents.count <= 0{
+                    print("no documents fetched")
+                }
+                else{
+                    for snapshot in querySnapshot!.documents{
+                        let curPost = Post(snapshot: snapshot)!
+                        fetchedPosts.append(curPost)
+                    }
+                    success(fetchedPosts, fetchedPosts.count)
+                }
+            }
+        }
+    }
     static func getUserById(forUID uid: String, success: @escaping (User?) -> Void) {
 
         let docRef = Firestore.firestore().collection("user1").document(uid)
@@ -221,7 +249,8 @@ class DBViewController: UIViewController {
         }
     }
 
-    static func createLike(for postID: String, success: @escaping (Int) -> Void){
+    static func createLike(for post: Post, success: @escaping (Int) -> Void){
+        let postID = post.RecID
         let db = Firestore.firestore()
         let postRef = db.collection("recordings1").document(postID)
         let userRef = db.collection("user1").document(User.current.uid)
@@ -262,6 +291,9 @@ class DBViewController: UIViewController {
             transaction.updateData(["numLikes": newLikes], forDocument: postRef)
             //messed up b4
             transaction.updateData(["likedPosts.\(postID)":true], forDocument: userRef)
+            for tag in post.Tags{
+                transaction.updateData(["likedGenres.\(tag)": FieldValue.increment(Int64(1))], forDocument: userRef)
+            }
             success(newLikes)
             return newLikes
         }) { (object, error) in
@@ -273,7 +305,8 @@ class DBViewController: UIViewController {
         }
     }
     
-    static func destroyLike(for postID: String, success: @escaping (Int) -> Void){
+    static func destroyLike(for post: Post, success: @escaping (Int) -> Void){
+        let postID = post.RecID
         let db = Firestore.firestore()
         let postRef = db.collection("recordings1").document(postID)
         let userRef = db.collection("user1").document(User.current.uid)
@@ -314,6 +347,9 @@ class DBViewController: UIViewController {
             transaction.updateData(["numLikes": newLikes], forDocument: postRef)
             //messed up b4
             transaction.updateData(["likedPosts.\(postID)": FieldValue.delete()], forDocument: userRef)
+            for tag in post.Tags{
+                transaction.updateData(["likedGenres.\(tag)": FieldValue.increment(Int64(-1))], forDocument: userRef)
+            }
             success(newLikes)
             return newLikes
         }) { (object, error) in

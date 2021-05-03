@@ -23,7 +23,8 @@ struct UserService {
                          "followers": [String:Bool](),
                          "profilePic": "default.jpeg",
                         "numFollowers": 0,
-                        "numFollowing" : 0] as [String : Any]
+                        "numFollowing" : 0,
+                         "likedGenres": [String:Int]()] as [String : Any]
         print("in create in userservice")
         let ref = Firestore.firestore().collection("user1").document(firUser.uid)
         

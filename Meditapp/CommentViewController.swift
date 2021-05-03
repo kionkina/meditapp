@@ -111,7 +111,7 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
 //            }
             //if user to current post found in dict
             if let user = postUser{
-                cell.configure(with: self.recording!, for: user )
+                cell.configure(with: self.recording!, for: user, tagger: nil )
                 cell.postUser = user
             }
             cell.selectionStyle = UITableViewCell.SelectionStyle.none
