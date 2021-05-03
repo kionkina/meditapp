@@ -38,7 +38,7 @@ class commentCellTableViewCell: UITableViewCell {
         //retrieves image from postphotos in storage
         //fix user image when implement profile picture
         let imageRef = Storage.storage().reference().child("profilephotos").child(user!.profilePic)
-        //sets the image from the path to the UIImageView
+        //sets the image from the path to the UIImageVie
         self.userImage.sd_setImage(with: imageRef)
         self.userImage.layer.cornerRadius = self.userImage.frame.height/2
         self.userImage.clipsToBounds = true

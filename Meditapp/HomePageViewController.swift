@@ -85,6 +85,9 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @objc func loadRecordings(forLimit limit:Int) {
+        print("refreshing")
+        print("I'm following")
+        print(followings.map({ $0.firstName}))
         myRefreshControl.endRefreshing()
         queryLimit = limit
         var fetchPosts = [DocumentReference]()
@@ -93,6 +96,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
 //        print(minTimestamp, "timestamp")
         var numPosts = 0
         var followingRef:User?
+        
         while(canFetchMoreFollowing && numPosts < queryLimit){
             let prevCount = recordings.count
             for following in followings{
@@ -163,6 +167,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         recordings.removeAll()
         users.removeAll()
         tableView.reloadData()
+        self.userIds = User.current.following
         canFetchMoreFollowing = true
         loadTenUsers(success: doneLoadingUsers)
     }
