@@ -1178,6 +1178,7 @@
                     <connections>
                         <outlet property="tableView" destination="2pt-pB-D4O" id="Be6-tT-Cfh"/>
                         <segue destination="9GA-by-eNv" kind="show" identifier="viewMore" id="LoA-ra-0F6"/>
+                        <segue destination="ct4-kI-yZX" kind="show" identifier="ontheRiseProfile" id="oWV-Xo-K98"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WPv-67-eNr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1845,9 +1846,9 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="sNm-ey-ej2"/>
+        <segue reference="mje-WN-Y7o"/>
         <segue reference="pGk-au-85h"/>
-        <segue reference="Gnw-me-fgD"/>
+        <segue reference="oWV-Xo-K98"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="default-img" width="185" height="170"/>

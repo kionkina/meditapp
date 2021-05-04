@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseStorage
 
 class ExplorePageViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, RecommendationsDelegate, GenresDelegate {
 //    func userDidTap(forTag tag: String) {
@@ -21,6 +22,11 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
             let vc = segue.destination as! ViewMoreViewController
             vc.viewforTags = sender as! [String]
         }
+        else if segue.identifier == "ontheRiseProfile"{
+            let vc = segue.destination as! UserProfilePageViewController
+//            let forUser = sender as! Int
+            vc.postUser = topUsers[sender as! Int]
+        }
     }
     
     @IBOutlet weak var tableView: UITableView!
@@ -28,6 +34,9 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
     var sectionHeaderHeight:CGFloat = 0
     var topUsers = [User]()
     
+    var pfpRef:StorageReference{
+        return Storage.storage().reference().child("profilephotos")
+    }
     //will eventually be 3 sections
     func numberOfSections(in tableView: UITableView) -> Int {
         return 3
@@ -76,17 +85,28 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
             print("At section \(indexPath.section)")
             let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
             // cell.image?.downloadedfrom("")
+            cell.textLabel?.textAlignment = .right
             cell.textLabel?.text = topUsers[indexPath.row].username
+            cell.imageView?.sd_setImage(with: pfpRef.child(topUsers[indexPath.row].profilePic))
             return cell
         }
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 2{
+            performSegue(withIdentifier: "ontheRiseProfile", sender: indexPath.row)
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
+    }
+    
+    
     
     //each row height of 250
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if (indexPath.section == 0) || (indexPath.section == 1){
             return 250.0
         } else {
-            return 44.0
+            return 50.0
         }
     }
     
@@ -104,10 +124,5 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
             }
             self.tableView.reloadSections([2], with: .none)
         }
-        
-        
-        
-        print(User.current.likedGenres, "user liked genres")
-        print(User.current.tags)
     }
 }

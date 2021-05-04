@@ -131,6 +131,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         DBViewController.getRec(for: fetchPosts) { (snapshot) in
 //            print(snapshot, "the snapshots array")
 //            self.recordings.append(Post(snapshot: snapshot)!)
+            print("fetching posts")
             let post = Post(snapshot: snapshot)!
                         self.recordings.insert(post, at: 0)
                         let tagsForPost = TKCollectionView()
@@ -139,6 +140,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
 //            print("After db call", self.recordings.count)
             self.recordings.sort(by: { $0.Timestamp.dateValue() > $1.Timestamp.dateValue() })
             if self.recordings.count == numPosts{
+                print("about to reload table")
                 self.tableView.reloadData()
             }
         }
