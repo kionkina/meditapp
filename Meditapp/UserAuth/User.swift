@@ -32,7 +32,7 @@ class User : NSObject {
     var likedGenres: [String:Int]
 
     //Standard User init()
-    init(uid: String, username: String, firstName: String, lastName: String, profilePic: String) {
+    init(uid: String, username: String, firstName: String, lastName: String, profilePic: String, numFollowing: Int = 0, numfollowers: Int = 0) {
         self.uid = uid
         self.firstName = firstName
         self.lastName = lastName
@@ -41,8 +41,8 @@ class User : NSObject {
         self.recordings = []
         self.likedPosts = [String:Bool]()
         self.profilePic = profilePic
-        self.numFollowers = 0
-        self.numFollowing = 0
+        self.numFollowing = numFollowing
+        self.numFollowers = numfollowers
         self.followers = [String:Bool]()
         self.following = [String:Bool]()
         self.likedGenres = [String:Int]()
@@ -89,12 +89,14 @@ class User : NSObject {
 //            let recordings = aDecoder.decodeObject(forKey:"recordings") as? [DocumentReference],
             let likedPosts = aDecoder.decodeObject(forKey:"likedPosts") as? [String:Bool],
             let profilePic = aDecoder.decodeObject(forKey: "profilePic") as? String,
-            let numFollowers = aDecoder.decodeObject(forKey: "numFollowers") as? Int,
-            let numFollowing = aDecoder.decodeObject(forKey: "numFollowing") as? Int,
+            let numFollowing = aDecoder.decodeInteger(forKey: "numFollowing"),
+            let numFollowers = aDecoder.decodeInteger(forKey: "numFollowers"),
             let following = aDecoder.decodeObject(forKey: "following") as? [String:Bool],
             let followers = aDecoder.decodeObject(forKey: "followers") as? [String:Bool],
             let likedGenres = aDecoder.decodeObject(forKey:"likedGenres") as? [String:Int]
-            else { return nil }
+            else {
+            print("returning nil")
+            return nil }
         
         self.uid = uid
         self.firstName = firstName
@@ -108,9 +110,8 @@ class User : NSObject {
         self.numFollowers = numFollowers
         self.following = following
         self.followers = followers
+        self.profilePic = profilePic
         self.likedGenres = likedGenres
-        print(self.profilePic, "PROFILEPIC")
-        print(self.likedPosts, "IN USERSWIFT")
     }
     
     
@@ -127,9 +128,12 @@ class User : NSObject {
     
     class func setCurrent(_ user: User, writeToUserDefaults: Bool = false) {
         if writeToUserDefaults {
-            let data = NSKeyedArchiver.archivedData(withRootObject: user)
-            
-            UserDefaults.standard.set(data, forKey: "currentUser")
+            do {let data = try NSKeyedArchiver.archivedData(withRootObject: user, requiringSecureCoding: false)
+                UserDefaults.standard.set(data, forKey: "currentUser")
+            }
+            catch {
+                print("couldn't set")
+            }
         }
         
         _current = user
@@ -138,6 +142,9 @@ class User : NSObject {
 
 extension User: NSCoding {
     func encode(with aCoder: NSCoder) {
+        print("endcoding")
+        print(numFollowers)
+        print(numFollowing)
         aCoder.encode(uid, forKey: "uid")
         aCoder.encode(firstName, forKey: "firstName")
         aCoder.encode(lastName, forKey: "lastName")
@@ -148,6 +155,8 @@ extension User: NSCoding {
         aCoder.encode(profilePic, forKey: "profilePic")
         aCoder.encode(numFollowing, forKey: "numFollowing")
         aCoder.encode(numFollowers, forKey: "numFollowers")
+        aCoder.encode(following, forKey: "following")
+        aCoder.encode(followers, forKey: "followers")
         aCoder.encode(likedGenres, forKey: "likedGenres")
     }
 }

@@ -62,7 +62,7 @@ class CreateUserViewController: UIViewController {
                 }
                 
                 UserDefaults.standard.removeObject(forKey: "UserLikedPosts")
-                
+                print("user: ", user)
                 User.setCurrent(user, writeToUserDefaults: true)
                 self.performSegue(withIdentifier: "selectTags", sender:nil)
             }
