@@ -7,7 +7,7 @@
 
 import UIKit
 import FirebaseStorage
-
+import TaggerKit
 class RecommendationsCollectionViewCell: UICollectionViewCell {
     static let identifier = "RecommendationsCollectionViewCell"
     
@@ -26,6 +26,7 @@ class RecommendationsCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var userImage: UIImageView!
     
     @IBOutlet weak var playButton: UIButton!
+    @IBOutlet weak var tagView: UIView!
     
     //tags view also
     
@@ -34,7 +35,7 @@ class RecommendationsCollectionViewCell: UICollectionViewCell {
         // Initialization code
     }
     
-    public func configure(withPost userPost:Post, forUser postUser:User){
+    public func configure(withPost userPost:Post, forUser postUser:User, forView view:TKCollectionView){
         postTitle.text = userPost.Name
         postDesc.text = userPost.Description
         
@@ -47,6 +48,7 @@ class RecommendationsCollectionViewCell: UICollectionViewCell {
         
         userImage.sd_setImage(with: userPfpRef)
         
+        tagView.addSubview(view.view)
     }
 
 }

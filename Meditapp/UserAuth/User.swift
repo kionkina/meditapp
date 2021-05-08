@@ -16,11 +16,6 @@ class User : NSObject {
     let firstName : String
     let lastName : String
     let username : String
-    var dictValue: [String : Any] {
-        return ["firstName" : firstName,
-                "lastName" : lastName,
-                "username" : username]
-    }
     var tags: [String]
     var recordings: [[String:DocumentReference]]
     var likedPosts: [String:Bool]
@@ -31,6 +26,21 @@ class User : NSObject {
     var followers: [String:Bool]
     var likedGenres: [String:Int]
 
+    init(user: User){
+        self.uid = user.uid
+        self.firstName = user.firstName
+        self.lastName = user.lastName
+        self.username = user.username
+        self.tags = user.tags
+        self.recordings = user.recordings
+        self.likedPosts = user.likedPosts
+        self.profilePic = user.profilePic
+        self.numFollowers = user.numFollowers
+        self.numFollowing = user.numFollowing
+        self.followers = user.followers
+        self.following = user.following
+        self.likedGenres = user.likedGenres
+    }
     //Standard User init()
     init(uid: String, username: String, firstName: String, lastName: String, profilePic: String) {
         self.uid = uid
@@ -92,10 +102,14 @@ class User : NSObject {
             let numFollowers = aDecoder.decodeObject(forKey: "numFollowers") as? Int,
             let numFollowing = aDecoder.decodeObject(forKey: "numFollowing") as? Int,
             let following = aDecoder.decodeObject(forKey: "following") as? [String:Bool],
-            let followers = aDecoder.decodeObject(forKey: "followers") as? [String:Bool],
-            let likedGenres = aDecoder.decodeObject(forKey:"likedGenres") as? [String:Int]
-            else { return nil }
+            let followers = aDecoder.decodeObject(forKey: "followers") as? [String:Bool]
+//            let likedGenres = aDecoder.decodeObject(forKey:"likedGenres") as? [String:Int]
+            else {
+            print("cannot decode for some reason")
+            return nil
+        }
         
+        print("decoding and storing")
         self.uid = uid
         self.firstName = firstName
         self.lastName = lastName
@@ -108,7 +122,7 @@ class User : NSObject {
         self.numFollowers = numFollowers
         self.following = following
         self.followers = followers
-        self.likedGenres = likedGenres
+        self.likedGenres = [String:Int]()
         print(self.profilePic, "PROFILEPIC")
         print(self.likedPosts, "IN USERSWIFT")
     }
@@ -138,6 +152,7 @@ class User : NSObject {
 
 extension User: NSCoding {
     func encode(with aCoder: NSCoder) {
+        print("encoding")
         aCoder.encode(uid, forKey: "uid")
         aCoder.encode(firstName, forKey: "firstName")
         aCoder.encode(lastName, forKey: "lastName")
@@ -146,8 +161,10 @@ extension User: NSCoding {
 //        aCoder.encode(recordings, forKey: "recordings")
         aCoder.encode(likedPosts, forKey: "likedPosts")
         aCoder.encode(profilePic, forKey: "profilePic")
-        aCoder.encode(numFollowing, forKey: "numFollowing")
         aCoder.encode(numFollowers, forKey: "numFollowers")
-        aCoder.encode(likedGenres, forKey: "likedGenres")
+        aCoder.encode(numFollowing, forKey: "numFollowing")
+        aCoder.encode(following, forKey: "following")
+        aCoder.encode(followers, forKey: "followers")
+//        aCoder.encode(likedGenres, forKey: "likedGenres")
     }
 }

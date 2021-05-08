@@ -161,7 +161,7 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
 //        firstName.text = postUser?.lastName
 //        lastName.text = postUser?.username
         
-//        print("in profile! uid: " + postUser!.uid)
+        print("in profile! uid: " + postUser!.uid, "and his recordings are", postUser!.recordings)
 //        loadPfp()
         
         //change eventually to user.profileimage
@@ -206,10 +206,12 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
     
     func loadRecordings() {
         let userRecs = postUser!.recordings.map{ Array($0.values)[0] }
+        print(userRecs, "userrecs vs", postUser!.recordings)
         DBViewController.getRecordings(for: userRecs) { (doc: DocumentSnapshot) in
             if (doc != nil) {
                 self.recordings.append(Post(snapshot: doc)!)
                 self.recordings.sort(by: { $0.Timestamp.dateValue() > $1.Timestamp.dateValue() })
+                print("adding recording")
                 self.tableView.reloadData()
                 self.myRefreshControl.endRefreshing()
             }

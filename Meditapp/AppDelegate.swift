@@ -34,6 +34,28 @@ extension AppDelegate {
     func configureInitialRootViewController(for window: UIWindow?) {
         let defaults = UserDefaults.standard
         
+        if Auth.auth().currentUser != nil{
+            print("auth.current not nil")
+        }
+        else{
+            print("auth.current NIL")
+        }
+        
+        if let userData = defaults.object(forKey: "currentUser") as? Data{
+            print("there exist user data", userData)
+            if (NSKeyedUnarchiver.unarchiveObject(with: userData) as? User) != nil{
+                print("unarchived")
+            }
+            else{
+                print("cannot unarchive")
+            }
+        }
+        else{
+            print("there isnt user data in defualts")
+        }
+        
+
+        
         if Auth.auth().currentUser != nil,
             let userData = defaults.object(forKey: "currentUser") as? Data,
             let user = NSKeyedUnarchiver.unarchiveObject(with: userData) as? User {

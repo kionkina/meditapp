@@ -19,8 +19,8 @@ class HeaderTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
 
-    func configure(forHeader header:String, withAlign alignment:Bool){
-        if alignment{
+    func configure(forHeader header:String, withAlign alignment:Int){
+        if alignment == 1{
             headerLabel.textAlignment = .left
         }
         else{

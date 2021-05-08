@@ -60,7 +60,8 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                 DBViewController.loadTenUsers(for: idArr) { (users: [User]) in
                     for newUser in users {
                         self.followings.append(newUser)
-                        self.users[newUser.uid] = newUser
+                        let copyUser = User(user: newUser)
+                        self.users[newUser.uid] = copyUser
                     }
                     success(updateIndex)
                 }
@@ -70,12 +71,21 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
 
     func doneLoadingUsers(updateIndex: Bool){
         print("in done loading users")
+        for user in users{
+            print(user.value!.firstName, user.value!.recordings , "After loading users")
+        }
         tableView.reloadData()
+        for user in users{
+            print(user.value!.firstName, user.value!.recordings , "After loading users")
+        }
         if (updateIndex) {
             curr_index += 10
             loadTenUsers(success: doneLoadingUsers)
         }
         else {
+            for user in users{
+                print(user.value!.firstName, user.value!.recordings , "After loading users")
+            }
             print("loaded all da following", self.followings)
             loadRecordings(forLimit: 10)
         }
@@ -86,6 +96,9 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @objc func loadRecordings(forLimit limit:Int) {
+        for user in users{
+            print(user.value!.firstName, user.value!.recordings , "After loading users in fetching posts")
+        }
         print("refreshing")
         print("I'm following")
         print(followings.map({ $0.firstName}))
@@ -101,13 +114,13 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         while(canFetchMoreFollowing && numPosts < queryLimit){
             let prevCount = recordings.count
             for following in followings{
-                print("following loop", following.recordings)
+//                print("following loop", following.recordings)
                 if following.recordings.count > 0{
-                    print("line 100", following.recordings[0])
+//                    print("line 100", following.recordings[0])
                     let userRecordings = following.recordings[following.recordings.count - 1]
                     let currTimestamp = DBViewController.stringToTime(time: Array(userRecordings.keys)[0] )
                     if currTimestamp.dateValue() > maxTimestamp.dateValue(){
-                        print("found a more recent post")
+//                        print("found a more recent post")
                         maxTimestamp = currTimestamp
                         recentPost = userRecordings[DBViewController.timeToString(stamp: maxTimestamp)]
                         followingRef = following
@@ -128,20 +141,26 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
             }
         }
 //        print(numPosts, "After while loop and the fetchedposts", fetchPosts)
+        
+        for user in users{
+            print(user.value!.firstName, user.value!.recordings , "After loading users in fetching posts")
+        }
+        
         DBViewController.getRec(for: fetchPosts) { (snapshot) in
 //            print(snapshot, "the snapshots array")
 //            self.recordings.append(Post(snapshot: snapshot)!)
             print("fetching posts")
             let post = Post(snapshot: snapshot)!
-                        self.recordings.insert(post, at: 0)
-                        let tagsForPost = TKCollectionView()
-                        tagsForPost.tags = post.Tags
+            self.recordings.insert(post, at: 0)
+            let tagsForPost = TKCollectionView()
+            tagsForPost.tags = post.Tags
             self.tagTaggerKits.append(tagsForPost)
 //            print("After db call", self.recordings.count)
             self.recordings.sort(by: { $0.Timestamp.dateValue() > $1.Timestamp.dateValue() })
             if self.recordings.count == numPosts{
                 print("about to reload table")
                 self.tableView.reloadData()
+                
             }
         }
     }
@@ -262,7 +281,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                 
         let recording = recordings[indexPath.row]
         cell.post = recording
-
+            
         //set whether the post has already been liked when displaying cells.
         if User.current.likedPosts[recording.RecID] != nil{
             cell.setLiked(User.current.likedPosts[recording.RecID]!, recording.numLikes)

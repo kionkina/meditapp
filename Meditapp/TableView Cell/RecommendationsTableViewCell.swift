@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import TaggerKit
 protocol RecommendationsDelegate: class {
     func userDidTap(forTags tags:[String])
 }
@@ -29,7 +29,7 @@ class RecommendationsTableViewCell: UITableViewCell, UICollectionViewDelegate, U
             
             let recording = recordings[indexPath.row]
             if let user = users[recording.OwnerID]{
-                cell.configure(withPost: recording, forUser: user!)
+                cell.configure(withPost: recording, forUser: user!, forView: tagsforPosts[indexPath.row])
             }
             cell.layer.borderColor = UIColor.black.cgColor
             cell.layer.borderWidth = 1
@@ -68,6 +68,7 @@ class RecommendationsTableViewCell: UITableViewCell, UICollectionViewDelegate, U
     
     weak var delegate: RecommendationsDelegate?
 
+    var tagsforPosts = [TKCollectionView]()
     var recordings = [Post]()
     var users = [String: User?]()
     var toplikedGenres:[String] = {
@@ -105,8 +106,12 @@ class RecommendationsTableViewCell: UITableViewCell, UICollectionViewDelegate, U
             self.recordings.removeAll()
             for doc in docs{
                 self.recordings.append(doc)
+                let tagsForPost = TKCollectionView()
+                tagsForPost.tags = doc.Tags
+                self.tagsforPosts.append(tagsForPost)
             }
             self.collectionView.reloadData()
+            print("number of fetched post by tags \(docs.count)")
             success()
         }
     }

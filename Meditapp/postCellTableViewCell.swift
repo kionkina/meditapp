@@ -168,6 +168,7 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
                 
                 let userLikedPosts:[String:Bool] =  User.current.likedPosts
                 defaults.set(userLikedPosts, forKey: "UserLikedPosts")
+                
 
             }
         }

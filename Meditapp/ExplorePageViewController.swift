@@ -31,7 +31,6 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
     
     @IBOutlet weak var tableView: UITableView!
     var titles = ["Recommendations", "Genres", "On The Rise"]
-    var sectionHeaderHeight:CGFloat = 0
     var topUsers = [User]()
     
     var pfpRef:StorageReference{
@@ -46,55 +45,48 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
     //will change for on the rise feature, maybe another tableview for that feature
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if (section == 0) || (section == 1) {
-            return 1
+            return 1 + 1
         } else {
-            return topUsers.count
+            return topUsers.count + 1
         }
     }
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return sectionHeaderHeight
-    }
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "HeaderTableViewCell") as! HeaderTableViewCell
-        if section == 0{
-            cell.configure(forHeader: "Recommended", withAlign: false)
-        }
-        else if section == 1{
-            cell.configure(forHeader: "Genres", withAlign: true)
-        } else {
-            cell.configure(forHeader: "On The Rise", withAlign: true)
-        }
-        return cell.contentView
-    }
     
     //
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.row == 0{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "HeaderTableViewCell") as! HeaderTableViewCell
+            cell.configure(forHeader: titles[indexPath.section], withAlign: (indexPath.section + 2) % 2)
+            cell.separatorInset = UIEdgeInsets(top: 0, left: cell.bounds.size.width, bottom: 0, right: 0);
+            cell.selectionStyle = .none
+            return cell
+        }
         if indexPath.section == 0{
-            print("At indexpath section 0")
+//            print("At indexpath section 0")
             let cell = tableView.dequeueReusableCell(withIdentifier: RecommendationsTableViewCell.identifier, for: indexPath) as! RecommendationsTableViewCell
             cell.delegate = self
             return cell
         }
         else if indexPath.section == 1{
-            print("At indexpath \(indexPath.section)")
+//            print("At indexpath \(indexPath.section)")
             let cell = tableView.dequeueReusableCell(withIdentifier: GenresTableViewCell.identifier, for: indexPath) as! GenresTableViewCell
             cell.delegate = self
             return cell
         } else {
-            print("At section \(indexPath.section)")
+//            print("At section \(indexPath.section)")
             let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
             // cell.image?.downloadedfrom("")
             cell.textLabel?.textAlignment = .right
-            cell.textLabel?.text = topUsers[indexPath.row].username
-            cell.imageView?.sd_setImage(with: pfpRef.child(topUsers[indexPath.row].profilePic))
+            cell.textLabel?.text = topUsers[indexPath.row - 1].username
+            cell.imageView?.sd_setImage(with: pfpRef.child(topUsers[indexPath.row - 1].profilePic))
+            cell.selectionStyle = .none
             return cell
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 2{
-            performSegue(withIdentifier: "ontheRiseProfile", sender: indexPath.row)
+            performSegue(withIdentifier: "ontheRiseProfile", sender: indexPath.row - 1)
             tableView.deselectRow(at: indexPath, animated: true)
         }
     }
@@ -103,6 +95,9 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
     
     //each row height of 250
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row == 0{
+            return 50.0
+        }
         if (indexPath.section == 0) || (indexPath.section == 1){
             return 250.0
         } else {
@@ -115,8 +110,6 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
         super.viewDidLoad()
         tableView.register(RecommendationsTableViewCell.nib(), forCellReuseIdentifier: RecommendationsTableViewCell.identifier)
         tableView.register(GenresTableViewCell.nib(), forCellReuseIdentifier: GenresTableViewCell.identifier)
-        
-        sectionHeaderHeight = tableView.dequeueReusableCell(withIdentifier: "HeaderTableViewCell")?.contentView.bounds.height ?? 0
         
         DBViewController.getTopFiveUsers { (users) in
             for users in users {

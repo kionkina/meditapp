@@ -5,6 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -94,6 +95,14 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wb9-aU-74I">
+                        <rect key="frame" x="36" y="185" width="205" height="28"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="28" id="tPr-9X-8nN"/>
+                            <constraint firstAttribute="width" constant="205" id="tZ0-R8-Nmi"/>
+                        </constraints>
+                    </view>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
@@ -103,6 +112,7 @@
                 <constraint firstItem="zRX-QF-kSU" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="32" id="22b-lF-hgV"/>
                 <constraint firstItem="PHb-aY-hgC" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="36" id="2t8-Oc-6Oo"/>
                 <constraint firstItem="PHb-aY-hgC" firstAttribute="leading" secondItem="zRX-QF-kSU" secondAttribute="trailing" constant="8" symbolic="YES" id="53h-ls-Vs4"/>
+                <constraint firstAttribute="bottom" secondItem="Wb9-aU-74I" secondAttribute="bottom" constant="2" id="5QC-qt-q7n"/>
                 <constraint firstItem="KHk-IX-Wgt" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="37" id="9cf-qc-ZYu"/>
                 <constraint firstItem="cE7-EW-GsQ" firstAttribute="top" secondItem="KHk-IX-Wgt" secondAttribute="bottom" constant="109" id="A49-LP-dKV"/>
                 <constraint firstItem="Cj3-wI-ZMm" firstAttribute="top" secondItem="Opj-EW-gXB" secondAttribute="bottom" constant="28" id="A6x-lz-wJY"/>
@@ -113,6 +123,7 @@
                 <constraint firstAttribute="trailing" secondItem="KHk-IX-Wgt" secondAttribute="trailing" constant="20" id="QWa-aY-rkv"/>
                 <constraint firstItem="UPY-js-iwq" firstAttribute="top" secondItem="KHk-IX-Wgt" secondAttribute="bottom" constant="106" id="RY0-Fg-mCC"/>
                 <constraint firstItem="zRX-QF-kSU" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="29" id="RgU-vo-iWC"/>
+                <constraint firstAttribute="trailing" secondItem="Wb9-aU-74I" secondAttribute="trailing" constant="245" id="T19-Uc-ib7"/>
                 <constraint firstAttribute="bottom" secondItem="Cj3-wI-ZMm" secondAttribute="bottom" constant="34" id="XgD-rm-aJQ"/>
                 <constraint firstAttribute="trailing" secondItem="cE7-EW-GsQ" secondAttribute="trailing" constant="17" id="Y6K-7P-wUv"/>
                 <constraint firstItem="nP8-1e-WZS" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="20" id="YTb-KP-kae"/>
@@ -123,9 +134,11 @@
                 <constraint firstItem="E2j-dm-RVJ" firstAttribute="top" secondItem="Opj-EW-gXB" secondAttribute="bottom" constant="41" id="bri-6W-ovg"/>
                 <constraint firstItem="PHb-aY-hgC" firstAttribute="leading" secondItem="zRX-QF-kSU" secondAttribute="trailing" constant="19" id="hZv-dO-6Uy"/>
                 <constraint firstItem="Opj-EW-gXB" firstAttribute="leading" secondItem="nP8-1e-WZS" secondAttribute="trailing" constant="4" id="i15-ks-vUd"/>
+                <constraint firstItem="Wb9-aU-74I" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="36" id="ly7-g9-mHJ"/>
                 <constraint firstItem="Opj-EW-gXB" firstAttribute="top" secondItem="KHk-IX-Wgt" secondAttribute="bottom" constant="26" id="ne9-dU-pP5"/>
                 <constraint firstItem="cE7-EW-GsQ" firstAttribute="leading" secondItem="UPY-js-iwq" secondAttribute="trailing" constant="8" symbolic="YES" id="oVl-ot-V0L"/>
                 <constraint firstItem="UPY-js-iwq" firstAttribute="leading" secondItem="E2j-dm-RVJ" secondAttribute="trailing" constant="11" id="rki-VY-0vr"/>
+                <constraint firstItem="Wb9-aU-74I" firstAttribute="top" secondItem="Cj3-wI-ZMm" secondAttribute="bottom" constant="4" id="wis-17-D95"/>
                 <constraint firstItem="Cj3-wI-ZMm" firstAttribute="leading" secondItem="nP8-1e-WZS" secondAttribute="trailing" constant="8" symbolic="YES" id="xRt-Kc-XXe"/>
                 <constraint firstItem="E2j-dm-RVJ" firstAttribute="leading" secondItem="xce-hb-ZlT" secondAttribute="trailing" constant="6" id="yrO-4d-2Wn"/>
                 <constraint firstAttribute="bottom" secondItem="nP8-1e-WZS" secondAttribute="bottom" constant="36" id="z0e-Y2-08l"/>
@@ -137,6 +150,7 @@
                 <outlet property="postDesc" destination="Opj-EW-gXB" id="DRT-i1-b3r"/>
                 <outlet property="postImage" destination="nP8-1e-WZS" id="cln-HX-orn"/>
                 <outlet property="postTitle" destination="yj8-JF-oma" id="oJy-vx-AzF"/>
+                <outlet property="tagView" destination="Wb9-aU-74I" id="x9E-w2-t3E"/>
                 <outlet property="userImage" destination="zRX-QF-kSU" id="FaB-Wa-Vyv"/>
                 <outlet property="userName" destination="PHb-aY-hgC" id="R6e-17-FMm"/>
             </connections>
@@ -150,5 +164,8 @@
         <image name="play" width="52" height="52"/>
         <image name="profile" width="512" height="512"/>
         <image name="text.bubble" catalog="system" width="128" height="110"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>
