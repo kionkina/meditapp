@@ -43,6 +43,15 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
                     vc.numIds = postUser!.numFollowers
             }
         }
+        else if (segue.identifier == "toComments") {
+            let button = sender as! UIButton
+            if let cell = button.superview?.superview as? postCellTableViewCell {
+                    //print(cell.uid)
+                    let vc = segue.destination as! CommentViewController
+                    vc.postUser = self.postUser
+                    vc.recording = cell.post
+            }
+        }
     }
     
     func addFollower() -> Void {
@@ -66,10 +75,7 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
             
             cell.fullName.text = postUser!.firstName + " " + postUser!.lastName
             cell.username.text = postUser?.username
-            print("numFollowers")
-            print(postUser?.numFollowers)
-            print("numFollowing")
-            print(postUser?.numFollowing)
+     
             cell.numFollowers.text = String(postUser!.numFollowers)
             cell.numFollowing.text = String(postUser!.numFollowing)
             cell.uid = postUser!.uid
@@ -107,7 +113,7 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
             }
             
             if let user = postUser{
-                cell.configure(with: recording, for: user, tagger: nil )
+                cell.configure(with: recording, for: user, tagger: nil)
                 cell.postUser = user
             }
             
@@ -205,6 +211,7 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
     }
     
     func loadRecordings() {
+        myRefreshControl.endRefreshing()
         let userRecs = postUser!.recordings.map{ Array($0.values)[0] }
         print(userRecs, "userrecs vs", postUser!.recordings)
         DBViewController.getRecordings(for: userRecs) { (doc: DocumentSnapshot) in
@@ -213,7 +220,7 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
                 self.recordings.sort(by: { $0.Timestamp.dateValue() > $1.Timestamp.dateValue() })
                 print("adding recording")
                 self.tableView.reloadData()
-                self.myRefreshControl.endRefreshing()
+//                self.myRefreshControl.endRefreshing()
             }
         }
     }

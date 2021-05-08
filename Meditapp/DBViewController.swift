@@ -158,7 +158,9 @@ class DBViewController: UIViewController {
                 else{
                     for snapshot in querySnapshot!.documents{
                         let curPost = Post(snapshot: snapshot)!
-                        fetchedPosts.append(curPost)
+                        if curPost.OwnerID != User.current.uid{
+                            fetchedPosts.append(curPost)
+                        }
                     }
                     success(fetchedPosts, fetchedPosts.count)
                 }

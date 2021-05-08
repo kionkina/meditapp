@@ -102,7 +102,7 @@ class RecommendationsTableViewCell: UITableViewCell, UICollectionViewDelegate, U
 
     func loadRecordings(forTags tags:[String], success: @escaping(() -> Void)) {
         queryLimit = 5
-        DBViewController.getPostsByTags(forLimit: queryLimit, forTags: tags) { (docs, numFetched) in
+        DBViewController.getPostsExplore(forLimit: queryLimit, forTags: tags) { (docs, numFetched) in
             self.recordings.removeAll()
             for doc in docs{
                 self.recordings.append(doc)

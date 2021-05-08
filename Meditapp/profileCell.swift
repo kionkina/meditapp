@@ -21,7 +21,8 @@ class profileCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        profileImageView.layer.cornerRadius =  profileImageView.frame.size.height/2
+
 
     }
     

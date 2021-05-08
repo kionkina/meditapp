@@ -12,15 +12,8 @@ import AVFoundation
 
 class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
     
-//    lazy var tagCollection:TKCollectionView = {
-//        var tagsView = TKCollectionView()
-////        tagsView.tags = self.post!.Tags
-//        self.tags?.addSubview(tagsView.view)
-//        return tagsView
-//    }()
+    var tagsCollection = TKCollectionView()
     
-    //            cell.tags!.addSubview(tagCollection.view)
-    //            tagCollection.tags = recording.Tags
     @IBOutlet weak var postTitle: UILabel!
     @IBOutlet weak var postDescription: UILabel!
     @IBOutlet weak var postImage: UIImageView!
@@ -40,16 +33,16 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
     
     @IBOutlet weak var sepLine: UIImageView?
     
+    deinit {
+        for view in tags!.subviews{
+            view.removeFromSuperview()
+        }
+        print("cell deinited")
+    }
+    
     override func prepareForReuse() {
         super.prepareForReuse()
-//        print("prepare for reuse", tagCollection.tags)
-//        tagCollection.tags = []
-//        print("tags in prepare for reuse", tagCollection.tags)
-        if tags != nil{
-            for view in tags!.subviews{
-                view.removeFromSuperview()
-            }
-        }
+
     }
     
     func playDownloadedAudio(forPath path: URL){
@@ -204,16 +197,27 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        postImage.layer.cornerRadius = 10
+        userImage.layer.cornerRadius = userImage.frame.size.height/2
+
+        tags?.addSubview(tagsCollection.view)
     }
 
     func configure(with model: Post, for user: User?, tagger tagView:TKCollectionView?){
         self.commentsCount?.text = "\(model.numComments)"
         self.postTitle.text = model.Name
         self.postDescription.text = model.Description
-        if tagView != nil{
-            self.tags?.addSubview(tagView!.view)
-        }
+       
+//        if tagView != nil{
+//            self.tags?.addSubview(tagView!.view)
+//        }
+//        print("post tags are \(model.Tags)")
+        tagsCollection.tags = model.Tags
+        tagsCollection.tagsCollectionView.reloadData()
+        
+        
+        
+        
         let imageRef = Storage.storage().reference().child("postphotos").child(model.PostImg)
         self.postImage.sd_setImage(with: imageRef)
         

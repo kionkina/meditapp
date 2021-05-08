@@ -41,6 +41,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @objc func loadTenUsers(success: @escaping (Bool) -> Void) -> Void {
+        myRefreshControl.endRefreshing()
         followings.removeAll()
         if (userIds != nil) {
             //takes 10 user ids from current index
@@ -102,7 +103,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         print("refreshing")
         print("I'm following")
         print(followings.map({ $0.firstName}))
-        myRefreshControl.endRefreshing()
+//        myRefreshControl.endRefreshing()
         queryLimit = limit
         var fetchPosts = [DocumentReference]()
         var recentPost:DocumentReference?

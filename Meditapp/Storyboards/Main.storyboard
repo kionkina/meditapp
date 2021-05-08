@@ -487,6 +487,11 @@
                                                         <action selector="playButton:" destination="pwg-Xp-mci" eventType="touchUpInside" id="NaS-fl-S3k"/>
                                                     </connections>
                                                 </button>
+                                                <view tag="100" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZfH-Pl-knG">
+                                                    <rect key="frame" x="24" y="181" width="380" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                </view>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="VAQ-5x-XRs" firstAttribute="top" secondItem="9HO-SX-X7M" secondAttribute="bottom" constant="8" symbolic="YES" id="16t-Fr-ymo"/>
@@ -548,6 +553,7 @@
                                             <outlet property="postDescription" destination="8M2-on-aKS" id="joY-Mj-lrP"/>
                                             <outlet property="postImage" destination="VAQ-5x-XRs" id="qjM-Hg-Dx0"/>
                                             <outlet property="postTitle" destination="22b-oQ-w9M" id="CNP-lL-Ch2"/>
+                                            <outlet property="tags" destination="ZfH-Pl-knG" id="iIM-zo-8eX"/>
                                             <outlet property="time" destination="Fhn-kS-RxP" id="lh4-DT-B0j"/>
                                             <outlet property="userImage" destination="9HO-SX-X7M" id="XsQ-dV-6Ep"/>
                                             <outlet property="usernameLabel" destination="9E4-NY-53e" id="8aa-DS-2NX"/>
@@ -569,7 +575,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DDL-AZ-dJO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1159.4202898550725" y="1197.554347826087"/>
+            <point key="canvasLocation" x="-1600" y="1247"/>
         </scene>
         <!--Followers View Controller-->
         <scene sceneID="rd1-xo-15R">
@@ -642,7 +648,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cK6-yg-55Q" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-828.98550724637687" y="1872.554347826087"/>
+            <point key="canvasLocation" x="-832" y="2303"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="dQc-0s-lSW">
@@ -1053,7 +1059,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EGe-PH-YTl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-346" y="1198"/>
+            <point key="canvasLocation" x="-149" y="1198"/>
         </scene>
         <!--Tags View Controller-->
         <scene sceneID="rKr-Bd-z0q">
@@ -1442,8 +1448,8 @@
                                                 <constraint firstAttribute="width" constant="240" id="Zl8-vw-Yry"/>
                                             </constraints>
                                         </imageView>
-                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qhF-HJ-MA1" userLabel="Edit Button">
-                                            <rect key="frame" x="378" y="44" width="17.333333333333314" height="25"/>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qhF-HJ-MA1" userLabel="Edit Button">
+                                            <rect key="frame" x="378" y="44" width="17.333333333333314" height="22"/>
                                             <state key="normal" image="pencil" catalog="system"/>
                                             <connections>
                                                 <segue destination="bDl-il-Qa3" kind="popoverPresentation" identifier="uploadPFP" popoverAnchorView="qhF-HJ-MA1" id="Q2F-8t-S5c">
@@ -1514,6 +1520,7 @@
                                         <constraint firstAttribute="bottom" secondItem="fjO-Ad-hz4" secondAttribute="bottom" constant="33" id="L24-KO-4Vp"/>
                                         <constraint firstAttribute="trailing" secondItem="fjO-Ad-hz4" secondAttribute="trailing" constant="129" id="L4y-Xm-JoR"/>
                                         <constraint firstItem="0ls-lJ-fJm" firstAttribute="top" secondItem="xmf-Th-8Wp" secondAttribute="bottom" constant="4" id="MZ1-eR-3a4"/>
+                                        <constraint firstItem="qhF-HJ-MA1" firstAttribute="top" secondItem="9Z7-RI-0uK" secondAttribute="top" constant="44" id="Qm0-cZ-cLJ"/>
                                         <constraint firstItem="0ls-lJ-fJm" firstAttribute="leading" secondItem="Dts-32-bQt" secondAttribute="trailing" constant="17" id="R6J-fL-lrV"/>
                                         <constraint firstItem="zni-rd-q4n" firstAttribute="leading" secondItem="dYy-1W-mGK" secondAttribute="trailing" constant="71" id="Tzq-Gv-0dN"/>
                                         <constraint firstItem="NgA-gZ-bQA" firstAttribute="top" secondItem="0ls-lJ-fJm" secondAttribute="bottom" constant="3" id="YFf-Se-chr"/>
@@ -1523,8 +1530,8 @@
                                         <constraint firstItem="dYy-1W-mGK" firstAttribute="leading" secondItem="9Z7-RI-0uK" secondAttribute="leading" constant="128" id="bKg-dB-piH"/>
                                         <constraint firstItem="zni-rd-q4n" firstAttribute="leading" secondItem="Fh2-E4-eb1" secondAttribute="trailing" constant="56" id="cie-nC-Afx"/>
                                         <constraint firstItem="Fh2-E4-eb1" firstAttribute="leading" secondItem="9Z7-RI-0uK" secondAttribute="leading" constant="114" id="gNJ-7W-q2x"/>
+                                        <constraint firstAttribute="trailing" secondItem="qhF-HJ-MA1" secondAttribute="trailing" constant="18.670000000000002" id="iyk-qO-Krb"/>
                                         <constraint firstItem="Dts-32-bQt" firstAttribute="leading" secondItem="9Z7-RI-0uK" secondAttribute="leading" constant="122" id="jWH-dx-5u9"/>
-                                        <constraint firstItem="qhF-HJ-MA1" firstAttribute="leading" secondItem="xmf-Th-8Wp" secondAttribute="trailing" constant="51" id="l99-hc-8Dc"/>
                                         <constraint firstItem="NgA-gZ-bQA" firstAttribute="top" secondItem="Dts-32-bQt" secondAttribute="bottom" constant="3" id="pkI-HG-1f8"/>
                                         <constraint firstItem="Dts-32-bQt" firstAttribute="top" secondItem="xmf-Th-8Wp" secondAttribute="bottom" constant="4" id="pyl-WF-fC7"/>
                                         <constraint firstAttribute="bottom" secondItem="Fh2-E4-eb1" secondAttribute="bottom" constant="8" id="rOu-5d-Ort"/>
@@ -1649,6 +1656,11 @@
                                                         <action selector="playButton:" destination="iQF-DD-4XJ" eventType="touchUpInside" id="suh-OC-8ch"/>
                                                     </connections>
                                                 </button>
+                                                <view tag="100" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WLL-KQ-vXL">
+                                                    <rect key="frame" x="24" y="181" width="380" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                </view>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="h4T-hB-yCi" secondAttribute="trailing" constant="10" id="1Df-bj-7sp"/>
@@ -1717,6 +1729,7 @@
                                             <outlet property="postDescription" destination="h4T-hB-yCi" id="oOK-tQ-00o"/>
                                             <outlet property="postImage" destination="LqZ-ih-iCL" id="g61-IZ-E8w"/>
                                             <outlet property="postTitle" destination="RCL-xO-GDg" id="K3U-HI-oUC"/>
+                                            <outlet property="tags" destination="WLL-KQ-vXL" id="lXE-gQ-evz"/>
                                             <outlet property="time" destination="KOs-84-30F" id="8ac-7P-juY"/>
                                             <outlet property="userImage" destination="CFM-e3-zrj" id="Ghi-4W-Taa"/>
                                             <outlet property="username" destination="Bt3-p5-deL" id="BPb-xN-QC7"/>
@@ -1846,8 +1859,8 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="sNm-ey-ej2"/>
-        <segue reference="pGk-au-85h"/>
+        <segue reference="zfB-l7-Bea"/>
+        <segue reference="jJZ-N7-g7o"/>
         <segue reference="Gnw-me-fgD"/>
     </inferredMetricsTieBreakers>
     <resources>
