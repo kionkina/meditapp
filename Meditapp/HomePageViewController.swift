@@ -22,6 +22,8 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     let myRefreshControl = UIRefreshControl()
     var separator = 0
     
+    var topPosts = [Post]()
+    
     var curr_index = -1
     var followings: [User] = []
     var userIds: [String:Bool] = [:]
@@ -128,6 +130,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                     }
                 }
             }
+            
             if recentPost != nil, followingRef != nil{
                 fetchPosts.append(recentPost!)
                 followingRef!.recordings.removeLast(1)
@@ -141,6 +144,18 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                 canFetchMoreFollowing = false
             }
         }
+        if numPosts == 0 {
+        
+        }
+        DBViewController.getPostsNoFollowers(forLimit: (queryLimit - numPosts), success: {
+            (docs, numFetched) in
+                self.recordings.removeAll()
+                for doc in docs{
+                    self.recordings.append(doc)
+                }
+                self.separator = numFetched
+                self.loadUsers()
+        })
 //        print(numPosts, "After while loop and the fetchedposts", fetchPosts)
         
         for user in users{
@@ -278,6 +293,11 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.row == recordings.count {
+            let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+            cell.textLabel?.text = "View Explore Page Now"
+            return cell
+        }
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! postCellTableViewCell
                 
         let recording = recordings[indexPath.row]
@@ -308,12 +328,18 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == recordings.count {
+            tabBarController!.selectedIndex = 2
+        }
+    }
+    
     
     // MARK: - Table view data source
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return recordings.count
+        return recordings.count+1
     }
     
     

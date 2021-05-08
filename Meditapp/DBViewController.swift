@@ -537,4 +537,35 @@ class DBViewController: UIViewController {
         }
         
     }
+    static func getPostsNoFollowers(forLimit limit: Int, success: @escaping ([Post], _ numFetched: Int) -> Void){
+        let db = Firestore.firestore()
+        var fetchedPosts = [Post]()
+        let queryRef = db.collection("recordings1")
+            //.whereField("OwnerID", notIn: [User.current.uid])
+            .order(by: "numLikes", descending: true)
+            .limit(to: limit)
+        //get documents from that query
+        queryRef.getDocuments { (querySnapshot, error) in
+            if let error = error{
+                print("Error getting documents: \(error.localizedDescription)")
+            }
+            else{
+                //querysnapshot can contain multiple documents
+                if querySnapshot!.documents.count <= 0{
+                    print("no documents fetched")
+                }
+                else{
+                    for snapshot in querySnapshot!.documents{
+                        let curPost = Post(snapshot: snapshot)!
+                        if curPost.OwnerID != User.current.uid{
+                            fetchedPosts.append(curPost)
+                        }
+                    }
+                    success(fetchedPosts, fetchedPosts.count)
+                }
+            }
+        }
+    }
 }
+
+
