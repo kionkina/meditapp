@@ -89,8 +89,8 @@ class User : NSObject {
 //            let recordings = aDecoder.decodeObject(forKey:"recordings") as? [DocumentReference],
             let likedPosts = aDecoder.decodeObject(forKey:"likedPosts") as? [String:Bool],
             let profilePic = aDecoder.decodeObject(forKey: "profilePic") as? String,
-            let numFollowing = aDecoder.decodeInteger(forKey: "numFollowing"),
-            let numFollowers = aDecoder.decodeInteger(forKey: "numFollowers"),
+            let numFollowing = aDecoder.decodeInteger(forKey: "numFollowing") as? Int,
+            let numFollowers = aDecoder.decodeInteger(forKey: "numFollowers") as? Int,
             let following = aDecoder.decodeObject(forKey: "following") as? [String:Bool],
             let followers = aDecoder.decodeObject(forKey: "followers") as? [String:Bool],
             let likedGenres = aDecoder.decodeObject(forKey:"likedGenres") as? [String:Int]
