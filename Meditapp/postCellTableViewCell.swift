@@ -207,7 +207,7 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
         tags?.addSubview(tagsCollection.view)
     }
 
-    func configure(with model: Post, for user: User?, tagger tagView:TKCollectionView?){
+    func configure(with model: Post, for user: User?){
         self.commentsCount?.text = "\(model.numComments)"
         self.postTitle.text = model.Name
         self.postDescription.text = model.Description

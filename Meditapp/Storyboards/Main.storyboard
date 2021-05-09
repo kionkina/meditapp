@@ -4,6 +4,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Image references" minToolsVersion="12.0"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -59,7 +60,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XlG-kM-ZjQ">
-                                                    <rect key="frame" x="290" y="151.66666666666666" width="21" height="22"/>
+                                                    <rect key="frame" x="291.33333333333331" y="151.66666666666666" width="21" height="22"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="21" id="3yP-1l-D9W"/>
                                                         <constraint firstAttribute="height" constant="22" id="d23-1M-zYM"/>
@@ -147,7 +148,7 @@
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eYg-dL-uB5">
-                                                    <rect key="frame" x="191" y="146" width="32" height="32"/>
+                                                    <rect key="frame" x="192.33333333333334" y="146" width="32" height="32"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="32" id="JJL-c5-zqg"/>
                                                         <constraint firstAttribute="width" constant="32" id="ynx-Jr-rzE"/>
@@ -238,6 +239,34 @@
                                             <outlet property="userImage" destination="52w-bp-god" id="VUq-J9-S5V"/>
                                             <outlet property="username" destination="VJT-LA-2lr" id="BoI-aF-b6r"/>
                                         </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="LoadingCell" id="bMb-em-RXh">
+                                        <rect key="frame" x="0.0" y="239" width="414" height="43.666667938232422"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="bMb-em-RXh" id="rBX-f2-K7C">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.666667938232422"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="O0Q-5o-PZB">
+                                                    <rect key="frame" x="159.33333333333334" y="12" width="95.333333333333343" height="20"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BPa-94-Nbf">
+                                                            <rect key="frame" x="0.0" y="0.0" width="67.333333333333329" height="20"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                            <color key="textColor" name="ArtistName"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <activityIndicatorView opaque="NO" tag="100" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="dab-KU-T3i">
+                                                            <rect key="frame" x="75.333333333333314" y="0.0" width="20" height="20"/>
+                                                        </activityIndicatorView>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="O0Q-5o-PZB" firstAttribute="centerX" secondItem="rBX-f2-K7C" secondAttribute="centerX" id="CdE-b8-LXs"/>
+                                                <constraint firstItem="O0Q-5o-PZB" firstAttribute="centerY" secondItem="rBX-f2-K7C" secondAttribute="centerY" id="w2c-hn-5le"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -1878,6 +1907,9 @@
         <image name="profile_pic_2" width="626" height="626"/>
         <image name="stop" width="52" height="52"/>
         <image name="text.bubble" catalog="system" width="128" height="110"/>
+        <namedColor name="ArtistName">
+            <color red="0.32899999618530273" green="0.32400000095367432" blue="0.4779999852180481" alpha="0.33000001311302185" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

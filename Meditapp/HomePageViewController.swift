@@ -32,7 +32,10 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     static var audioPlayer = AVAudioPlayer()
     static var playingCell: postCellTableViewCell?
     
-    var tagTaggerKits = [TKCollectionView]()
+//    var tagTaggerKits = [TKCollectionView]()
+    
+    var isFetching = false
+    var showExploresCell = false
     
     var isFetchingMore:Bool = false
     var canFetchMoreFollowing:Bool = true
@@ -44,6 +47,9 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     
     @objc func loadTenUsers(success: @escaping (Bool) -> Void) -> Void {
         myRefreshControl.endRefreshing()
+        isFetching = true
+        tableView.reloadData()
+        
         followings.removeAll()
         if (userIds != nil) {
             //takes 10 user ids from current index
@@ -90,7 +96,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                 print(user.value!.firstName, user.value!.recordings , "After loading users")
             }
             print("loaded all da following", self.followings)
-            loadRecordings(forLimit: 10)
+            loadRecordings(forLimit: 3)
         }
     }
     
@@ -115,7 +121,6 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         var followingRef:User?
         
         while(canFetchMoreFollowing && numPosts < queryLimit){
-            let prevCount = recordings.count
             for following in followings{
 //                print("following loop", following.recordings)
                 if following.recordings.count > 0{
@@ -144,43 +149,67 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                 canFetchMoreFollowing = false
             }
         }
-        if numPosts == 0 {
         
+        let needMorePosts = queryLimit - numPosts
+        if needMorePosts > 0{
+            loadTopRecordings(forLimit: needMorePosts, success: loadUsers)
         }
-        DBViewController.getPostsNoFollowers(forLimit: (queryLimit - numPosts), success: {
-            (docs, numFetched) in
-                self.recordings.removeAll()
-                for doc in docs{
-                    self.recordings.append(doc)
-                }
-                self.separator = numFetched
-                self.loadUsers()
-        })
+      
 //        print(numPosts, "After while loop and the fetchedposts", fetchPosts)
         
         for user in users{
             print(user.value!.firstName, user.value!.recordings , "After loading users in fetching posts")
         }
         
+        print("Fetchpost count is \(fetchPosts.count)")
         DBViewController.getRec(for: fetchPosts) { (snapshot) in
 //            print(snapshot, "the snapshots array")
 //            self.recordings.append(Post(snapshot: snapshot)!)
-            print("fetching posts")
             let post = Post(snapshot: snapshot)!
             self.recordings.insert(post, at: 0)
             let tagsForPost = TKCollectionView()
             tagsForPost.tags = post.Tags
-            self.tagTaggerKits.append(tagsForPost)
+//            self.tagTaggerKits.append(tagsForPost)
 //            print("After db call", self.recordings.count)
             self.recordings.sort(by: { $0.Timestamp.dateValue() > $1.Timestamp.dateValue() })
             if self.recordings.count == numPosts{
                 print("about to reload table")
+                self.isFetching = false
+                self.showExploresCell = true
                 self.tableView.reloadData()
                 
             }
         }
     }
     
+    @objc func loadTopRecordings(forLimit limit:Int, success: @escaping(() -> Void)) {
+        DBViewController.getTopPosts(forLimit: queryLimit) { (docs, numFetched) in
+            self.topPosts.removeAll()
+            for doc in docs{
+                self.topPosts.append(doc)
+            }
+            self.tableView.reloadData()
+//            self.separator = numFetched
+            self.isFetching = false
+            self.showExploresCell = true
+            self.myRefreshControl.endRefreshing()
+            success()
+        }
+    }
+    
+    @objc func loadUsers() -> Void {
+        //check if ID is not already in users
+        for post in topPosts {
+            if !users.keys.contains(post.OwnerID) {
+                DBViewController.getUserById(forUID: post.OwnerID) { (user) in
+                    if let user = user {
+                        self.users[user.uid] = user
+                        self.tableView.reloadData()
+                    }
+                }
+            }
+        }
+    }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "toProfile") {
@@ -203,42 +232,13 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @objc func refreshReload(){
-        print("i have refreshed")
-//        canFetchMore = true
-        //because if we dont remove users, in the loadusers post, all our users already stored, so it wont get to point of reloading data, since if statement never checks in loaduser since we run the loop on recordings we already fetched where it checks if ownerid exists in dict we had prior before we removed. The table then tries to load the cell before table has been reloading so it tries to load the row from data model that is no longer dere.
         recordings.removeAll()
         users.removeAll()
-        tagTaggerKits.removeAll()
+//        tagTaggerKits.removeAll()
         tableView.reloadData()
         self.userIds = User.current.following
         canFetchMoreFollowing = true
         loadTenUsers(success: doneLoadingUsers)
-    }
-    
-    @objc func loadUsers() -> Void {
-        print("loadUsers")
-        //check if ID is not already in users
-        for recording in recordings {
-            if !users.keys.contains(recording.OwnerID) {
-                DBViewController.getUserById(forUID: recording.OwnerID) { (user) in
-                    if let user = user {
-                        self.users[user.uid] = user
-                        self.tableView.reloadData()
-                    }
-                }
-            }
-        }
-    }
-    
-
-    
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//        if indexPath.row + 1 == recordings.count{
-//            if !isFetchingMore && canFetchMore{
-//                print("fetching more")
-//                loadRecordings(forLimit: queryLimit + 10)
-//            }
-//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -293,56 +293,100 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == recordings.count {
-            let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-            cell.textLabel?.text = "View Explore Page Now"
+        if isFetching{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "LoadingCell", for: indexPath)
+            let spinner = cell.viewWithTag(100) as! UIActivityIndicatorView
+            spinner.startAnimating()
             return cell
         }
-        let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! postCellTableViewCell
+        else {
+            if indexPath.section == 0 || indexPath.section == 1{
+                let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! postCellTableViewCell
+                       
+                var beforeRec:Post?
+                if indexPath.section == 0{
+                    beforeRec = recordings[indexPath.row]
+                }
+                else if indexPath.section == 1{
+                    beforeRec = topPosts[indexPath.row]
+                }
+                    
+                guard let recording = beforeRec else{ fatalError("No recording")}
                 
-        let recording = recordings[indexPath.row]
-        cell.post = recording
-            
-        //set whether the post has already been liked when displaying cells.
-        if User.current.likedPosts[recording.RecID] != nil{
-            cell.setLiked(User.current.likedPosts[recording.RecID]!, recording.numLikes)
-        }
-        else{
-            cell.setLiked(false, recording.numLikes)
-        }
-        
-        if let user = users[recording.OwnerID]{
-            if user?.uid == User.current.uid{
-                cell.configure(with: recording, for: User.current, tagger: tagTaggerKits[indexPath.row])
-                cell.postUser = User.current
+                cell.post = recording
+                //set whether the post has already been liked when displaying cells.
+                if User.current.likedPosts[recording.RecID] != nil{
+                    cell.setLiked(User.current.likedPosts[recording.RecID]!, recording.numLikes)
+                }
+                else{
+                    cell.setLiked(false, recording.numLikes)
+                }
+                
+                if let user = users[recording.OwnerID]{
+                    if user?.uid == User.current.uid{
+                        cell.configure(with: recording, for: User.current)
+                        cell.postUser = User.current
+                    }
+                    else{
+                        cell.configure(with: recording, for: user)
+                        cell.postUser = user
+                    }
+                }
+                cell.selectionStyle = UITableViewCell.SelectionStyle.none
+                return cell
             }
             else{
-                cell.configure(with: recording, for: user, tagger: tagTaggerKits[indexPath.row] )
-                cell.postUser = user
+                let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+                cell.textLabel?.text = "View Explore Page Now"
+                return cell
             }
         }
-        
         // add separator
-        cell.sepLine?.isHidden = (Int(indexPath.row) != self.separator - 1)
-        cell.selectionStyle = UITableViewCell.SelectionStyle.none
-        return cell
+//        cell.sepLine?.isHidden = (Int(indexPath.row) != self.separator - 1)
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == recordings.count {
+        if indexPath.section == 2 {
             tabBarController!.selectedIndex = 2
         }
     }
     
     
     // MARK: - Table view data source
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        if isFetching{
+            return 1
+        }
+        else{
+            return 3
+        }
+    }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return recordings.count+1
+        if isFetching{
+            return 1
+        }
+        else{
+            if section == 0{
+                return recordings.count
+            }
+            else if section == 1{
+                return topPosts.count
+            }
+            else{
+                return 1
+            }
+        }
     }
     
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if !isFetching, indexPath.section == 0, indexPath.row + 1 == recordings.count, canFetchMoreFollowing{
+            print("Fetching more")
+            loadRecordings(forLimit: queryLimit + 3)
+        }
+    }
     
-
 }
 

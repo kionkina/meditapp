@@ -537,7 +537,7 @@ class DBViewController: UIViewController {
         }
         
     }
-    static func getPostsNoFollowers(forLimit limit: Int, success: @escaping ([Post], _ numFetched: Int) -> Void){
+    static func getTopPosts(forLimit limit: Int, success: @escaping ([Post], _ numFetched: Int) -> Void){
         let db = Firestore.firestore()
         var fetchedPosts = [Post]()
         let queryRef = db.collection("recordings1")

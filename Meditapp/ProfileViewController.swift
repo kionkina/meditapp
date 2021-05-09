@@ -96,7 +96,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             cell.setLiked(false, recording.numLikes)
         }
         
-        cell.configure(with: recording, for: User.current, tagger: nil)
+//        cell.configure(with: recording, for: User.current, tagger: nil)
+        cell.configure(with: recording, for: User.current)
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
 
         print("displaying cell numero: ", indexPath.row)

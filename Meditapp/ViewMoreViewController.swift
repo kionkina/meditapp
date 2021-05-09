@@ -173,11 +173,11 @@ class ViewMoreViewController: UIViewController, UITableViewDelegate, UITableView
         
         if let user = users[recording.OwnerID]{
             if user?.uid == User.current.uid{
-                cell.configure(with: recording, for: User.current, tagger: tagTaggerKits[indexPath.row])
+                cell.configure(with: recording, for: User.current)
                 cell.postUser = User.current
             }
             else{
-                cell.configure(with: recording, for: user, tagger: tagTaggerKits[indexPath.row] )
+                cell.configure(with: recording, for: user)
                 cell.postUser = user
             }
         }
