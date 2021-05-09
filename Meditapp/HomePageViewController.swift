@@ -31,6 +31,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
 
     static var audioPlayer = AVAudioPlayer()
     static var playingCell: postCellTableViewCell?
+    static var playingCollectionCell: RecommendationsCollectionViewCell?
     
 //    var tagTaggerKits = [TKCollectionView]()
     
@@ -45,36 +46,43 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
 
     }
     
-    @objc func loadTenUsers(success: @escaping (Bool) -> Void) -> Void {
+    @objc func loadTenUsers(success: @escaping (Bool) -> Void) -> Void{
         myRefreshControl.endRefreshing()
         isFetching = true
         tableView.reloadData()
         
-        followings.removeAll()
-        if (userIds != nil) {
-            //takes 10 user ids from current index
-            let keys = userIds.keys
-            var idArr = [String](userIds.keys)
+        if User.current.numFollowing > 0{
+            followings.removeAll()
+            if (userIds != nil) {
+                //takes 10 user ids from current index
+                let keys = userIds.keys
+                var idArr = [String](userIds.keys)
 
-            var updateIndex: Bool = false
-            // there are less than 10 more users to pull
-            if (keys.count > 0) {
-                if (keys.count - (curr_index + 1) > 10) {
-                    updateIndex = true
-                    idArr = [String](idArr[curr_index + 1...curr_index + 10])
-                } else {
-                    idArr = [String](idArr[(curr_index + 1)...(keys.count - 1)])
-                }
-
-                DBViewController.loadTenUsers(for: idArr) { (users: [User]) in
-                    for newUser in users {
-                        self.followings.append(newUser)
-                        let copyUser = User(user: newUser)
-                        self.users[newUser.uid] = copyUser
+                var updateIndex: Bool = false
+                // there are less than 10 more users to pull
+                if (keys.count > 0) {
+                    if (keys.count - (curr_index + 1) > 10) {
+                        updateIndex = true
+                        idArr = [String](idArr[curr_index + 1...curr_index + 10])
+                    } else {
+                        idArr = [String](idArr[(curr_index + 1)...(keys.count - 1)])
                     }
-                    success(updateIndex)
+
+                    DBViewController.loadTenUsers(for: idArr) { (users: [User]) in
+                        for newUser in users {
+                            self.followings.append(newUser)
+                            let copyUser = User(user: newUser)
+                            self.users[newUser.uid] = copyUser
+                        }
+                        success(updateIndex)
+                    }
                 }
             }
+        }
+        else{
+            print("only fetching top recordings")
+            canFetchMoreFollowing = false
+            loadTopRecordings(forLimit: 5, success: loadUsers)
         }
     }
 
@@ -96,7 +104,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                 print(user.value!.firstName, user.value!.recordings , "After loading users")
             }
             print("loaded all da following", self.followings)
-            loadRecordings(forLimit: 3)
+            loadRecordings(forLimit: 2)
         }
     }
     
@@ -157,38 +165,43 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
       
 //        print(numPosts, "After while loop and the fetchedposts", fetchPosts)
         
-        for user in users{
-            print(user.value!.firstName, user.value!.recordings , "After loading users in fetching posts")
-        }
+//        for user in users{
+//            print(user.value!.firstName, user.value!.recordings , "After loading users in fetching posts")
+//        }
         
         print("Fetchpost count is \(fetchPosts.count)")
-        DBViewController.getRec(for: fetchPosts) { (snapshot) in
-//            print(snapshot, "the snapshots array")
-//            self.recordings.append(Post(snapshot: snapshot)!)
-            let post = Post(snapshot: snapshot)!
-            self.recordings.insert(post, at: 0)
-            let tagsForPost = TKCollectionView()
-            tagsForPost.tags = post.Tags
-//            self.tagTaggerKits.append(tagsForPost)
-//            print("After db call", self.recordings.count)
-            self.recordings.sort(by: { $0.Timestamp.dateValue() > $1.Timestamp.dateValue() })
-            if self.recordings.count == numPosts{
-                print("about to reload table")
-                self.isFetching = false
-                self.showExploresCell = true
-                self.tableView.reloadData()
-                
+        if fetchPosts.count > 0{
+            var numPostsFetchCounter = 0
+            DBViewController.getRec(for: fetchPosts) { (snapshot) in
+    //            print(snapshot, "the snapshots array")
+    //            self.recordings.append(Post(snapshot: snapshot)!)
+                let post = Post(snapshot: snapshot)!
+                self.recordings.insert(post, at: 0)
+                let tagsForPost = TKCollectionView()
+                tagsForPost.tags = post.Tags
+    //            self.tagTaggerKits.append(tagsForPost)
+    //            print("After db call", self.recordings.count)
+                self.recordings.sort(by: { $0.Timestamp.dateValue() > $1.Timestamp.dateValue() })
+                numPostsFetchCounter += 1
+                if numPostsFetchCounter == numPosts{
+                    print("about to reload table")
+                    self.isFetching = false
+                    self.showExploresCell = true
+                    self.tableView.reloadData()
+                    
+                }
             }
         }
     }
     
     @objc func loadTopRecordings(forLimit limit:Int, success: @escaping(() -> Void)) {
+        queryLimit += limit
         DBViewController.getTopPosts(forLimit: queryLimit) { (docs, numFetched) in
             self.topPosts.removeAll()
             for doc in docs{
                 self.topPosts.append(doc)
             }
-            self.tableView.reloadData()
+            self.tableView.reloadSections([1], with: UITableView.RowAnimation.fade)
 //            self.separator = numFetched
             self.isFetching = false
             self.showExploresCell = true
@@ -305,7 +318,14 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                        
                 var beforeRec:Post?
                 if indexPath.section == 0{
-                    beforeRec = recordings[indexPath.row]
+                    if recordings.count == 0{
+                        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+                        
+                        return cell
+                    }
+                    else{
+                        beforeRec = recordings[indexPath.row]
+                    }
                 }
                 else if indexPath.section == 1{
                     beforeRec = topPosts[indexPath.row]
@@ -333,6 +353,8 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                     }
                 }
                 cell.selectionStyle = UITableViewCell.SelectionStyle.none
+//                cell.backgroundView?.layer.cornerRadius = 5 //set this to whatever constant you need
+//                cell.backgroundView?.clipsToBounds = true
                 return cell
             }
             else{
@@ -355,18 +377,27 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     // MARK: - Table view data source
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        if isFetching{
-            return 1
-        }
-        else{
-            return 3
-        }
+//        if isFetching{
+//            return 1
+//        }
+//        else{
+//            return 3
+//        }
+        return 3
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         if isFetching{
-            return 1
+            if section == 0{
+                return 1
+            }
+            else if section == 1{
+                return 0
+            }
+            else{
+                return 0
+            }
         }
         else{
             if section == 0{
@@ -388,5 +419,32 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
+    var sectionTitles = ["Recent", "Top Posts", "Check Out Our Explore Page"]
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if isFetching{
+            if section == 0{
+                return "Recent"
+            }
+            return nil
+        }
+        else{
+            return sectionTitles[section]
+        }
+    }
+    
+//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//        let labelRect = CGRect(x: 4, y: tableView.sectionHeaderHeight - 14, width: view.frame.width, height: 14)
+//        let label = UILabel(frame: labelRect)
+//        label.font = UIFont.boldSystemFont(ofSize: 13)
+//
+//        label.text = self.tableView(tableView, titleForHeaderInSection: section)
+//
+//        let viewRect = CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: 44)
+//
+//        let view = UIView(frame: viewRect)
+//        view.addSubview(label)
+//
+//        return view
+//    }
 }
 
