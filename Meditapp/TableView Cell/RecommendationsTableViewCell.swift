@@ -28,8 +28,23 @@ class RecommendationsTableViewCell: UITableViewCell, UICollectionViewDelegate, U
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecommendationsCollectionViewCell.identifier, for: indexPath) as! RecommendationsCollectionViewCell
             
             let recording = recordings[indexPath.row]
+            cell.userPost = recording
+            if User.current.likedPosts[recording.RecID] != nil{
+                cell.setLiked(User.current.likedPosts[recording.RecID]!, recording.numLikes)
+            }
+            else{
+                cell.setLiked(false, recording.numLikes)
+            }
+            
             if let user = users[recording.OwnerID]{
-                cell.configure(withPost: recording, forUser: user!, forView: tagsforPosts[indexPath.row])
+                if user?.uid == User.current.uid{
+                    cell.configure(with: recording, for: User.current)
+                    cell.postUser = User.current
+                }
+                else{
+                    cell.configure(with: recording, for: user)
+                    cell.postUser = user
+                }
             }
             cell.layer.borderColor = UIColor.black.cgColor
             cell.layer.borderWidth = 1
@@ -97,9 +112,43 @@ class RecommendationsTableViewCell: UITableViewCell, UICollectionViewDelegate, U
 //        print("Recommendations table view cell generated")
         //get users top 3 liked genres
         //get recordings
-        loadRecordings(forTags: toplikedGenres, success: loadUsers)
-    }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleLikes), name: Notification.Name("UpdateLikes"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleComment), name: Notification.Name("UpdateComment"), object: nil)
 
+        loadRecordings(forTags: toplikedGenres, success: loadUsers)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleLikes), name: Notification.Name("UpdateLikes"), object: nil)
+    }
+    
+    @objc func handleLikes(notification: NSNotification) {
+        print("like fired off handler in recommended cell")
+        if let dict = notification.object as? [String:Any] {
+            for post in recordings{
+                if post.RecID == dict["updateRecID"] as! String{
+                    post.numLikes = dict["updateLikes"] as! Int
+                }
+            }
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
+        }
+    }
+    @objc func handleComment(notification: NSNotification) {
+        print("like fired off comment handler in recommended cell")
+        if let dict = notification.object as? [String:Any] {
+            for post in recordings{
+                if post.RecID == dict["updateRecID"] as! String{
+                    post.numComments = dict["updateComment"] as! Int
+                }
+            }
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
+        }
+    }
+    
     func loadRecordings(forTags tags:[String], success: @escaping(() -> Void)) {
         queryLimit = 5
         DBViewController.getPostsExplore(forLimit: queryLimit, forTags: tags) { (docs, numFetched) in

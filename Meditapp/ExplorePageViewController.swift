@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseStorage
+import AVFoundation
 
 class ExplorePageViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, RecommendationsDelegate, GenresDelegate {
 //    func userDidTap(forTag tag: String) {
@@ -27,6 +28,16 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
 //            let forUser = sender as! Int
             vc.postUser = topUsers[sender as! Int]
         }
+        else if segue.identifier == "toProfile"{
+            let vc = segue.destination as! UserProfilePageViewController
+            vc.postUser = sender as? User
+        }
+        else if segue.identifier == "toComments"{
+            let vc = segue.destination as! CommentViewController
+            let dict = sender as! [String:Any]
+            vc.postUser = dict["user"] as? User
+            vc.recording = dict["post"] as? Post
+        }
     }
     
     @IBOutlet weak var tableView: UITableView!
@@ -36,7 +47,18 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
     var pfpRef:StorageReference{
         return Storage.storage().reference().child("profilephotos")
     }
-    //will eventually be 3 sections
+    
+    static var playingCell: RecommendationsCollectionViewCell?
+    static var audioPlayer = AVAudioPlayer()
+
+    override func viewWillDisappear(_ animated: Bool) {
+        if ExplorePageViewController.audioPlayer.isPlaying{
+            print("player needs to stop playing")
+            ExplorePageViewController.playingCell?.stopPlaying()
+        }
+    }
+    
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 3
     }
@@ -111,11 +133,23 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
         tableView.register(RecommendationsTableViewCell.nib(), forCellReuseIdentifier: RecommendationsTableViewCell.identifier)
         tableView.register(GenresTableViewCell.nib(), forCellReuseIdentifier: GenresTableViewCell.identifier)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(profileClicked), name: Notification.Name("profileClicked"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(commentClicked), name: Notification.Name("commentsClicked"), object: nil)
+        
         DBViewController.getTopFiveUsers { (users) in
             for users in users {
                 self.topUsers.append(users)
             }
             self.tableView.reloadSections([2], with: .none)
         }
+    }
+    
+    @objc func profileClicked(notification: NSNotification){
+        performSegue(withIdentifier: "toProfile", sender: notification.object as? User)
+    }
+    
+    @objc func commentClicked(notification: NSNotification){
+        performSegue(withIdentifier: "toComments", sender: notification.object as? [String:Any])
     }
 }

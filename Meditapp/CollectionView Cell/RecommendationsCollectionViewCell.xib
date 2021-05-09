@@ -30,11 +30,17 @@
                         <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <state key="normal" image="hand.thumbsup" catalog="system"/>
                         <state key="selected" image="hand.thumbsup.fill" catalog="system"/>
+                        <connections>
+                            <action selector="likeButton:" destination="gTV-IL-0wX" eventType="touchUpInside" id="SQ0-YP-t7O"/>
+                        </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UPY-js-iwq" userLabel="Comment Button">
                         <rect key="frame" x="424" y="159" width="23" height="22"/>
                         <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <state key="normal" image="text.bubble" catalog="system"/>
+                        <connections>
+                            <action selector="commentsClicked:" destination="gTV-IL-0wX" eventType="touchUpInside" id="ec7-gg-4Xu"/>
+                        </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E2j-dm-RVJ" userLabel="likesCount">
                         <rect key="frame" x="399" y="162" width="14" height="14"/>
@@ -69,6 +75,9 @@
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PHb-aY-hgC">
                         <rect key="frame" x="97" y="36" width="46" height="30"/>
                         <state key="normal" title="Button"/>
+                        <connections>
+                            <action selector="profileClicked:" destination="gTV-IL-0wX" eventType="touchUpInside" id="eZ2-Pa-fnh"/>
+                        </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Audio title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yj8-JF-oma">
                         <rect key="frame" x="160" y="63" width="80.5" height="14"/>
@@ -88,6 +97,9 @@
                         <state key="normal">
                             <imageReference key="image" image="play" symbolScale="large"/>
                         </state>
+                        <connections>
+                            <action selector="playButton:" destination="gTV-IL-0wX" eventType="touchUpInside" id="E7a-bb-LbD"/>
+                        </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Timestamp" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KHk-IX-Wgt">
                         <rect key="frame" x="398.5" y="37" width="67.5" height="16"/>
@@ -146,13 +158,17 @@
             </constraints>
             <size key="customSize" width="486" height="215"/>
             <connections>
+                <outlet property="commentsCount" destination="cE7-EW-GsQ" id="Deb-ZL-TLM"/>
+                <outlet property="likeButton" destination="xce-hb-ZlT" id="jAg-td-fZo"/>
+                <outlet property="likesCount" destination="E2j-dm-RVJ" id="8Ki-8T-tjB"/>
                 <outlet property="playButton" destination="Cj3-wI-ZMm" id="NDQ-RX-xrf"/>
-                <outlet property="postDesc" destination="Opj-EW-gXB" id="DRT-i1-b3r"/>
+                <outlet property="postDescription" destination="Opj-EW-gXB" id="eKl-s6-cuz"/>
                 <outlet property="postImage" destination="nP8-1e-WZS" id="cln-HX-orn"/>
                 <outlet property="postTitle" destination="yj8-JF-oma" id="oJy-vx-AzF"/>
-                <outlet property="tagView" destination="Wb9-aU-74I" id="x9E-w2-t3E"/>
+                <outlet property="tags" destination="Wb9-aU-74I" id="5c7-jP-xsH"/>
+                <outlet property="time" destination="KHk-IX-Wgt" id="3jA-Pt-KMC"/>
                 <outlet property="userImage" destination="zRX-QF-kSU" id="FaB-Wa-Vyv"/>
-                <outlet property="userName" destination="PHb-aY-hgC" id="R6e-17-FMm"/>
+                <outlet property="username" destination="PHb-aY-hgC" id="Tly-Ik-hNX"/>
             </connections>
             <point key="canvasLocation" x="-147.82608695652175" y="-36.495535714285715"/>
         </collectionViewCell>

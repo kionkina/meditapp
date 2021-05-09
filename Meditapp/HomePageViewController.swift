@@ -31,7 +31,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
 
     static var audioPlayer = AVAudioPlayer()
     static var playingCell: postCellTableViewCell?
-    static var playingCollectionCell: RecommendationsCollectionViewCell?
+
     
 //    var tagTaggerKits = [TKCollectionView]()
     
@@ -160,7 +160,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         
         let needMorePosts = queryLimit - numPosts
         if needMorePosts > 0{
-            loadTopRecordings(forLimit: needMorePosts, success: loadUsers)
+            loadTopRecordings(forLimit: 5, success: loadUsers)
         }
       
 //        print(numPosts, "After while loop and the fetchedposts", fetchPosts)
@@ -256,7 +256,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tableView.reloadData()
+//        tableView.reloadData()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -291,6 +291,9 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                     post.numLikes = dict["updateLikes"] as! Int
                 }
             }
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
     }
     @objc func handleComment(notification: NSNotification) {
@@ -300,6 +303,9 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                 if post.RecID == dict["updateRecID"] as! String{
                     post.numComments = dict["updateComment"] as! Int
                 }
+            }
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
             }
         }
     }

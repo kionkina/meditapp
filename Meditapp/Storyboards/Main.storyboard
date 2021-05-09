@@ -950,6 +950,11 @@
                                                         <action selector="playButton:" destination="o1o-Zc-ucB" eventType="touchUpInside" id="LCI-hE-ZU1"/>
                                                     </connections>
                                                 </button>
+                                                <view tag="100" contentMode="scaleToFill" id="gew-80-hnB">
+                                                    <rect key="frame" x="0.0" y="181" width="414" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                </view>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="aTD-dc-7CO" secondAttribute="trailing" constant="10" id="1Nz-ES-drO"/>
@@ -1006,6 +1011,7 @@
                                             <outlet property="postDescription" destination="oac-FT-4V5" id="xNk-JC-u9W"/>
                                             <outlet property="postImage" destination="AOE-5q-Pp2" id="G5a-OT-ZqH"/>
                                             <outlet property="postTitle" destination="xKB-kA-cdg" id="6II-Ko-9Jr"/>
+                                            <outlet property="tags" destination="gew-80-hnB" id="I5a-Xa-1lA"/>
                                             <outlet property="time" destination="aTD-dc-7CO" id="Zqv-81-abc"/>
                                             <outlet property="userImage" destination="5Pj-mY-8jg" id="Ryb-Ky-tfC"/>
                                             <outlet property="username" destination="FZz-iq-red" id="dKi-08-9cK"/>
@@ -1214,6 +1220,8 @@
                         <outlet property="tableView" destination="2pt-pB-D4O" id="Be6-tT-Cfh"/>
                         <segue destination="9GA-by-eNv" kind="show" identifier="viewMore" id="LoA-ra-0F6"/>
                         <segue destination="ct4-kI-yZX" kind="show" identifier="ontheRiseProfile" id="oWV-Xo-K98"/>
+                        <segue destination="ct4-kI-yZX" kind="show" identifier="toProfile" id="w1C-Wc-FTu"/>
+                        <segue destination="8RN-Os-wco" kind="show" identifier="toComments" id="twM-sf-k45"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WPv-67-eNr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1420,7 +1428,7 @@
                                             <outlet property="postDescription" destination="fKX-Rj-cg7" id="erk-sD-1AG"/>
                                             <outlet property="postImage" destination="x0h-12-Bo2" id="XgS-0Z-Srg"/>
                                             <outlet property="postTitle" destination="mqX-jN-Xth" id="KVD-3y-ZaL"/>
-                                            <outlet property="tags" destination="jnB-a2-Wjm" id="lco-9X-RMl"/>
+                                            <outlet property="tags" destination="jnB-a2-Wjm" id="0IO-RE-zwe"/>
                                             <outlet property="time" destination="H4r-iN-bW9" id="ots-yO-HDC"/>
                                             <outlet property="userImage" destination="WuQ-CM-TYM" id="V6A-Ja-kZP"/>
                                             <outlet property="username" destination="bov-mM-d3p" id="2Li-Ah-Poz"/>
@@ -1888,9 +1896,9 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="0Zq-kq-JsZ"/>
+        <segue reference="twM-sf-k45"/>
         <segue reference="jJZ-N7-g7o"/>
-        <segue reference="M0n-Hc-e7P"/>
+        <segue reference="w1C-Wc-FTu"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="default-img" width="185" height="170"/>
