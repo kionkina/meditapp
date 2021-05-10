@@ -61,8 +61,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var Pfp: UIImageView!
     
-    @IBOutlet weak var firstName: UILabel!
-    @IBOutlet weak var lastName: UILabel!
+    @IBOutlet weak var fullname: UILabel!
     @IBOutlet weak var userName: UILabel!
     
     @IBOutlet weak var numFollowers: UILabel!
@@ -129,11 +128,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         print("In profile vc")
         tableView.delegate = self
         tableView.dataSource = self
-//        UserService.show(forUID: User.current.uid, completion: { (user) in
-//            User.current = user
-//            self.configure()
-//        })
-//        postUser = User.current
         configure()
         
         print("view did load for profile")
@@ -155,8 +149,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     func configure()
     {
         
-        firstName.text = User.current.firstName
-        lastName.text = User.current.lastName
+        fullname.text = User.current.firstName + User.current.lastName
         userName.text = User.current.username
         numFollowers.text = String(User.current.numFollowers)
         numFollowing.text = String(User.current.numFollowing)

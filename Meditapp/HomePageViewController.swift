@@ -47,11 +47,14 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @objc func loadTenUsers(success: @escaping (Bool) -> Void) -> Void{
-        myRefreshControl.endRefreshing()
-        isFetching = true
-        tableView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            self?.myRefreshControl.endRefreshing()
+            self?.canFetchMoreFollowing = true
+            self?.isFetching = true
+            self?.tableView.reloadData()
+        }
         
-        if User.current.numFollowing > 0{
+        if User.current.following.count > 0{
             followings.removeAll()
             if (userIds != nil) {
                 //takes 10 user ids from current index
@@ -104,7 +107,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                 print(user.value!.firstName, user.value!.recordings , "After loading users")
             }
             print("loaded all da following", self.followings)
-            loadRecordings(forLimit: 5)
+            loadRecordings(forLimit: 10)
         }
     }
     
@@ -198,24 +201,45 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
             }
 //            self.tableView.reloadSections([1], with: UITableView.RowAnimation.fade)
 //            self.separator = numFetched
-            self.isFetching = false
-            self.showExploresCell = true
-            self.myRefreshControl.endRefreshing()
-            self.tableView.reloadData()
+            
+//            self.isFetching = false
+//            self.showExploresCell = true
+//            self.myRefreshControl.endRefreshing()
+            
+//            DispatchQueue.main.async {
+//                self.tableView.reloadData()
+//            }
+            
             success()
         }
     }
     
     @objc func loadUsers() -> Void {
         //check if ID is not already in users
+        var i = 0
+        let mygroup = DispatchGroup()
         for post in topPosts {
             if !users.keys.contains(post.OwnerID) {
+                mygroup.enter()
+                
                 DBViewController.getUserById(forUID: post.OwnerID) { (user) in
+                    print("Finished request \(i)")
                     if let user = user {
                         self.users[user.uid] = user
 //                        self.tableView.reloadData()
                     }
+                    i += 1
+                    mygroup.leave()
                 }
+            }
+        }
+        mygroup.notify(queue: .main){
+            DispatchQueue.main.async {
+                print("finished all request")
+                (self.myRefreshControl.isRefreshing) ? self.myRefreshControl.endRefreshing() : print("stopped refreshing already")
+                self.isFetching = false
+                self.tableView.reloadData()
+                print("called reload table")
             }
         }
     }
@@ -243,10 +267,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     @objc func refreshReload(){
         recordings.removeAll()
         users.removeAll()
-//        tagTaggerKits.removeAll()
-        tableView.reloadData()
         self.userIds = User.current.following
-        canFetchMoreFollowing = true
         loadTenUsers(success: doneLoadingUsers)
     }
     
