@@ -201,7 +201,9 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
             self.isFetching = false
             self.showExploresCell = true
             self.myRefreshControl.endRefreshing()
-            self.tableView.reloadData()
+            DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
             success()
         }
     }

@@ -193,7 +193,16 @@ class RecommendationsCollectionViewCell: UICollectionViewCell, AVAudioPlayerDele
         postImage.layer.cornerRadius = 10
         userImage.layer.cornerRadius = userImage.frame.size.height/2
 
+        //tags?.addSubview(tagsCollection.view)
+        
+        let meditappColor = UIColor(red: 252.0/255.0, green: 228.0/255.0, blue: 164.0/255, alpha: 0.2)
         tags?.addSubview(tagsCollection.view)
+        //tags?.subviews[0].layer.backgroundColor = CGColor(red: 252.0/255.0, green: 228.0/255.0, blue: 164.0/255, alpha: 0.3)
+        tags?.subviews[0].layer.backgroundColor = CGColor(red: 252.0/255.0, green: 228.0/255.0, blue: 164.0/255, alpha: 0.25)
+        //self.backgroundColor = meditappColor
+        self.applyGradient(isVertical: false, colorArray: [.white, meditappColor])
+        
+        self.layer.cornerRadius = 20
     }
 
     func configure(with model: Post, for user: User?){
@@ -206,6 +215,8 @@ class RecommendationsCollectionViewCell: UICollectionViewCell, AVAudioPlayerDele
 //        }
 //        print("post tags are \(model.Tags)")
         tagsCollection.tags = model.Tags
+        tagsCollection.customFont = UIFont.systemFont(ofSize: 12)
+        tagsCollection.customBackgroundColor = UIColor(red: 252.0/255.0, green: 228.0/255.0, blue: 164.0/255, alpha: 1)
         tagsCollection.tagsCollectionView.reloadData()
         
         let imageRef = Storage.storage().reference().child("postphotos").child(model.PostImg)
@@ -239,5 +250,6 @@ class RecommendationsCollectionViewCell: UICollectionViewCell, AVAudioPlayerDele
     
     
 }
+
 
 

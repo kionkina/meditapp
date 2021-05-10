@@ -46,8 +46,7 @@ class RecommendationsTableViewCell: UITableViewCell, UICollectionViewDelegate, U
                     cell.postUser = user
                 }
             }
-            cell.layer.borderColor = UIColor.black.cgColor
-            cell.layer.borderWidth = 1
+
             return cell
         }
         else{
@@ -70,7 +69,7 @@ class RecommendationsTableViewCell: UITableViewCell, UICollectionViewDelegate, U
             return CGSize(width: 210, height: 250)
         }
         else{
-            return CGSize(width: 380, height: 210)
+            return CGSize(width: 400, height: 210)
         }
     }
 
