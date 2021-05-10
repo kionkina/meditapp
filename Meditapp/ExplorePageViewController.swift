@@ -88,6 +88,8 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
 //            print("At indexpath section 0")
             let cell = tableView.dequeueReusableCell(withIdentifier: RecommendationsTableViewCell.identifier, for: indexPath) as! RecommendationsTableViewCell
             cell.delegate = self
+            cell.layer.borderColor =  CGColor(red: 1, green: 1, blue: 1, alpha: 1)
+            cell.layer.borderWidth = 7
             return cell
         }
         else if indexPath.section == 1{
@@ -131,6 +133,7 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
     //register the tableview cells
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         tableView.register(RecommendationsTableViewCell.nib(), forCellReuseIdentifier: RecommendationsTableViewCell.identifier)
         tableView.register(GenresTableViewCell.nib(), forCellReuseIdentifier: GenresTableViewCell.identifier)
         

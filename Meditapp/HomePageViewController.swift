@@ -209,7 +209,6 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
 //            DispatchQueue.main.async {
 //                self.tableView.reloadData()
 //            }
-            
             success()
         }
     }
