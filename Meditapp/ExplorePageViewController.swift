@@ -59,6 +59,7 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return 3
     }

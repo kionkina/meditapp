@@ -203,8 +203,14 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
         super.awakeFromNib()
         postImage.layer.cornerRadius = 10
         userImage.layer.cornerRadius = userImage.frame.size.height/2
+        
 
         tags?.addSubview(tagsCollection.view)
+        tags?.subviews[0].layer.backgroundColor = CGColor(red: 232/255.0, green: 231/255.0, blue: 231/255.0, alpha: 0.4)
+
+        self.backgroundColor = UIColor(red: 232/255.0, green: 231/255.0, blue: 231/255.0, alpha: 0.4)
+        
+        self.layer.cornerRadius = 20
     }
 
     func configure(with model: Post, for user: User?){
@@ -217,6 +223,8 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
 //        }
 //        print("post tags are \(model.Tags)")
         tagsCollection.tags = model.Tags
+        tagsCollection.customFont = UIFont.systemFont(ofSize: 12)
+        tagsCollection.customBackgroundColor = UIColor(red: 252.0/255.0, green: 228.0/255.0, blue: 164.0/255, alpha: 1)
         tagsCollection.tagsCollectionView.reloadData()
         
         
@@ -230,6 +238,8 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
         //fix user image when implement profile picture
         self.username?.setTitle(user!.username, for: .normal)
         self.usernameLabel?.text = user!.username
+        self.username?.setTitleColor(UIColor.black, for: .normal)
+        self.username?.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.bold)
         self.time?.text = DBViewController.convertTime(stamp: model.Timestamp)
         
         self.userImage.sd_setImage(with: Storage.storage().reference().child("profilephotos").child(user!.profilePic))
@@ -237,6 +247,7 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
         self.postUser = user
     }
 
+    
     
 
 }

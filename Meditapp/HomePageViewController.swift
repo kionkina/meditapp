@@ -49,7 +49,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     @objc func loadTenUsers(success: @escaping (Bool) -> Void) -> Void{
         myRefreshControl.endRefreshing()
         isFetching = true
-        tableView.reloadData()
+        //tableView.reloadData()
         
         if User.current.numFollowing > 0{
             followings.removeAll()
@@ -91,7 +91,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         for user in users{
             print(user.value!.firstName, user.value!.recordings , "After loading users")
         }
-        tableView.reloadData()
+       
         for user in users{
             print(user.value!.firstName, user.value!.recordings , "After loading users")
         }
@@ -217,8 +217,9 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                 DBViewController.getUserById(forUID: post.OwnerID) { (user) in
                     if let user = user {
                         self.users[user.uid] = user
-                        self.tableView.reloadData()
+//                        self.tableView.reloadData()
                     }
+                    
                 }
             }
         }
@@ -271,7 +272,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         
         print("I am following", User.current.following)
         tableView.estimatedRowHeight = 10000 // or your estimate
-
+        tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         myRefreshControl.addTarget(self, action: #selector(refreshReload), for: .valueChanged)
         tableView.refreshControl = myRefreshControl
 
@@ -361,6 +362,18 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                 cell.selectionStyle = UITableViewCell.SelectionStyle.none
 //                cell.backgroundView?.layer.cornerRadius = 5 //set this to whatever constant you need
 //                cell.backgroundView?.clipsToBounds = true
+                cell.layer.borderColor =  CGColor(red: 1, green: 1, blue: 1, alpha: 1)
+                cell.layer.borderWidth = 7
+                
+                cell.alpha = 0
+
+                UIView.animate(
+                    withDuration: 0.5,
+                    delay: 0.05 * Double(indexPath.row),
+                    animations: {
+                        cell.alpha = 1
+                })
+                
                 return cell
             }
             else{

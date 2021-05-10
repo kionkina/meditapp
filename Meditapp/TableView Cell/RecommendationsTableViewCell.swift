@@ -64,6 +64,7 @@ class RecommendationsTableViewCell: UITableViewCell, UICollectionViewDelegate, U
 
     }
     
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if indexPath.row == recordings.count{
             return CGSize(width: 210, height: 250)

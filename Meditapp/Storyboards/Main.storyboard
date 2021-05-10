@@ -28,7 +28,7 @@
             </objects>
             <point key="canvasLocation" x="-222" y="-484"/>
         </scene>
-        <!--Meditapp-->
+        <!--My Feed-->
         <scene sceneID="5Ut-sW-PkO">
             <objects>
                 <viewController id="dBm-fB-Yng" customClass="HomePageViewController" customModule="Meditapp" customModuleProvider="target" sceneMemberID="viewController">
@@ -277,7 +277,7 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Meditapp" id="LqH-wj-XWg">
+                    <navigationItem key="navigationItem" title="My Feed" id="LqH-wj-XWg">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="fLA-eu-iRW">
                             <connections>
                                 <segue destination="dCe-2x-bIS" kind="show" id="cjo-Uh-ibV"/>
@@ -1896,9 +1896,9 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="twM-sf-k45"/>
+        <segue reference="0Zq-kq-JsZ"/>
         <segue reference="jJZ-N7-g7o"/>
-        <segue reference="w1C-Wc-FTu"/>
+        <segue reference="M0n-Hc-e7P"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="default-img" width="185" height="170"/>
