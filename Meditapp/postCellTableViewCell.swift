@@ -205,10 +205,12 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
         userImage.layer.cornerRadius = userImage.frame.size.height/2
         
 
+        let meditappColor = UIColor(red: 252.0/255.0, green: 228.0/255.0, blue: 164.0/255, alpha: 0.2)
         tags?.addSubview(tagsCollection.view)
-        tags?.subviews[0].layer.backgroundColor = CGColor(red: 232/255.0, green: 231/255.0, blue: 231/255.0, alpha: 0.4)
-
-        self.backgroundColor = UIColor(red: 232/255.0, green: 231/255.0, blue: 231/255.0, alpha: 0.4)
+        //tags?.subviews[0].layer.backgroundColor = CGColor(red: 252.0/255.0, green: 228.0/255.0, blue: 164.0/255, alpha: 0.3)
+        tags?.subviews[0].layer.backgroundColor = CGColor(red: 252.0/255.0, green: 228.0/255.0, blue: 164.0/255, alpha: 0.25)
+        //self.backgroundColor = meditappColor
+        self.applyGradient(isVertical: true, colorArray: [.white, meditappColor])
         
         self.layer.cornerRadius = 20
     }
@@ -249,5 +251,28 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
 
     
     
+
+}
+
+extension UIView {
+
+    func applyGradient(isVertical: Bool, colorArray: [UIColor]) {
+        layer.sublayers?.filter({ $0 is CAGradientLayer }).forEach({ $0.removeFromSuperlayer() })
+         
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = colorArray.map({ $0.cgColor })
+        if isVertical {
+            //top to bottom
+            gradientLayer.locations = [0.0, 1.0]
+        } else {
+            //left to right
+            gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.5)
+            gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.5)
+        }
+        
+        backgroundColor = .clear
+        gradientLayer.frame = bounds
+        layer.insertSublayer(gradientLayer, at: 0)
+    }
 
 }
