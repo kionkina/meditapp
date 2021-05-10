@@ -49,7 +49,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     @objc func loadTenUsers(success: @escaping (Bool) -> Void) -> Void{
         myRefreshControl.endRefreshing()
         isFetching = true
-        //tableView.reloadData()
+        tableView.reloadData()
         
         if User.current.numFollowing > 0{
             followings.removeAll()
@@ -104,7 +104,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                 print(user.value!.firstName, user.value!.recordings , "After loading users")
             }
             print("loaded all da following", self.followings)
-            loadRecordings(forLimit: 2)
+            loadRecordings(forLimit: 5)
         }
     }
     
@@ -158,11 +158,6 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
             }
         }
         
-        let needMorePosts = queryLimit - numPosts
-        if needMorePosts > 0{
-            loadTopRecordings(forLimit: 5, success: loadUsers)
-        }
-      
 //        print(numPosts, "After while loop and the fetchedposts", fetchPosts)
         
 //        for user in users{
@@ -172,7 +167,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         print("Fetchpost count is \(fetchPosts.count)")
         if fetchPosts.count > 0{
             var numPostsFetchCounter = 0
-            DBViewController.getRec(for: fetchPosts) { (snapshot) in
+            DBViewController.getRec(for: fetchPosts) { [self] (snapshot) in
     //            print(snapshot, "the snapshots array")
     //            self.recordings.append(Post(snapshot: snapshot)!)
                 let post = Post(snapshot: snapshot)!
@@ -185,27 +180,28 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                 numPostsFetchCounter += 1
                 if numPostsFetchCounter == numPosts{
                     print("about to reload table")
-                    self.isFetching = false
-                    self.showExploresCell = true
-                    self.tableView.reloadData()
-                    
+//                    self.isFetching = false
+//                    self.showExploresCell = true
+//                    self.tableView.reloadData()
+                    self.loadTopRecordings(forLimit: 5, success: loadUsers)
                 }
             }
         }
     }
     
     @objc func loadTopRecordings(forLimit limit:Int, success: @escaping(() -> Void)) {
-        queryLimit += limit
-        DBViewController.getTopPosts(forLimit: queryLimit) { (docs, numFetched) in
+//        queryLimit += limit
+        DBViewController.getTopPosts(forLimit: limit) { (docs, numFetched) in
             self.topPosts.removeAll()
             for doc in docs{
                 self.topPosts.append(doc)
             }
-            self.tableView.reloadSections([1], with: UITableView.RowAnimation.fade)
+//            self.tableView.reloadSections([1], with: UITableView.RowAnimation.fade)
 //            self.separator = numFetched
             self.isFetching = false
             self.showExploresCell = true
             self.myRefreshControl.endRefreshing()
+            self.tableView.reloadData()
             success()
         }
     }
@@ -219,7 +215,6 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                         self.users[user.uid] = user
 //                        self.tableView.reloadData()
                     }
-                    
                 }
             }
         }
@@ -396,27 +391,19 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     // MARK: - Table view data source
     
     func numberOfSections(in tableView: UITableView) -> Int {
-//        if isFetching{
-//            return 1
-//        }
-//        else{
-//            return 3
-//        }
-        return 3
+        if isFetching{
+            return 1
+        }
+        else{
+            return 3
+        }
+//        return 3
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         if isFetching{
-            if section == 0{
-                return 1
-            }
-            else if section == 1{
-                return 0
-            }
-            else{
-                return 0
-            }
+            return 1
         }
         else{
             if section == 0{
@@ -429,26 +416,54 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                 return 1
             }
         }
+//        if isFetching{
+//            if section == 0{
+//                return 1
+//            }
+//            else if section == 1{
+//                return 0
+//            }
+//            else{
+//                return 0
+//            }
+//        }
+//        else{
+//            if section == 0{
+//                return recordings.count
+//            }
+//            else if section == 1{
+//                return topPosts.count
+//            }
+//            else{
+//                return 1
+//            }
+//        }
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if !isFetching, indexPath.section == 0, indexPath.row + 1 == recordings.count, canFetchMoreFollowing{
             print("Fetching more")
-            loadRecordings(forLimit: queryLimit + 3)
+            loadRecordings(forLimit: queryLimit + 5)
         }
     }
     
     var sectionTitles = ["Recent", "Top Posts", "Check Out Our Explore Page"]
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if isFetching{
-            if section == 0{
-                return "Recent"
-            }
             return nil
         }
         else{
             return sectionTitles[section]
         }
+//        if isFetching{
+//            if section == 0{
+//                return "Recent"
+//            }
+//            return nil
+//        }
+//        else{
+//            return sectionTitles[section]
+//        }
     }
     
 //    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
