@@ -159,9 +159,14 @@ class RecommendationsTableViewCell: UITableViewCell, UICollectionViewDelegate, U
     }
     var isFetching = true
     
+    func loadRecordingsFromExplorer(){
+        loadRecordings(forTags: toplikedGenres, success: loadUsers)
+    }
+    
     func loadRecordings(forTags tags:[String], success: @escaping(() -> Void)) {
         DispatchQueue.main.async {
             self.isFetching = true
+            self.recordings.removeAll()
             self.collectionView.reloadData()
         }
         queryLimit = 5

@@ -198,9 +198,10 @@ class RecommendationsCollectionViewCell: UICollectionViewCell, AVAudioPlayerDele
         let meditappColor = UIColor(red: 252.0/255.0, green: 228.0/255.0, blue: 164.0/255, alpha: 0.2)
         tags?.addSubview(tagsCollection.view)
         //tags?.subviews[0].layer.backgroundColor = CGColor(red: 252.0/255.0, green: 228.0/255.0, blue: 164.0/255, alpha: 0.3)
-        tags?.subviews[0].layer.backgroundColor = CGColor(red: 252.0/255.0, green: 228.0/255.0, blue: 164.0/255, alpha: 0.25)
-        //self.backgroundColor = meditappColor
-        self.applyGradient(isVertical: false, colorArray: [.white, meditappColor])
+        tags?.subviews[0].layer.backgroundColor = CGColor(red: 252.0/255.0, green: 228.0/255.0, blue: 164.0/255, alpha: 0.2)
+        tags?.subviews[0].frame.size.width =  (tags?.subviews[0].superview!.frame.size.width) as! CGFloat
+        self.backgroundColor = meditappColor
+        //self.applyGradient(isVertical: false, colorArray: [.white, meditappColor])
         
         self.layer.cornerRadius = 20
     }

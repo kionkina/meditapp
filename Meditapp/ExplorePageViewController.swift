@@ -44,6 +44,9 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
     @IBOutlet weak var tableView: UITableView!
     var titles = ["Recommendations", "Genres", "On The Rise"]
     var topUsers = [User]()
+    let myRefreshControl = UIRefreshControl()
+
+    var recommendationCell:RecommendationsTableViewCell?
     
     var pfpRef:StorageReference{
         return Storage.storage().reference().child("profilephotos")
@@ -91,6 +94,8 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
             cell.delegate = self
             cell.layer.borderColor =  CGColor(red: 1, green: 1, blue: 1, alpha: 1)
             cell.layer.borderWidth = 7
+            
+            recommendationCell = cell
             return cell
         }
         else if indexPath.section == 1{
@@ -134,6 +139,10 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
     //register the tableview cells
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        myRefreshControl.addTarget(self, action: #selector(refreshReload), for: .valueChanged)
+        tableView.refreshControl = myRefreshControl
+        
         tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         tableView.register(RecommendationsTableViewCell.nib(), forCellReuseIdentifier: RecommendationsTableViewCell.identifier)
         tableView.register(GenresTableViewCell.nib(), forCellReuseIdentifier: GenresTableViewCell.identifier)
@@ -142,12 +151,28 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
         
         NotificationCenter.default.addObserver(self, selector: #selector(commentClicked), name: Notification.Name("commentsClicked"), object: nil)
         
+        loadTopUsers()
+        
+    }
+    
+    func loadTopUsers(){
         DBViewController.getTopFiveUsers { (users) in
             for users in users {
                 self.topUsers.append(users)
             }
             self.tableView.reloadSections([2], with: .none)
         }
+    }
+    
+    @objc func refreshReload(){
+        if ExplorePageViewController.audioPlayer.isPlaying{
+            print("player needs to stop playing")
+            ExplorePageViewController.playingCell?.stopPlaying()
+        }
+        topUsers.removeAll()
+        recommendationCell?.loadRecordingsFromExplorer()
+        loadTopUsers()
+        myRefreshControl.endRefreshing()
     }
     
     @objc func profileClicked(notification: NSNotification){
