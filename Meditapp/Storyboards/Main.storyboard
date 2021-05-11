@@ -867,7 +867,7 @@
                                                         <constraint firstAttribute="height" constant="26" id="oV9-CY-NZc"/>
                                                     </constraints>
                                                 </view>
-                                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2UN-b5-ipF">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2UN-b5-ipF">
                                                     <rect key="frame" x="154.66666666666666" y="150" width="32" height="32"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="32" id="5Fo-aN-Zgm"/>
@@ -899,6 +899,7 @@
                                                 <constraint firstItem="0s1-Lo-MKY" firstAttribute="top" secondItem="Dlb-1l-Ncz" secondAttribute="top" id="fyc-Iv-m3A"/>
                                                 <constraint firstItem="olI-gu-O1p" firstAttribute="centerY" secondItem="tEQ-Bt-aio" secondAttribute="centerY" id="g1C-HY-TPh"/>
                                                 <constraint firstAttribute="trailing" secondItem="K2f-Js-FAg" secondAttribute="trailing" constant="8" id="hdN-bF-Lnw"/>
+                                                <constraint firstItem="2UN-b5-ipF" firstAttribute="leading" secondItem="Dlb-1l-Ncz" secondAttribute="trailing" constant="26.666666666666657" id="hni-8d-0lW"/>
                                                 <constraint firstItem="c11-ig-cfd" firstAttribute="top" secondItem="zFw-qk-4aH" secondAttribute="top" constant="11" id="m7q-SD-fkd"/>
                                                 <constraint firstItem="Dlb-1l-Ncz" firstAttribute="leading" secondItem="zFw-qk-4aH" secondAttribute="leading" constant="8" id="mLm-oU-Duu"/>
                                                 <constraint firstAttribute="trailing" secondItem="olI-gu-O1p" secondAttribute="trailing" constant="27" id="noL-mF-n3C"/>
@@ -1730,7 +1731,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="OYK-Xt-QSP"/>
         <segue reference="7bX-AO-RjQ"/>
-        <segue reference="bpa-Zl-oMB"/>
+        <segue reference="2iY-cv-WH4"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="default-img" width="185" height="170"/>

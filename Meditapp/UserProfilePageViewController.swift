@@ -133,7 +133,10 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        if isFetching{
+        if recordings.count == 0{
+            return 1
+        }
+        else if isFetching{
             return 1 + 1
         }
         else{
@@ -214,7 +217,10 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
     
     func loadRecordings() {
         myRefreshControl.endRefreshing()
-        isFetching = true
+        DispatchQueue.main.async {
+            self.isFetching = true
+            self.tableView.reloadData()
+        }
         let userRecs = postUser!.recordings.map{ Array($0.values)[0] }
         print(userRecs, "userrecs vs", postUser!.recordings)
         DBViewController.getRecordings(for: userRecs) { (doc: DocumentSnapshot) in
