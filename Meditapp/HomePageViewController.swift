@@ -399,6 +399,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
             else{
                 let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
                 cell.textLabel?.text = "View Explore Page Now"
+                cell.selectionStyle =  UITableViewCell.SelectionStyle.none
                 return cell
             }
         }
