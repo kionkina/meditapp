@@ -14,7 +14,12 @@ protocol RecommendationsDelegate: class {
 class RecommendationsTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return recordings.count + 1
+        if isFetching{
+            return 1
+        }
+        else{
+            return recordings.count + 1
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -24,49 +29,56 @@ class RecommendationsTableViewCell: UITableViewCell, UICollectionViewDelegate, U
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if indexPath.row < recordings.count{
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecommendationsCollectionViewCell.identifier, for: indexPath) as! RecommendationsCollectionViewCell
+        if isFetching{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LoadingCell", for: indexPath)
+            let spinner = cell.viewWithTag(100) as! UIActivityIndicatorView
             
-            let recording = recordings[indexPath.row]
-            cell.userPost = recording
-            if User.current.likedPosts[recording.RecID] != nil{
-                cell.setLiked(User.current.likedPosts[recording.RecID]!, recording.numLikes)
-            }
-            else{
-                cell.setLiked(false, recording.numLikes)
-            }
-            
-            if let user = users[recording.OwnerID]{
-                if user?.uid == User.current.uid{
-                    cell.configure(with: recording, for: User.current)
-                    cell.postUser = User.current
-                }
-                else{
-                    cell.configure(with: recording, for: user)
-                    cell.postUser = user
-                }
-            }
-
+            spinner.startAnimating()
             return cell
         }
         else{
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LoadMoreCollectionViewCell.identifier, for: indexPath) as! LoadMoreCollectionViewCell
-            if !displayMoreCell{
-                cell.viewMore.isEnabled = false
+            if indexPath.row < recordings.count{
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecommendationsCollectionViewCell.identifier, for: indexPath) as! RecommendationsCollectionViewCell
+                
+                let recording = recordings[indexPath.row]
+                cell.userPost = recording
+                if User.current.likedPosts[recording.RecID] != nil{
+                    cell.setLiked(User.current.likedPosts[recording.RecID]!, recording.numLikes)
+                }
+                else{
+                    cell.setLiked(false, recording.numLikes)
+                }
+                
+                if let user = users[recording.OwnerID]{
+                    if user?.uid == User.current.uid{
+                        cell.configure(with: recording, for: User.current)
+                        cell.postUser = User.current
+                    }
+                    else{
+                        cell.configure(with: recording, for: user)
+                        cell.postUser = user
+                    }
+                }
+
+                return cell
             }
             else{
-                cell.viewMore.isEnabled = true
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LoadMoreCollectionViewCell.identifier, for: indexPath) as! LoadMoreCollectionViewCell
+                if !displayMoreCell{
+                    cell.viewMore.isEnabled = false
+                }
+                else{
+                    cell.viewMore.isEnabled = true
+                }
+                return cell
             }
-            return cell
         }
-
-
     }
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if indexPath.row == recordings.count{
-            return CGSize(width: 210, height: 250)
+            return CGSize(width: 210, height: 270)
         }
         else{
             return CGSize(width: 400, height: 210)
@@ -83,7 +95,6 @@ class RecommendationsTableViewCell: UITableViewCell, UICollectionViewDelegate, U
     
     weak var delegate: RecommendationsDelegate?
 
-    var tagsforPosts = [TKCollectionView]()
     var recordings = [Post]()
     var users = [String: User?]()
     var toplikedGenres:[String] = {
@@ -108,10 +119,9 @@ class RecommendationsTableViewCell: UITableViewCell, UICollectionViewDelegate, U
         
         collectionView.register(RecommendationsCollectionViewCell.nib(), forCellWithReuseIdentifier: RecommendationsCollectionViewCell.identifier)
         collectionView.register(LoadMoreCollectionViewCell.nib(), forCellWithReuseIdentifier: LoadMoreCollectionViewCell.identifier)
+        collectionView.register(LoadingCell.nib(), forCellWithReuseIdentifier: LoadingCell.identifier)
+
         
-//        print("Recommendations table view cell generated")
-        //get users top 3 liked genres
-        //get recordings
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleLikes), name: Notification.Name("UpdateLikes"), object: nil)
         
@@ -119,7 +129,6 @@ class RecommendationsTableViewCell: UITableViewCell, UICollectionViewDelegate, U
 
         loadRecordings(forTags: toplikedGenres, success: loadUsers)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(handleLikes), name: Notification.Name("UpdateLikes"), object: nil)
     }
     
     @objc func handleLikes(notification: NSNotification) {
@@ -148,32 +157,56 @@ class RecommendationsTableViewCell: UITableViewCell, UICollectionViewDelegate, U
             }
         }
     }
+    var isFetching = true
     
     func loadRecordings(forTags tags:[String], success: @escaping(() -> Void)) {
+        DispatchQueue.main.async {
+            self.isFetching = true
+            self.collectionView.reloadData()
+        }
         queryLimit = 5
         DBViewController.getPostsExplore(forLimit: queryLimit, forTags: tags) { (docs, numFetched) in
+            if numFetched == 0{
+                DispatchQueue.main.async {
+                    self.isFetching = false
+                    self.collectionView.reloadData()
+                    return
+                }
+            }
+            
             self.recordings.removeAll()
             for doc in docs{
                 self.recordings.append(doc)
-                let tagsForPost = TKCollectionView()
-                tagsForPost.tags = doc.Tags
-                self.tagsforPosts.append(tagsForPost)
             }
-            self.collectionView.reloadData()
-            print("number of fetched post by tags \(docs.count)")
+//            self.collectionView.reloadData()
             success()
         }
     }
     
     func loadUsers() -> Void {
-        for recording in recordings {
-            if !users.keys.contains(recording.OwnerID) {
-                DBViewController.getUserById(forUID: recording.OwnerID) { (user) in
+        var i = 0
+        let mygroup = DispatchGroup()
+        for post in recordings {
+            if !users.keys.contains(post.OwnerID) {
+                mygroup.enter()
+                
+                DBViewController.getUserById(forUID: post.OwnerID) { (user) in
+                    print("Finished request \(i)")
                     if let user = user {
                         self.users[user.uid] = user
-                        self.collectionView.reloadData()
+//                        self.tableView.reloadData()
                     }
+                    i += 1
+                    mygroup.leave()
                 }
+            }
+        }
+        mygroup.notify(queue: .main){
+            DispatchQueue.main.async {
+                print("finished all request")
+                self.isFetching = false
+                self.collectionView.reloadData()
+                print("called reload table")
             }
         }
     }

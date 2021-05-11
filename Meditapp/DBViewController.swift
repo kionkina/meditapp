@@ -153,7 +153,7 @@ class DBViewController: UIViewController {
             else{
                 //querysnapshot can contain multiple documents
                 if querySnapshot!.documents.count <= 0{
-                    print("no documents fetched")
+                    success(fetchedPosts, 0)
                 }
                 else{
                     for snapshot in querySnapshot!.documents{

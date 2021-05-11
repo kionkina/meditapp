@@ -35,10 +35,10 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     
 //    var tagTaggerKits = [TKCollectionView]()
     
-    var isFetching = false
+    var isFetching = true
     var showExploresCell = false
     
-    var isFetchingMore:Bool = false
+//    var isFetchingMore:Bool = false
     var canFetchMoreFollowing:Bool = true
 
     var audioReference: StorageReference{
@@ -47,11 +47,11 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @objc func loadTenUsers(success: @escaping (Bool) -> Void) -> Void{
-        DispatchQueue.main.async { [weak self] in
-            self?.myRefreshControl.endRefreshing()
-            self?.canFetchMoreFollowing = true
-            self?.isFetching = true
-            self?.tableView.reloadData()
+        DispatchQueue.main.async {
+            self.myRefreshControl.endRefreshing()
+            self.canFetchMoreFollowing = true
+            self.isFetching = true
+            self.tableView.reloadData()
         }
         
         if User.current.following.count > 0{
@@ -273,6 +273,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 //        tableView.reloadData()
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -280,6 +281,9 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
             print("player needs to stop playing")
             HomePageViewController.playingCell?.stopPlaying()
         }
+        NotificationCenter.default.addObserver(self, selector: #selector(handleLikes), name: Notification.Name("UpdateLikes"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleComment), name: Notification.Name("UpdateComment"), object: nil)
     }
     
     override func viewDidLoad() {
@@ -294,9 +298,9 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         self.userIds = User.current.following
         loadTenUsers(success: doneLoadingUsers)
 //        loadRecordings(forLimit: 10)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleLikes), name: Notification.Name("UpdateLikes"), object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(handleComment), name: Notification.Name("UpdateComment"), object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(handleLikes), name: Notification.Name("UpdateLikes"), object: nil)
+//
+//        NotificationCenter.default.addObserver(self, selector: #selector(handleComment), name: Notification.Name("UpdateComment"), object: nil)
     }
 
     @objc func handleLikes(notification: NSNotification) {
@@ -331,6 +335,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         if isFetching{
             let cell = tableView.dequeueReusableCell(withIdentifier: "LoadingCell", for: indexPath)
             let spinner = cell.viewWithTag(100) as! UIActivityIndicatorView
+            
             spinner.startAnimating()
             return cell
         }

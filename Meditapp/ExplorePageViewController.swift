@@ -21,6 +21,7 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "viewMore"{
             let vc = segue.destination as! ViewMoreViewController
+            vc.title = "Explore"
             vc.viewforTags = sender as! [String]
         }
         else if segue.identifier == "ontheRiseProfile"{

@@ -18,6 +18,8 @@
 		362B1B80263677EE000EAB6A /* LoadMoreCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362B1B7E263677EE000EAB6A /* LoadMoreCollectionViewCell.swift */; };
 		362B1B81263677EE000EAB6A /* LoadMoreCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 362B1B7F263677EE000EAB6A /* LoadMoreCollectionViewCell.xib */; };
 		362B1B84263733A0000EAB6A /* ViewMoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362B1B83263733A0000EAB6A /* ViewMoreViewController.swift */; };
+		3684D1BF2649DC4400B36A73 /* LoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3684D1BD2649DC4400B36A73 /* LoadingCell.swift */; };
+		3684D1C02649DC4400B36A73 /* LoadingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3684D1BE2649DC4400B36A73 /* LoadingCell.xib */; };
 		36B9F7EC262E06CE0010BFCD /* ExplorePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B9F7EB262E06CE0010BFCD /* ExplorePageViewController.swift */; };
 		36B9F7F2262E0A0E0010BFCD /* RecommendationsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B9F7F0262E0A0E0010BFCD /* RecommendationsTableViewCell.swift */; };
 		36B9F7F3262E0A0E0010BFCD /* RecommendationsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36B9F7F1262E0A0E0010BFCD /* RecommendationsTableViewCell.xib */; };
@@ -70,6 +72,8 @@
 		362B1B7E263677EE000EAB6A /* LoadMoreCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadMoreCollectionViewCell.swift; sourceTree = "<group>"; };
 		362B1B7F263677EE000EAB6A /* LoadMoreCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoadMoreCollectionViewCell.xib; sourceTree = "<group>"; };
 		362B1B83263733A0000EAB6A /* ViewMoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreViewController.swift; sourceTree = "<group>"; };
+		3684D1BD2649DC4400B36A73 /* LoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingCell.swift; sourceTree = "<group>"; };
+		3684D1BE2649DC4400B36A73 /* LoadingCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoadingCell.xib; sourceTree = "<group>"; };
 		36B9F7EB262E06CE0010BFCD /* ExplorePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplorePageViewController.swift; sourceTree = "<group>"; };
 		36B9F7F0262E0A0E0010BFCD /* RecommendationsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationsTableViewCell.swift; sourceTree = "<group>"; };
 		36B9F7F1262E0A0E0010BFCD /* RecommendationsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecommendationsTableViewCell.xib; sourceTree = "<group>"; };
@@ -159,6 +163,8 @@
 				36B9F800262E0D950010BFCD /* GenresCollectionViewCell.xib */,
 				362B1B7E263677EE000EAB6A /* LoadMoreCollectionViewCell.swift */,
 				362B1B7F263677EE000EAB6A /* LoadMoreCollectionViewCell.xib */,
+				3684D1BD2649DC4400B36A73 /* LoadingCell.swift */,
+				3684D1BE2649DC4400B36A73 /* LoadingCell.xib */,
 			);
 			path = "CollectionView Cell";
 			sourceTree = "<group>";
@@ -321,6 +327,7 @@
 				9AEA1D1925E5DE3E00C329C8 /* Login.storyboard in Resources */,
 				36B9F802262E0D950010BFCD /* GenresCollectionViewCell.xib in Resources */,
 				9AEA1D1625E5DE3800C329C8 /* Main.storyboard in Resources */,
+				3684D1C02649DC4400B36A73 /* LoadingCell.xib in Resources */,
 				36B9F7F3262E0A0E0010BFCD /* RecommendationsTableViewCell.xib in Resources */,
 				9AEA1D3625E5DF5100C329C8 /* GoogleService-Info.plist in Resources */,
 				36B9F7FD262E0A3F0010BFCD /* RecommendationsCollectionViewCell.xib in Resources */,
@@ -411,6 +418,7 @@
 				9A2750B0262E06A60058F821 /* FollowersViewController.swift in Sources */,
 				0375DBA2261E1D320013BF82 /* checklistItemTableViewCell.swift in Sources */,
 				9A9970BA2612878E008BAB51 /* commentTableViewCell.swift in Sources */,
+				3684D1BF2649DC4400B36A73 /* LoadingCell.swift in Sources */,
 				3613CB4626067C460065D1CE /* HomePageViewController.swift in Sources */,
 				9AEA1D2B25E5DE6800C329C8 /* User.swift in Sources */,
 				9AE03F752602994900715283 /* ChecklistViewController.swift in Sources */,

@@ -15,12 +15,10 @@ class ViewMoreViewController: UIViewController, UITableViewDelegate, UITableView
     
     var recordings = [Post]()
     var users = [String: User?]()
-    var tagTaggerKits = [TKCollectionView]()
     
     var queryLimit = 0
     let myRefreshControl = UIRefreshControl()
     
-    var isFetchingMore:Bool = false
     var canFetchMore:Bool = true
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -44,42 +42,36 @@ class ViewMoreViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @objc func refreshReload(){
-        print("i have refreshed")
-        canFetchMore = true
-        //because if we dont remove users, in the loadusers post, all our users already stored, so it wont get to point of reloading data, since if statement never checks in loaduser since we run the loop on recordings we already fetched where it checks if ownerid exists in dict we had prior before we removed. The table then tries to load the cell before table has been reloading so it tries to load the row from data model that is no longer dere.
+//        canFetchMore = true
         recordings.removeAll()
         users.removeAll()
-        tableView.reloadData()
         loadRecordings(success: loadUsers)
     }
     
-    @objc func loadUsers() -> Void {
-        print("loadUsers")
-        //check if ID is not already in users
-        for recording in recordings {
-            if !users.keys.contains(recording.OwnerID) {
-                DBViewController.getUserById(forUID: recording.OwnerID) { (user) in
-                    if let user = user {
-                        self.users[user.uid] = user
-                        self.tableView.reloadData()
-                    }
-                }
-            }
-        }
-    }
+    var isFetching = true
     
     @objc func loadRecordings(success: @escaping(() -> Void)) {
+        DispatchQueue.main.async {
+            self.myRefreshControl.endRefreshing()
+            self.canFetchMore = true
+            self.isFetching = true
+            self.tableView.reloadData()
+        }
         queryLimit = 8
         DBViewController.getPostsExplore(forLimit: queryLimit, forTags: viewforTags) { (docs, numFetched) in
+            if numFetched == 0{
+                DispatchQueue.main.async {
+                    self.isFetching = false
+                    self.canFetchMore = false
+                    self.tableView.reloadData()
+                    return
+                }
+            }
             self.recordings.removeAll()
             for doc in docs{
-                let tagger = TKCollectionView()
-                tagger.tags = doc.Tags
-                self.tagTaggerKits.append(tagger)
                 self.recordings.append(doc)
             }
 //            self.tableView.reloadData()
-            self.myRefreshControl.endRefreshing()
             success()
         }
     }
@@ -87,12 +79,10 @@ class ViewMoreViewController: UIViewController, UITableViewDelegate, UITableView
     func loadMoreRecordings(success: @escaping(() -> Void)) {
         queryLimit += 8
         DBViewController.getPostsExplore(forLimit: queryLimit, forTags: viewforTags) { (docs, numFetched) in
+            
             let prevNumPosts = self.recordings.count
             self.recordings.removeAll()
             for doc in docs{
-                let tagger = TKCollectionView()
-                tagger.tags = doc.Tags
-                self.tagTaggerKits.append(tagger)
                 self.recordings.append(doc)
             }
             //check is prev num post is equal to new amount of post. if so, cant fetch anymore
@@ -100,16 +90,43 @@ class ViewMoreViewController: UIViewController, UITableViewDelegate, UITableView
                 self.canFetchMore = false
             }
             //in case we already have all users in our users dict, if statement wont check and it wont reload.
-            self.tableView.reloadData()
-            self.isFetchingMore = false
+//            self.tableView.reloadData()
             success()
         }
     }
     
+    @objc func loadUsers() -> Void {
+        var i = 0
+        let mygroup = DispatchGroup()
+        for post in recordings {
+            if !users.keys.contains(post.OwnerID) {
+                mygroup.enter()
+                
+                DBViewController.getUserById(forUID: post.OwnerID) { (user) in
+                    print("Finished request \(i)")
+                    if let user = user {
+                        self.users[user.uid] = user
+//                        self.tableView.reloadData()
+                    }
+                    i += 1
+                    mygroup.leave()
+                }
+            }
+        }
+        mygroup.notify(queue: .main){
+            DispatchQueue.main.async {
+                print("finished all request")
+                (self.myRefreshControl.isRefreshing) ? self.myRefreshControl.endRefreshing() : print("stopped refreshing already")
+                self.isFetching = false
+                self.tableView.reloadData()
+                print("called reload table")
+            }
+        }
+    }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row + 1 == recordings.count{
-            if !isFetchingMore && canFetchMore{
+            if !isFetching && canFetchMore{
                 loadMoreRecordings(success: loadUsers)
             }
         }
@@ -158,40 +175,54 @@ class ViewMoreViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! postCellTableViewCell
-                
-        let recording = recordings[indexPath.row]
-        cell.post = recording
-
-        //set whether the post has already been liked when displaying cells.
-        if User.current.likedPosts[recording.RecID] != nil{
-            cell.setLiked(User.current.likedPosts[recording.RecID]!, recording.numLikes)
+        if isFetching{
+            print("displaying loading cell")
+            let cell = tableView.dequeueReusableCell(withIdentifier: "LoadingCell", for: indexPath)
+            let spinner = cell.viewWithTag(100) as! UIActivityIndicatorView
+            
+            spinner.startAnimating()
+            return cell
         }
         else{
-            cell.setLiked(false, recording.numLikes)
-        }
-        
-        if let user = users[recording.OwnerID]{
-            if user?.uid == User.current.uid{
-                cell.configure(with: recording, for: User.current)
-                cell.postUser = User.current
+            let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! postCellTableViewCell
+                    
+            let recording = recordings[indexPath.row]
+            cell.post = recording
+
+            //set whether the post has already been liked when displaying cells.
+            if User.current.likedPosts[recording.RecID] != nil{
+                cell.setLiked(User.current.likedPosts[recording.RecID]!, recording.numLikes)
             }
             else{
-                cell.configure(with: recording, for: user)
-                cell.postUser = user
+                cell.setLiked(false, recording.numLikes)
             }
+            
+            if let user = users[recording.OwnerID]{
+                if user?.uid == User.current.uid{
+                    cell.configure(with: recording, for: User.current)
+                    cell.postUser = User.current
+                }
+                else{
+                    cell.configure(with: recording, for: user)
+                    cell.postUser = user
+                }
+            }
+            
+            // add separator
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
+            return cell
         }
-        
-        // add separator
-        cell.selectionStyle = UITableViewCell.SelectionStyle.none
-        return cell
     }
     
     // MARK: - Table view data source
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return recordings.count
+        if isFetching{
+            return 1
+        }
+        else{
+            return recordings.count
+        }
     }
     
 }

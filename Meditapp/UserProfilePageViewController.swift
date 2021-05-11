@@ -14,12 +14,6 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
    
     @IBOutlet var tableView: UITableView!
     
-    var audioPlayer = AVAudioPlayer()
-    
-    var audioReference: StorageReference{
-        return Storage.storage().reference().child("recordings")
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "toFollowing") {
             let button = sender as! UIButton
@@ -68,6 +62,8 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
         return
     }
     
+    var isFetching = true
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if indexPath.row == 0{
@@ -97,28 +93,38 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
             return cell
         }
         else{
-            let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! postCellTableViewCell
-            let recording = recordings[indexPath.row - 1]
-            //if user to current post found in dict
-            //configure the cell
-    //        cell.configure(with: recording)
-            cell.post = recording
-            
-
-            if User.current.likedPosts[recording.RecID] != nil{
-                cell.setLiked(User.current.likedPosts[recording.RecID]!, recording.numLikes)
+            if isFetching{
+                print("displaying loading cell")
+                let cell = tableView.dequeueReusableCell(withIdentifier: "LoadingCell", for: indexPath)
+                let spinner = cell.viewWithTag(100) as! UIActivityIndicatorView
+                
+                spinner.startAnimating()
+                return cell
             }
             else{
-                cell.setLiked(false, recording.numLikes)
+                let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! postCellTableViewCell
+                let recording = recordings[indexPath.row - 1]
+                //if user to current post found in dict
+                //configure the cell
+        //        cell.configure(with: recording)
+                cell.post = recording
+                
+
+                if User.current.likedPosts[recording.RecID] != nil{
+                    cell.setLiked(User.current.likedPosts[recording.RecID]!, recording.numLikes)
+                }
+                else{
+                    cell.setLiked(false, recording.numLikes)
+                }
+                
+                if let user = postUser{
+                    cell.configure(with: recording, for: user)
+                    cell.postUser = user
+                }
+                
+                cell.selectionStyle = UITableViewCell.SelectionStyle.none
+                return cell
             }
-            
-            if let user = postUser{
-                cell.configure(with: recording, for: user)
-                cell.postUser = user
-            }
-            
-            cell.selectionStyle = UITableViewCell.SelectionStyle.none
-            return cell
         }
     }
     
@@ -127,7 +133,12 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 1 + recordings.count
+        if isFetching{
+            return 1 + 1
+        }
+        else{
+            return 1 + recordings.count
+        }
     }
     
 
@@ -142,10 +153,6 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
     
     let myRefreshControl = UIRefreshControl()
 
-    @IBOutlet weak var Pfp: UIImageView!
-    
-
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData()
@@ -155,20 +162,15 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
 //        print("loading userprofile vc")
         super.viewDidLoad()
         
-        
         tableView.delegate = self
         tableView.dataSource = self
         
         myRefreshControl.addTarget(self, action: #selector(refreshReload), for: .valueChanged)
         tableView.refreshControl = myRefreshControl
         
-//        username.text = postUser?.firstName
         navigationItem.title = postUser?.username
-//        firstName.text = postUser?.lastName
-//        lastName.text = postUser?.username
         
-        print("in profile! uid: " + postUser!.uid, "and his recordings are", postUser!.recordings)
-//        loadPfp()
+//        print("in profile! uid: " + postUser!.uid, "and his recordings are", postUser!.recordings)
         
         //change eventually to user.profileimage
         loadRecordings()
@@ -212,15 +214,18 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
     
     func loadRecordings() {
         myRefreshControl.endRefreshing()
+        isFetching = true
         let userRecs = postUser!.recordings.map{ Array($0.values)[0] }
         print(userRecs, "userrecs vs", postUser!.recordings)
         DBViewController.getRecordings(for: userRecs) { (doc: DocumentSnapshot) in
             if (doc != nil) {
                 self.recordings.append(Post(snapshot: doc)!)
                 self.recordings.sort(by: { $0.Timestamp.dateValue() > $1.Timestamp.dateValue() })
-                print("adding recording")
-                self.tableView.reloadData()
-//                self.myRefreshControl.endRefreshing()
+                
+                DispatchQueue.main.async {
+                    self.isFetching = false
+                    self.tableView.reloadData()
+                }
             }
         }
     }
