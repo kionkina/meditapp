@@ -26,7 +26,7 @@ struct UserService {
                         "numFollowing" : 0,
                          "likedGenres": [String:Int]()] as [String : Any]
         print("in create in userservice")
-        let ref = Firestore.firestore().collection("user1").document(firUser.uid)
+        let ref = Firestore.firestore().collection("user2").document(firUser.uid)
         
         ref.setData(userAttrs) { error in
             if let error = error {
@@ -51,7 +51,7 @@ struct UserService {
         
         print("in show in userservice")
         
-        let ref = Firestore.firestore().collection("user1").document(uid)
+        let ref = Firestore.firestore().collection("user2").document(uid)
         print("uid: " + uid)
         ref.addSnapshotListener { documentSnapshot, error in
             guard let snapshot = documentSnapshot else {
@@ -66,7 +66,7 @@ struct UserService {
     }
     
     static func deleteUser(forUID uid: String, success: @escaping (Bool) -> Void) {
-        let ref = Firestore.firestore().collection("user1").document(uid)
+        let ref = Firestore.firestore().collection("user2").document(uid)
         
         ref.delete() { err in
             if let err = err {

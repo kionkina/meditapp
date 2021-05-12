@@ -43,7 +43,7 @@ class GenresTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollecti
     
     @IBOutlet var collectionView:UICollectionView!
     
-    let genres = ["Morning", "Evening", "Energizing", "Relaxing", "meditation", "Mantra"]
+    let genres = ["Morning", "Evening", "Energizing", "Relaxing", "Meditation", "Mantra"]
     
     weak var delegate: GenresDelegate?
 

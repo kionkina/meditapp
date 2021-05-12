@@ -91,14 +91,15 @@ class ChecklistViewController: UITableViewController {
     
     //TODO: move logic to controller
     func updateData(selectedTags: [String]){
-        let docRef = Firestore.firestore().collection("user1").document(User.current.uid)
+        let docRef = Firestore.firestore().collection("user2").document(User.current.uid)
 
         docRef.updateData([
             "tags": selectedTags
         ]) { err in
             if let err = err {
                 print("Error updating document: \(err)")
-            } else {
+            }
+            else {
                 User.setCurrent(User.current, writeToUserDefaults: true)
                 print("Document successfully updated")
             }
@@ -106,7 +107,7 @@ class ChecklistViewController: UITableViewController {
     }
     
     func updatelikedGenres(forGenres genres: [String:Int]){
-        let docRef = Firestore.firestore().collection("user1").document(User.current.uid)
+        let docRef = Firestore.firestore().collection("user2").document(User.current.uid)
 
         docRef.updateData([
             "likedGenres": genres

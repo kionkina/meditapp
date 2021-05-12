@@ -116,18 +116,10 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @objc func loadRecordings(forLimit limit:Int) {
-        for user in users{
-            print(user.value!.firstName, user.value!.recordings , "After loading users in fetching posts")
-        }
-        print("refreshing")
-        print("I'm following")
-        print(followings.map({ $0.firstName}))
-//        myRefreshControl.endRefreshing()
         queryLimit = limit
         var fetchPosts = [DocumentReference]()
         var recentPost:DocumentReference?
         var maxTimestamp = Timestamp(seconds: 0, nanoseconds:0)
-//        print(minTimestamp, "timestamp")
         var numPosts = 0
         var followingRef:User?
         
@@ -175,10 +167,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     //            self.recordings.append(Post(snapshot: snapshot)!)
                 let post = Post(snapshot: snapshot)!
                 self.recordings.insert(post, at: 0)
-                let tagsForPost = TKCollectionView()
-                tagsForPost.tags = post.Tags
-    //            self.tagTaggerKits.append(tagsForPost)
-    //            print("After db call", self.recordings.count)
+        
                 self.recordings.sort(by: { $0.Timestamp.dateValue() > $1.Timestamp.dateValue() })
                 numPostsFetchCounter += 1
                 if numPostsFetchCounter == numPosts{
@@ -195,6 +184,14 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     @objc func loadTopRecordings(forLimit limit:Int, success: @escaping(() -> Void)) {
 //        queryLimit += limit
         DBViewController.getTopPosts(forLimit: limit) { (docs, numFetched) in
+            if numFetched == 0{
+                print("cant get top posts")
+                DispatchQueue.main.async {
+                    self.isFetching = false
+                    self.tableView.reloadData()
+                    return
+                }
+            }
             self.topPosts.removeAll()
             for doc in docs{
                 self.topPosts.append(doc)
@@ -214,31 +211,23 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @objc func loadUsers() -> Void {
-        //check if ID is not already in users
-        var i = 0
         let mygroup = DispatchGroup()
         for post in topPosts {
             if !users.keys.contains(post.OwnerID) {
                 mygroup.enter()
-                
                 DBViewController.getUserById(forUID: post.OwnerID) { (user) in
-                    print("Finished request \(i)")
                     if let user = user {
                         self.users[user.uid] = user
-//                        self.tableView.reloadData()
                     }
-                    i += 1
                     mygroup.leave()
                 }
             }
         }
         mygroup.notify(queue: .main){
             DispatchQueue.main.async {
-                print("finished all request")
                 (self.myRefreshControl.isRefreshing) ? self.myRefreshControl.endRefreshing() : print("stopped refreshing already")
                 self.isFetching = false
                 self.tableView.reloadData()
-                print("called reload table")
             }
         }
     }

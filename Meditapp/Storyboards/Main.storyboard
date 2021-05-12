@@ -724,7 +724,7 @@
                                     <action selector="uploadImg:" destination="dCe-2x-bIS" eventType="touchUpInside" id="XcI-EH-Oos"/>
                                 </connections>
                             </button>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default-img" translatesAutoresizingMaskIntoConstraints="NO" id="bLK-vy-lQr">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default-img" translatesAutoresizingMaskIntoConstraints="NO" id="bLK-vy-lQr">
                                 <rect key="frame" x="245" y="211" width="149" height="121"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="121" id="ldn-08-Jai"/>
@@ -1671,7 +1671,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="default-img" translatesAutoresizingMaskIntoConstraints="NO" id="gdn-P5-rAa">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="default-img" translatesAutoresizingMaskIntoConstraints="NO" id="gdn-P5-rAa">
                                 <rect key="frame" x="59" y="73" width="297" height="270"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -1757,9 +1757,9 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="d6L-j6-a8X"/>
+        <segue reference="0Zq-kq-JsZ"/>
         <segue reference="WoX-UU-taf"/>
-        <segue reference="bpa-Zl-oMB"/>
+        <segue reference="M0n-Hc-e7P"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="default-img" width="185" height="170"/>

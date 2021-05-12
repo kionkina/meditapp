@@ -67,9 +67,9 @@ class DBViewController: UIViewController {
         }
         print("FETCHING BY TAGS", tags)
         print("about to run query")
-        //let userRef = db.collection("user1").document(User.current.uid)
+        //let userRef = db.collection("user2").document(User.current.uid)
         //returns a firquery. using orderby requires creating index
-        let queryRef = db.collection("recordings1")
+        let queryRef = db.collection("recordings2")
             //.whereField("OwnerID", notIn: [User.current.uid])
             .whereField("Tags", arrayContainsAny: tags)
             .order(by: "Timestamp", descending: true)
@@ -106,7 +106,7 @@ class DBViewController: UIViewController {
                     else{
                         print("going to fetch more")
                         let original = fetchedPosts.count
-                        let queryRef2 = db.collection("recordings1")
+                        let queryRef2 = db.collection("recordings2")
                             .whereField("IdTime", notIn: foundPosts)
                             .order(by: "IdTime", descending: true)
                             .limit(to: limit - fetchedPosts.count)
@@ -140,7 +140,7 @@ class DBViewController: UIViewController {
     static func getPostsExplore(forLimit limit: Int , forTags tags: [String], success: @escaping ([Post], _ numFetched: Int) -> Void){
         let db = Firestore.firestore()
         var fetchedPosts = [Post]()
-        let queryRef = db.collection("recordings1")
+        let queryRef = db.collection("recordings2")
             //.whereField("OwnerID", notIn: [User.current.uid])
             .whereField("Tags", arrayContainsAny: tags)
             .order(by: "Timestamp", descending: true)
@@ -170,9 +170,9 @@ class DBViewController: UIViewController {
     }
     static func getUserById(forUID uid: String, success: @escaping (User?) -> Void) {
 
-        let docRef = Firestore.firestore().collection("user1").document(uid)
+        let docRef = Firestore.firestore().collection("user2").document(uid)
         
-        docRef.getDocument { (document, error) in
+        docRef.getDocument { (document  , error) in
             if let document = document, document.exists {
                 let user = User(snapshot: document)
                 success(user)
@@ -189,10 +189,10 @@ class DBViewController: UIViewController {
         
         for docRef in references {
             docRef.getDocument { (document, error) in
-                if let document = document, document.exists {
-//                    ret.append(document)
+                if let document = document{
                     success(document)
-                } else {
+                }
+                else {
                     print("Document does not exist")
                 }
             }
@@ -205,7 +205,8 @@ class DBViewController: UIViewController {
             reference.getDocument { (document, error) in
                 if let document = document, document.exists {
                     success(document)
-                } else {
+                }
+                else {
                     print("Document does not exist")
                 }
             }
@@ -214,14 +215,14 @@ class DBViewController: UIViewController {
     
     static func getCommentsById(forPost: String, success: @escaping (([DocumentSnapshot]) -> Void)) {
         let db = Firestore.firestore()
-        db.collection("recordings1").document(forPost).collection("Comments").order(by: "Timestamp", descending: true).getDocuments{ (qs: QuerySnapshot?, err) in
+        db.collection("recordings2").document(forPost).collection("Comments").order(by: "Timestamp", descending: true).getDocuments{ (qs: QuerySnapshot?, err) in
             success(qs!.documents)
         }
     }
     
     static func insertComment(postID: String, comment: Comment, oldNumComments: Int, success: @escaping (Int)  -> Void) {
         let db = Firestore.firestore()
-        let recRef = db.collection("recordings1").document(postID)
+        let recRef = db.collection("recordings2").document(postID)
         let commentRef = recRef.collection("Comments")
         let newDocRef = commentRef.document()
         let newNumComments = oldNumComments + 1
@@ -255,9 +256,9 @@ class DBViewController: UIViewController {
     static func createLike(for post: Post, success: @escaping (Int) -> Void){
         let postID = post.RecID
         let db = Firestore.firestore()
-        let postRef = db.collection("recordings1").document(postID)
-        let userRef = db.collection("user1").document(User.current.uid)
-        let postuserRef = db.collection("user1").document(post.OwnerID)
+        let postRef = db.collection("recordings2").document(postID)
+        let userRef = db.collection("user2").document(User.current.uid)
+        let postuserRef = db.collection("user2").document(post.OwnerID)
         
         db.runTransaction({ (transaction, errorPointer) -> Any? in
             let postDoc: DocumentSnapshot
@@ -314,9 +315,9 @@ class DBViewController: UIViewController {
     static func destroyLike(for post: Post, success: @escaping (Int) -> Void){
         let postID = post.RecID
         let db = Firestore.firestore()
-        let postRef = db.collection("recordings1").document(postID)
-        let userRef = db.collection("user1").document(User.current.uid)
-        let postuserRef = db.collection("user1").document(post.OwnerID)
+        let postRef = db.collection("recordings2").document(postID)
+        let userRef = db.collection("user2").document(User.current.uid)
+        let postuserRef = db.collection("user2").document(post.OwnerID)
         db.runTransaction({ (transaction, errorPointer) -> Any? in
             let postDoc: DocumentSnapshot
             do {
@@ -371,8 +372,8 @@ class DBViewController: UIViewController {
     //Followers
     static func follow(for uid: String, success: @escaping (Int) -> Void){
         let db = Firestore.firestore()
-        let currUserRef = db.collection("user1").document(User.current.uid)
-        let userRef = db.collection("user1").document(uid)
+        let currUserRef = db.collection("user2").document(User.current.uid)
+        let userRef = db.collection("user2").document(uid)
         
         let oldNumFollowing = User.current.numFollowing
         
@@ -430,8 +431,8 @@ class DBViewController: UIViewController {
     
     static func unfollow(for uid: String, success: @escaping (Int) -> Void){
         let db = Firestore.firestore()
-        let currUserRef = db.collection("user1").document(User.current.uid)
-        let userRef = db.collection("user1").document(uid)
+        let currUserRef = db.collection("user2").document(User.current.uid)
+        let userRef = db.collection("user2").document(uid)
         
         let oldNumFollowing = User.current.numFollowing
         
@@ -495,7 +496,7 @@ class DBViewController: UIViewController {
         print(users)
 
         let db = Firestore.firestore()
-        db.collection("user1").whereField(FieldPath.documentID(), in: users).getDocuments { (qs: QuerySnapshot?, _: Error?) in
+        db.collection("user2").whereField(FieldPath.documentID(), in: users).getDocuments { (qs: QuerySnapshot?, _: Error?) in
             print("Returning")
             print(qs)
             var ret: [User] = []
@@ -512,7 +513,7 @@ class DBViewController: UIViewController {
         var usersToReturn = [User]()
         
         let db = Firestore.firestore()
-        let queryRef2 = db.collection("user1")
+        let queryRef2 = db.collection("user2")
             .order(by: "totalLikes", descending: true)
             .limit(to: 5)
         queryRef2.getDocuments { (querySnapshot, error) in
@@ -541,7 +542,7 @@ class DBViewController: UIViewController {
     static func getTopPosts(forLimit limit: Int, success: @escaping ([Post], _ numFetched: Int) -> Void){
         let db = Firestore.firestore()
         var fetchedPosts = [Post]()
-        let queryRef = db.collection("recordings1")
+        let queryRef = db.collection("recordings2")
             //.whereField("OwnerID", notIn: [User.current.uid])
             .order(by: "numLikes", descending: true)
             .limit(to: limit)
@@ -553,7 +554,7 @@ class DBViewController: UIViewController {
             else{
                 //querysnapshot can contain multiple documents
                 if querySnapshot!.documents.count <= 0{
-                    print("no documents fetched")
+                    success(fetchedPosts, fetchedPosts.count)
                 }
                 else{
                     for snapshot in querySnapshot!.documents{
