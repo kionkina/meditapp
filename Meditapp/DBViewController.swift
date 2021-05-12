@@ -156,6 +156,7 @@ class DBViewController: UIViewController {
                     success(fetchedPosts, 0)
                 }
                 else{
+                    print(querySnapshot!.documents.count, "count for explore page docs fetched")
                     for snapshot in querySnapshot!.documents{
                         let curPost = Post(snapshot: snapshot)!
                         if curPost.OwnerID != User.current.uid{
@@ -410,13 +411,11 @@ class DBViewController: UIViewController {
             }
 
             transaction.updateData(["numFollowers": newNumFollowers], forDocument: userRef)
-            transaction.updateData(["numFollowing": (User.current.numFollowing + 1)], forDocument: currUserRef)
-            User.current.numFollowing += 1
-            User.current.following[uid] = true
-            
+            transaction.updateData(["numFollowing": FieldValue.increment(Int64(1))], forDocument: currUserRef)
             transaction.updateData(["followers.\(User.current.uid)":true], forDocument: userRef)
             transaction.updateData(["following.\(uid)":true], forDocument: currUserRef)
-            
+            User.current.numFollowing += 1
+            User.current.following[uid] = true
             
             success(newNumFollowers)
             return newNumFollowers
@@ -471,11 +470,13 @@ class DBViewController: UIViewController {
             }
 
             transaction.updateData(["numFollowers": newNumFollowers], forDocument: userRef)
-            transaction.updateData(["numFollowing": (User.current.numFollowing - 1)], forDocument: currUserRef)
-            User.current.following[uid] = true
-            
+            transaction.updateData(["numFollowing": FieldValue.increment(Int64(-1))], forDocument: currUserRef)
             transaction.updateData(["followers.\(User.current.uid)":FieldValue.delete()], forDocument: userRef)
             transaction.updateData(["following.\(uid)":FieldValue.delete()], forDocument: currUserRef)
+            
+            User.current.numFollowing -= 1
+            User.current.following[uid] = nil
+            
             
             
             success(newNumFollowers)

@@ -67,8 +67,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var numFollowers: UILabel!
     @IBOutlet weak var numFollowing: UILabel!
     
-    var audioPlayer = AVAudioPlayer()
-    var firstTimeLoaded = false
+//    var firstTimeLoaded = false
     
     var audioReference: StorageReference{
         return Storage.storage().reference().child("recordings")
@@ -76,33 +75,48 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
 //    var postUser: User?
     var recordings: [Post] = []
+    let myRefreshControl = UIRefreshControl()
+
+    
+    
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return recordings.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! postCellTableViewCell
-        
-        let recording = recordings[indexPath.row]
-        cell.post = recording
-        
-        //set whether the post has already been liked when displaying cells.
-        if User.current.likedPosts[recording.RecID] != nil{
-            cell.setLiked(User.current.likedPosts[recording.RecID]!, recording.numLikes)
+        if isFetching{
+            print("displaying loading cell")
+            let cell = tableView.dequeueReusableCell(withIdentifier: "LoadingCell", for: indexPath)
+            let spinner = cell.viewWithTag(100) as! UIActivityIndicatorView
+            
+            spinner.startAnimating()
+            return cell
         }
         else{
-            cell.setLiked(false, recording.numLikes)
-        }
-        
-//        cell.configure(with: recording, for: User.current, tagger: nil)
-        cell.configure(with: recording, for: User.current)
-        cell.selectionStyle = UITableViewCell.SelectionStyle.none
+            print("isfetching is false")
+            let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! postCellTableViewCell
+            
+            let recording = recordings[indexPath.row]
+            cell.post = recording
+            
+            //set whether the post has already been liked when displaying cells.
+            if User.current.likedPosts[recording.RecID] != nil{
+                cell.setLiked(User.current.likedPosts[recording.RecID]!, recording.numLikes)
+            }
+            else{
+                cell.setLiked(false, recording.numLikes)
+            }
+            
+    //        cell.configure(with: recording, for: User.current, tagger: nil)
+            cell.configure(with: recording, for: User.current)
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
 
-        print("displaying cell numero: ", indexPath.row)
-        cell.postUser = User.current
-        
-        return cell
+            cell.postUser = User.current
+            
+            return cell
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -114,26 +128,40 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        print(postUser!.profilePic, "updated pfp")
-        print(recordings.count, "recording count in viewwillappear")
-        print(User.current.recordings.count, "user recording count in viewwillappear")
-        if(recordings.count != 0 && User.current.recordings.count > recordings.count){
-            print("post mustve been added")
-            recordings.removeAll()
-            configure()
+////        print(postUser!.profilePic, "updated pfp")
+//        print(recordings.count, "recording count in viewwillappear")
+//        print(User.current.recordings.count, "user recording count in viewwillappear")
+//        if(recordings.count != 0 && User.current.recordings.count > recordings.count){
+//            print("post mustve been added")
+//            recordings.removeAll()
+//            configure()
+//        }
+        if firstTime{
+            firstTime.toggle()
+        }
+        else{
+            loadRecordings()
         }
     }
     
+    var firstTime = false
     override func viewDidLoad() {
         print("In profile vc")
         tableView.delegate = self
         tableView.dataSource = self
         configure()
         
-        print("view did load for profile")
-
+        myRefreshControl.addTarget(self, action: #selector(refreshReload), for: .valueChanged)
+        tableView.refreshControl = myRefreshControl
+        
         super.viewDidLoad()
     
+        firstTime = true
+    }
+    
+    @objc func refreshReload(){
+        recordings.removeAll()
+        loadRecordings()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -162,30 +190,28 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         let profilePicRef = Storage.storage().reference().child("profilephotos").child(User.current.profilePic)
         
         self.Pfp.sd_setImage(with: profilePicRef)
-        
-//        let downloadTask = profilePicRef.getData(maxSize: 1024 * 1024 * 12) { (data, error) in
-//            if let error = error{
-//                print("error, (error.localizedDescription)")
-//            }
-//            if let data = data{
-//                print("i have image data")
-//                let image = UIImage(data: data)
-//                self.Pfp.image = image
-//                self.Pfp.layer.cornerRadius = self.Pfp.frame.height/2
-//                self.Pfp.clipsToBounds = true
-//            }
-//            // print(error ?? "NONE")
-//        }
+    
     }
     
+    var isFetching = true
+    
     func loadRecordings(){
+        print("load recordings called")
+        DispatchQueue.main.async {
+            self.myRefreshControl.endRefreshing()
+            self.isFetching = true
+            self.recordings.removeAll()
+            self.tableView.reloadData()
+        }
+        
         let userRecs = User.current.recordings.map{ Array($0.values)[0] }
 
         DBViewController.getRecordings(for: userRecs) { (doc: DocumentSnapshot) in
-            if(doc != nil){
-                self.recordings.append(Post(snapshot: doc)!)
-                self.recordings.sort(by: { $0.Timestamp.dateValue() > $1.Timestamp.dateValue() })
-                print(self.recordings)
+            self.recordings.append(Post(snapshot: doc)!)
+            self.recordings.sort(by: { $0.Timestamp.dateValue() > $1.Timestamp.dateValue() })
+            print(self.recordings)
+            DispatchQueue.main.async {
+                self.isFetching = false
                 self.tableView.reloadData()
             }
         }

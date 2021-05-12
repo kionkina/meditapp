@@ -8,6 +8,10 @@
 import UIKit
 import TaggerKit
 class ViewMoreViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    deinit {
+        print("view more controller destroyed")
+    }
 
     @IBOutlet weak var tableView: UITableView!
     

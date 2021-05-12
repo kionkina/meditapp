@@ -28,10 +28,19 @@ class profileCell: UITableViewCell {
     
     func showFollowButton() {
         if isFollowing {
-            self.followBotton.setTitle("Unfollow", for: .normal)
+            DispatchQueue.main.async {
+                self.followBotton.setTitle("Unfollow", for: .normal)
+                self.followBotton.isEnabled = true
+            }
+//            self.followBotton.setTitle("Unfollow", for: .normal)
+            
         }
         else {
-            self.followBotton.setTitle("Follow", for: .normal)
+            DispatchQueue.main.async {
+                self.followBotton.setTitle("Follow", for: .normal)
+                self.followBotton.isEnabled = true
+            }
+//            self.followBotton.setTitle("Follow", for: .normal)
         }
     }
     
@@ -44,37 +53,36 @@ class profileCell: UITableViewCell {
     var unfollowHandler:(() -> Void)?
     
     @IBAction func followButton(_ sender: UIButton) {
+        DispatchQueue.main.async {
+            self.followBotton.isEnabled = false
+        }
         //call appropriate db fxn
         //let upperView = self.superview?.superview as! UserProfilePageViewController
         if (isFollowing) {
             DBViewController.unfollow(for: self.uid) { (newNumFollowers) in
                 DispatchQueue.main.async {
-                    if (newNumFollowers != nil) {
-                        self.isFollowing = false
-                        //pulled from db instead of incrementing in case someone else followed too
-                        User.current.numFollowing -= 1
-                        User.current.following.removeValue(forKey: self.uid)
-                        self.showFollowButton()
-                        self.unfollowHandler!()
-                    }
+                    self.isFollowing = false
+                    //pulled from db instead of incrementing in case someone else followed too
+                    User.current.numFollowing -= 1
+                    User.current.following.removeValue(forKey: self.uid)
+                    self.showFollowButton()
+                    self.unfollowHandler!()
                 }
             }
-        } else {
+        }
+        else {
             DBViewController.follow(for: self.uid) { (newNumFollowers) in
                 DispatchQueue.main.async {
-                    if (newNumFollowers != nil) {
-                        print("newnumfolls")
-                        print(newNumFollowers)
-                        self.isFollowing = true
-                        //pulled from db instead of incrementing in case someone else followed too
-                        User.current.numFollowing += 1
-                        User.current.following[self.uid] = true
-                        self.showFollowButton()
-                        self.followHandler!()
-                        
+                    print("newnumfolls")
+                    print(newNumFollowers)
+                    self.isFollowing = true
+                    //pulled from db instead of incrementing in case someone else followed too
+                    User.current.numFollowing += 1
+                    User.current.following[self.uid] = true
+                    self.showFollowButton()
+                    self.followHandler!()
+                }
             }
-        }
-    }
         }
     }
 }
