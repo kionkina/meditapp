@@ -83,6 +83,8 @@ extension LoginViewController{
         applyKeyboardPush()
         applyKeyboardDismisser()
         logInButton.layer.cornerRadius = 10
+        logInButton.backgroundColor = UIColor.init(red: 214/255, green: 178/255, blue: 111/255, alpha: 1);
+        logInButton.tintColor = UIColor.white;
         createAccountButton.layer.cornerRadius = 10
     }
 }
