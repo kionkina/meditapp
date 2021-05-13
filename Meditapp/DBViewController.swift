@@ -543,7 +543,6 @@ class DBViewController: UIViewController {
         let db = Firestore.firestore()
         var fetchedPosts = [Post]()
         let queryRef = db.collection("recordings2")
-            //.whereField("OwnerID", notIn: [User.current.uid])
             .order(by: "numLikes", descending: true)
             .limit(to: limit)
         //get documents from that query
@@ -563,6 +562,7 @@ class DBViewController: UIViewController {
                             fetchedPosts.append(curPost)
                         }
                     }
+                    print("finished fetching toppost")
                     success(fetchedPosts, fetchedPosts.count)
                 }
             }
