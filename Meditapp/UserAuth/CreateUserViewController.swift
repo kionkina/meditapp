@@ -75,5 +75,7 @@ extension CreateUserViewController{
         applyKeyboardPush()
         applyKeyboardDismisser()
         signUpButton.layer.cornerRadius = 10
+        signUpButton.backgroundColor = UIColor.init(red: 214/255, green: 178/255, blue: 111/255, alpha: 1);
+        signUpButton.tintColor = UIColor.white;
     }
 }
