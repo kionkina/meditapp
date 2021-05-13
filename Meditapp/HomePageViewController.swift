@@ -196,6 +196,9 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                 }
             }
         }
+        else{
+            loadTopRecordings(forLimit: 5, success: loadUsers)
+        }
     }
     
     @objc func loadTopRecordings(forLimit limit:Int, success: @escaping(() -> Void)) {
