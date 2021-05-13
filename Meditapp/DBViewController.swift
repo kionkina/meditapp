@@ -426,7 +426,7 @@ class DBViewController: UIViewController {
             transaction.updateData(["numFollowing": FieldValue.increment(Int64(1))], forDocument: currUserRef)
             transaction.updateData(["followers.\(User.current.uid)":true], forDocument: userRef)
             transaction.updateData(["following.\(uid)":true], forDocument: currUserRef)
-            User.current.numFollowing += 1
+
             User.current.following[uid] = true
             
             success(newNumFollowers)
@@ -486,7 +486,7 @@ class DBViewController: UIViewController {
             transaction.updateData(["followers.\(User.current.uid)":FieldValue.delete()], forDocument: userRef)
             transaction.updateData(["following.\(uid)":FieldValue.delete()], forDocument: currUserRef)
             
-            User.current.numFollowing -= 1
+
             User.current.following[uid] = nil
             
             
