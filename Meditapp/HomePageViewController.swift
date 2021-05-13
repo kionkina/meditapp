@@ -116,6 +116,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @objc func loadRecordings(forLimit limit:Int) {
+        print("in load recordings")
         queryLimit = limit
         var fetchPosts = [DocumentReference]()
         var recentPost:DocumentReference?
@@ -229,9 +230,9 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     
     
     @objc func loadUsers() -> Void {
-        let dispatchQueue = DispatchQueue(label: "background")
+//        let dispatchQueue = DispatchQueue(label: "background")
         let mygroup = DispatchGroup()
-        dispatchQueue.async {
+//        dispatchQueue.async {
             for post in self.topPosts {
                 if !self.users.keys.contains(post.OwnerID) {
                     mygroup.enter()
@@ -243,7 +244,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                     }
                 }
             }
-        }
+//        }
         mygroup.notify(queue: .main){
             DispatchQueue.main.async {
                 (self.myRefreshControl.isRefreshing) ? self.myRefreshControl.endRefreshing() : print("stopped refreshing already")
