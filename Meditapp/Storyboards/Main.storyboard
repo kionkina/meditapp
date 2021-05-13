@@ -20,8 +20,8 @@
                     </tabBar>
                     <connections>
                         <segue destination="xEb-PT-1cq" kind="relationship" relationship="viewControllers" id="Zcf-9t-TY5"/>
-                        <segue destination="wni-IA-jJR" kind="relationship" relationship="viewControllers" id="OVs-eN-YiK"/>
                         <segue destination="pZg-BV-D9y" kind="relationship" relationship="viewControllers" id="Aha-dx-byc"/>
+                        <segue destination="wni-IA-jJR" kind="relationship" relationship="viewControllers" id="OVs-eN-YiK"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Zg-mi-cX0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1091,7 +1091,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ivt-rt-8QG">
                                                     <rect key="frame" x="20" y="15" width="374" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" name="HiraMaruProN-W4" family="Hiragino Maru Gothic ProN" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="22"/>
                                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -1744,7 +1744,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="hyi-cZ-32R">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="barTintColor" red="0.87668538829999998" green="0.65670324800000002" blue="0.40360656230000003" alpha="0.84705882349999995" colorSpace="custom" customColorSpace="displayP3"/>
+                        <color key="barTintColor" red="1" green="0.86714914759999995" blue="0.56842068160000003" alpha="0.84705882349999995" colorSpace="custom" customColorSpace="sRGB"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -1757,9 +1757,9 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="0Zq-kq-JsZ"/>
+        <segue reference="twM-sf-k45"/>
         <segue reference="WoX-UU-taf"/>
-        <segue reference="M0n-Hc-e7P"/>
+        <segue reference="oWV-Xo-K98"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="default-img" width="185" height="170"/>

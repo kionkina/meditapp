@@ -20,6 +20,15 @@ class HeaderTableViewCell: UITableViewCell {
     }
 
     func configure(forHeader header:String, withAlign alignment:Int){
+        
+        let fullString = NSMutableAttributedString(string: header)
+        let imgAttachment = NSTextAttachment()
+        let img = UIImage(systemName: "arrow.right")
+       
+        imgAttachment.image = img
+        let imgString = NSAttributedString(attachment: imgAttachment)
+        fullString.append(imgString)
+        
         if alignment == 1{
             headerLabel.textAlignment = .left
         }
