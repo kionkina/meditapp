@@ -154,20 +154,20 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         }
 
         print("about to make the dbcalls for followings for num posts \(fetchPosts.count)")
-        if fetchPosts.count > 0{
-            var numPostsFetchCounter = 0
-            DBViewController.getRec(for: fetchPosts) { [self] (snapshot) in
-                let post = Post(snapshot: snapshot)!
-                self.recordings.insert(post, at: 0)
-
-                self.recordings.sort(by: { $0.Timestamp.dateValue() > $1.Timestamp.dateValue() })
-                numPostsFetchCounter += 1
-                if numPostsFetchCounter == numPosts{
-                    print("about to reload table")
-                    self.loadTopRecordings(forLimit: 5, success: loadUsers)
-                }
-            }
-        }
+//        if fetchPosts.count > 0{
+//            var numPostsFetchCounter = 0
+//            DBViewController.getRec(for: fetchPosts) { [self] (snapshot) in
+//                let post = Post(snapshot: snapshot)!
+//                self.recordings.insert(post, at: 0)
+//
+//                self.recordings.sort(by: { $0.Timestamp.dateValue() > $1.Timestamp.dateValue() })
+//                numPostsFetchCounter += 1
+//                if numPostsFetchCounter == numPosts{
+//                    print("about to reload table")
+//                    self.loadTopRecordings(forLimit: 5, success: loadUsers)
+//                }
+//            }
+//        }
         
         if fetchPosts.count > 0{
             let dispatchGroup = DispatchGroup()
