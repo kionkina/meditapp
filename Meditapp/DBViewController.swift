@@ -213,6 +213,17 @@ class DBViewController: UIViewController {
         }
     }
     
+    static func getSingleRec(for reference: DocumentReference, success: @escaping (DocumentSnapshot) -> Void){
+        reference.getDocument { (document, error) in
+            if let document = document, document.exists {
+                print("successfully fetched")
+                success(document)
+            }
+            else {
+                print("Document does not exist")
+            }
+        }
+    }
     static func getCommentsById(forPost: String, success: @escaping (([DocumentSnapshot]) -> Void)) {
         let db = Firestore.firestore()
         db.collection("recordings2").document(forPost).collection("Comments").order(by: "Timestamp", descending: true).getDocuments{ (qs: QuerySnapshot?, err) in

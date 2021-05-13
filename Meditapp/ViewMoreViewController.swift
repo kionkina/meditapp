@@ -61,7 +61,7 @@ class ViewMoreViewController: UIViewController, UITableViewDelegate, UITableView
             self.isFetching = true
             self.tableView.reloadData()
         }
-        queryLimit = 8
+        queryLimit = 4
         DBViewController.getPostsExplore(forLimit: queryLimit, forTags: viewforTags) { (docs, numFetched) in
             if numFetched == 0{
                 DispatchQueue.main.async {
@@ -81,7 +81,7 @@ class ViewMoreViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func loadMoreRecordings(success: @escaping(() -> Void)) {
-        queryLimit += 8
+        queryLimit += 4
         DBViewController.getPostsExplore(forLimit: queryLimit, forTags: viewforTags) { (docs, numFetched) in
             
             let prevNumPosts = self.recordings.count
@@ -122,7 +122,12 @@ class ViewMoreViewController: UIViewController, UITableViewDelegate, UITableView
                 print("finished all request")
                 (self.myRefreshControl.isRefreshing) ? self.myRefreshControl.endRefreshing() : print("stopped refreshing already")
                 self.isFetching = false
-                self.tableView.reloadData()
+//                self.tableView.reloadData()
+                UIView.performWithoutAnimation {
+                    self.tableView.reloadData()
+                    self.tableView.beginUpdates()
+                    self.tableView.endUpdates()
+                }
                 print("called reload table")
             }
         }

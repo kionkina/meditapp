@@ -175,7 +175,7 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
                 self.setLiked(false, numofLikes)
                 
                 for tag in self.post!.Tags{
-                    User.current.likedGenres[tag]! += 1
+                    User.current.likedGenres[tag]! -= 1
                 }
                 let updateDict = [
                     "updateRecID":self.post!.RecID,

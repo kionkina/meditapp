@@ -162,7 +162,14 @@ class RecommendationsTableViewCell: UITableViewCell, UICollectionViewDelegate, U
     var isFetching = true
     
     func loadRecordingsFromExplorer(){
-        loadRecordings(forTags: toplikedGenres, success: loadUsers)
+        print("LIKEDGENRES \(User.current.likedGenres)")
+        let topGenresDicts = User.current.likedGenres.sorted { $0.value > $1.value }.prefix(3)
+        var topGenres = [String]()
+        for dict in topGenresDicts{
+            topGenres.append(dict.key)
+        }
+        print(topGenres, "THE TOP GENRES")
+        loadRecordings(forTags: topGenres, success: loadUsers)
     }
     
     func loadRecordings(forTags tags:[String], success: @escaping(() -> Void)) {

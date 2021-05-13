@@ -107,7 +107,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                 print(user.value!.firstName, user.value!.recordings , "After loading users")
             }
             print("loaded all da following", self.followings)
-            loadRecordings(forLimit: 10)
+            loadRecordings(forLimit: 5)
         }
     }
     
@@ -152,30 +152,46 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                 canFetchMoreFollowing = false
             }
         }
-        
-//        print(numPosts, "After while loop and the fetchedposts", fetchPosts)
-        
-//        for user in users{
-//            print(user.value!.firstName, user.value!.recordings , "After loading users in fetching posts")
-//        }
-        
-        print("Fetchpost count is \(fetchPosts.count)")
+
+        print("about to make the dbcalls for followings for num posts \(fetchPosts.count)")
         if fetchPosts.count > 0{
             var numPostsFetchCounter = 0
             DBViewController.getRec(for: fetchPosts) { [self] (snapshot) in
-    //            print(snapshot, "the snapshots array")
-    //            self.recordings.append(Post(snapshot: snapshot)!)
                 let post = Post(snapshot: snapshot)!
                 self.recordings.insert(post, at: 0)
-        
+
                 self.recordings.sort(by: { $0.Timestamp.dateValue() > $1.Timestamp.dateValue() })
                 numPostsFetchCounter += 1
                 if numPostsFetchCounter == numPosts{
                     print("about to reload table")
-//                    self.isFetching = false
-//                    self.showExploresCell = true
-//                    self.tableView.reloadData()
                     self.loadTopRecordings(forLimit: 5, success: loadUsers)
+                }
+            }
+        }
+        
+        if fetchPosts.count > 0{
+            let dispatchGroup = DispatchGroup()
+            let dispatchQueue = DispatchQueue(label: "fetchposts")
+            let dispatchSemaphore = DispatchSemaphore(value: 0)
+
+            dispatchQueue.async {
+                for post in fetchPosts{
+                    dispatchGroup.enter()
+                    print("dispatch group enter")
+                    DBViewController.getSingleRec(for: post){ snapshot in
+                        let post = Post(snapshot: snapshot)!
+//                        self.recordings.insert(post, at: 0)
+                        self.recordings.append(post)
+                        print("everytime i enter")
+                        dispatchSemaphore.signal()
+                        dispatchGroup.leave()
+                    }
+                    print("semaphore waiting...")
+                    dispatchSemaphore.wait()
+                }
+                dispatchGroup.notify(queue: .main){
+                    print("fetch requests are done")
+                    self.loadTopRecordings(forLimit: 5, success: self.loadUsers)
                 }
             }
         }
@@ -210,16 +226,21 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
+    
+    
     @objc func loadUsers() -> Void {
+        let dispatchQueue = DispatchQueue(label: "background")
         let mygroup = DispatchGroup()
-        for post in topPosts {
-            if !users.keys.contains(post.OwnerID) {
-                mygroup.enter()
-                DBViewController.getUserById(forUID: post.OwnerID) { (user) in
-                    if let user = user {
-                        self.users[user.uid] = user
+        dispatchQueue.async {
+            for post in self.topPosts {
+                if !self.users.keys.contains(post.OwnerID) {
+                    mygroup.enter()
+                    DBViewController.getUserById(forUID: post.OwnerID) { (user) in
+                        if let user = user {
+                            self.users[user.uid] = user
+                        }
+                        mygroup.leave()
                     }
-                    mygroup.leave()
                 }
             }
         }
@@ -227,7 +248,11 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
             DispatchQueue.main.async {
                 (self.myRefreshControl.isRefreshing) ? self.myRefreshControl.endRefreshing() : print("stopped refreshing already")
                 self.isFetching = false
-                self.tableView.reloadData()
+                UIView.performWithoutAnimation {
+                    self.tableView.reloadData()
+                    self.tableView.beginUpdates()
+                    self.tableView.endUpdates()
+                }
             }
         }
     }
