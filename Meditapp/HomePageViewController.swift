@@ -398,7 +398,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 2 {
-            tabBarController!.selectedIndex = 2
+            tabBarController!.selectedIndex = 1
         }
     }
     

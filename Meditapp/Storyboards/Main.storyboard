@@ -929,7 +929,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YRb-wp-CAh">
-                                                    <rect key="frame" x="78" y="10" width="46" height="30"/>
+                                                    <rect key="frame" x="78" y="10" width="245" height="30"/>
                                                     <state key="normal" title="Button"/>
                                                     <connections>
                                                         <segue destination="ct4-kI-yZX" kind="show" identifier="toProfile1" id="hG9-7F-o0j"/>
@@ -959,7 +959,6 @@
                                             <constraints>
                                                 <constraint firstItem="YRb-wp-CAh" firstAttribute="leading" secondItem="TN1-c1-j3g" secondAttribute="trailing" constant="10" id="1Vl-Ay-JhY"/>
                                                 <constraint firstItem="TN1-c1-j3g" firstAttribute="top" secondItem="RVP-wm-8p1" secondAttribute="top" constant="10" id="4fw-df-ZmP"/>
-                                                <constraint firstItem="mOF-WZ-BNN" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="YRb-wp-CAh" secondAttribute="trailing" constant="184" id="Cee-ju-O7s"/>
                                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="hN3-nV-vpi" secondAttribute="trailing" constant="8" id="Ihs-ss-8G7"/>
                                                 <constraint firstItem="YRb-wp-CAh" firstAttribute="top" secondItem="TN1-c1-j3g" secondAttribute="top" id="K7L-G4-y7X"/>
                                                 <constraint firstItem="TN1-c1-j3g" firstAttribute="leading" secondItem="RVP-wm-8p1" secondAttribute="leading" constant="8" id="Ma3-3a-Rt1"/>
@@ -969,6 +968,7 @@
                                                 <constraint firstItem="hN3-nV-vpi" firstAttribute="top" secondItem="mOF-WZ-BNN" secondAttribute="bottom" constant="10" id="lXA-nH-XKQ"/>
                                                 <constraint firstAttribute="trailing" secondItem="mOF-WZ-BNN" secondAttribute="trailing" constant="20" id="lik-fS-a4S"/>
                                                 <constraint firstAttribute="bottom" secondItem="TN1-c1-j3g" secondAttribute="bottom" constant="8" id="mXC-Ea-mcr"/>
+                                                <constraint firstItem="mOF-WZ-BNN" firstAttribute="leading" secondItem="YRb-wp-CAh" secondAttribute="trailing" constant="8" symbolic="YES" id="zRG-tx-mOL"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -1759,7 +1759,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="twM-sf-k45"/>
         <segue reference="WoX-UU-taf"/>
-        <segue reference="oWV-Xo-K98"/>
+        <segue reference="2iY-cv-WH4"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="default-img" width="185" height="170"/>
