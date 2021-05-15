@@ -70,23 +70,23 @@ extension AppDelegate {
                 print("No user liked posts object")
             }
             
-            let docRef = Firestore.firestore().collection("user2").document(user.uid)
-
-            docRef.getDocument { (document, error) in
-                if let document = document, document.exists {
-                    let loadUser = User(snapshot: document)!
-                    User.setCurrent(loadUser, writeToUserDefaults: true)
-//                    User.current.recordings = document.get("content") as! [[String:DocumentReference]]
-//                    User.current.likedGenres = document.get("likedGenres") as! [String:Int]
-                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                    let initialViewController = storyboard.instantiateViewController(withIdentifier: "tabController")
-                    window?.rootViewController = initialViewController
-                    window?.makeKeyAndVisible()
-                }
-                else {
-                    print("Document does not exist")
-                }
-            }
+//            let docRef = Firestore.firestore().collection("user2").document(user.uid)
+//
+//            docRef.getDocument { (document, error) in
+//                if let document = document, document.exists {
+//                    let loadUser = User(snapshot: document)!
+//                    User.setCurrent(loadUser, writeToUserDefaults: true)
+////                    User.current.recordings = document.get("content") as! [[String:DocumentReference]]
+////                    User.current.likedGenres = document.get("likedGenres") as! [String:Int]
+////                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+////                    let initialViewController = storyboard.instantiateViewController(withIdentifier: "tabController")
+////                    window?.rootViewController = initialViewController
+////                    window?.makeKeyAndVisible()
+//                }
+//                else {
+//                    print("Document does not exist")
+//                }
+//            }
         }
         else {
             print("i am not logged in")

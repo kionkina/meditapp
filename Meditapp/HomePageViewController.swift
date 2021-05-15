@@ -307,14 +307,34 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("I am following", User.current.following)
+//        print("I am following", User.current.following)
         tableView.estimatedRowHeight = 10000 // or your estimate
         tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         myRefreshControl.addTarget(self, action: #selector(refreshReload), for: .valueChanged)
         tableView.refreshControl = myRefreshControl
 
-        self.userIds = User.current.following
-        loadTenUsers(success: doneLoadingUsers)
+        
+        let docRef = Firestore.firestore().collection("user2").document(User.current.uid)
+
+        let dispatchGroup = DispatchGroup()
+        dispatchGroup.enter()
+        docRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                let loadUser = User(snapshot: document)!
+                User.setCurrent(loadUser, writeToUserDefaults: true)
+            }
+            else {
+                print("Document does not exist")
+            }
+            dispatchGroup.leave()
+        }
+        dispatchGroup.notify(queue: .main){
+            print("done fetching user")
+            self.userIds = User.current.following
+            self.loadTenUsers(success: self.doneLoadingUsers)
+        }
+//        self.userIds = User.current.following
+//        loadTenUsers(success: doneLoadingUsers)
 //        loadRecordings(forLimit: 10)
 //        NotificationCenter.default.addObserver(self, selector: #selector(handleLikes), name: Notification.Name("UpdateLikes"), object: nil)
 //
