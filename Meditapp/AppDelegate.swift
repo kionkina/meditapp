@@ -70,6 +70,9 @@ extension AppDelegate {
                 print("No user liked posts object")
             }
             
+            UserDefaults.standard.set(false, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")
+
+            
 //            let docRef = Firestore.firestore().collection("user2").document(user.uid)
 //
 //            docRef.getDocument { (document, error) in

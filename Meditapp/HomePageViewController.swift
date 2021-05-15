@@ -155,47 +155,21 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         }
 
         print("about to make the dbcalls for followings for num posts \(fetchPosts.count)")
-//        if fetchPosts.count > 0{
-//            var numPostsFetchCounter = 0
-//            DBViewController.getRec(for: fetchPosts) { [self] (snapshot) in
-//                let post = Post(snapshot: snapshot)!
-//                self.recordings.insert(post, at: 0)
-//
-//                self.recordings.sort(by: { $0.Timestamp.dateValue() > $1.Timestamp.dateValue() })
-//                numPostsFetchCounter += 1
-//                if numPostsFetchCounter == numPosts{
-//                    print("about to reload table")
-//                    self.loadTopRecordings(forLimit: 5, success: loadUsers)
-//                }
-//            }
-//        }
-        
         if fetchPosts.count > 0{
-            let dispatchGroup = DispatchGroup()
-            let dispatchQueue = DispatchQueue(label: "fetchposts")
-            let dispatchSemaphore = DispatchSemaphore(value: 0)
+            var numPostsFetchCounter = 0
+            DBViewController.getRec(for: fetchPosts) { [self] (snapshot) in
+                let post = Post(snapshot: snapshot)!
+                self.recordings.insert(post, at: 0)
 
-            dispatchQueue.async {
-                for post in fetchPosts{
-                    dispatchGroup.enter()
-                    print("dispatch group enter")
-                    DBViewController.getSingleRec(for: post){ snapshot in
-                        let post = Post(snapshot: snapshot)!
-//                        self.recordings.insert(post, at: 0)
-                        self.recordings.append(post)
-                        print("everytime i enter")
-                        dispatchSemaphore.signal()
-                        dispatchGroup.leave()
-                    }
-                    print("semaphore waiting...")
-                    dispatchSemaphore.wait()
-                }
-                dispatchGroup.notify(queue: .main){
-                    print("fetch requests are done")
-                    self.loadTopRecordings(forLimit: 5, success: self.loadUsers)
+                self.recordings.sort(by: { $0.Timestamp.dateValue() > $1.Timestamp.dateValue() })
+                numPostsFetchCounter += 1
+                if numPostsFetchCounter == numPosts{
+                    print("about to reload table")
+                    self.loadTopRecordings(forLimit: 5, success: loadUsers)
                 }
             }
         }
+        
         else{
             loadTopRecordings(forLimit: 5, success: loadUsers)
         }
@@ -306,6 +280,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("view controller loaded")
         
 //        print("I am following", User.current.following)
         tableView.estimatedRowHeight = 10000 // or your estimate
@@ -317,18 +292,21 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         let docRef = Firestore.firestore().collection("user2").document(User.current.uid)
 
         let dispatchGroup = DispatchGroup()
-        dispatchGroup.enter()
-        docRef.getDocument { (document, error) in
-            if let document = document, document.exists {
-                let loadUser = User(snapshot: document)!
-                User.setCurrent(loadUser, writeToUserDefaults: true)
+        DispatchQueue.global().async {
+            dispatchGroup.enter()
+            docRef.getDocument { (document, error) in
+                if let document = document, document.exists {
+                    print("fetched the user")
+                    let loadUser = User(snapshot: document)!
+                    User.setCurrent(loadUser, writeToUserDefaults: true)
+                }
+                else {
+                    print("Document does not exist")
+                }
+                dispatchGroup.leave()
             }
-            else {
-                print("Document does not exist")
-            }
-            dispatchGroup.leave()
         }
-        dispatchGroup.notify(queue: .main){
+        dispatchGroup.notify(queue: DispatchQueue.global()){
             print("done fetching user")
             self.userIds = User.current.following
             self.loadTenUsers(success: self.doneLoadingUsers)
@@ -378,26 +356,54 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
             return cell
         }
         else {
-            if indexPath.section == 0 || indexPath.section == 1{
-                let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! postCellTableViewCell
-                       
-                var beforeRec:Post?
-                if indexPath.section == 0{
-                    if recordings.count == 0{
-                        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-                        
-                        return cell
+            if indexPath.section == 0{
+                if recordings.count == 0{
+                    let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+                    return cell
+                }
+                else{
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! postCellTableViewCell
+
+                    let recording = recordings[indexPath.row]
+                    cell.post = recording
+                    //set whether the post has already been liked when displaying cells.
+                    if User.current.likedPosts[recording.RecID] != nil{
+                        cell.setLiked(User.current.likedPosts[recording.RecID]!, recording.numLikes)
                     }
                     else{
-                        beforeRec = recordings[indexPath.row]
+                        cell.setLiked(false, recording.numLikes)
                     }
-                }
-                else if indexPath.section == 1{
-                    beforeRec = topPosts[indexPath.row]
-                }
                     
-                guard let recording = beforeRec else{ fatalError("No recording")}
-                
+                    if let user = users[recording.OwnerID]{
+                        if user?.uid == User.current.uid{
+                            cell.configure(with: recording, for: User.current)
+                            cell.postUser = User.current
+                        }
+                        else{
+                            cell.configure(with: recording, for: user)
+                            cell.postUser = user
+                        }
+                    }
+                    cell.selectionStyle = UITableViewCell.SelectionStyle.none
+    //                cell.backgroundView?.layer.cornerRadius = 5 //set this to whatever constant you need
+    //                cell.backgroundView?.clipsToBounds = true
+                    cell.layer.borderColor =  CGColor(red: 1, green: 1, blue: 1, alpha: 1)
+                    cell.layer.borderWidth = 7
+                    
+                    cell.alpha = 0
+                    UIView.animate(
+                       withDuration: 0.5,
+                       delay: 0.05 * Double(indexPath.row),
+                       animations: {
+                           cell.alpha = 1
+                   })
+                    return cell
+                }
+            }
+            else if indexPath.section == 1{
+                let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! postCellTableViewCell
+
+                let recording = topPosts[indexPath.row]
                 cell.post = recording
                 //set whether the post has already been liked when displaying cells.
                 if User.current.likedPosts[recording.RecID] != nil{
@@ -418,21 +424,21 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                     }
                 }
                 cell.selectionStyle = UITableViewCell.SelectionStyle.none
-//                cell.backgroundView?.layer.cornerRadius = 5 //set this to whatever constant you need
-//                cell.backgroundView?.clipsToBounds = true
-                cell.layer.borderColor =  CGColor(red: 1, green: 1, blue: 1, alpha: 1)
-                cell.layer.borderWidth = 7
-                
-                cell.alpha = 0
+                //                cell.backgroundView?.layer.cornerRadius = 5 //set this to whatever constant you need
+                //                cell.backgroundView?.clipsToBounds = true
+                                cell.layer.borderColor =  CGColor(red: 1, green: 1, blue: 1, alpha: 1)
+                                cell.layer.borderWidth = 7
+                                
+                                cell.alpha = 0
 
-                UIView.animate(
-                    withDuration: 0.5,
-                    delay: 0.05 * Double(indexPath.row),
-                    animations: {
-                        cell.alpha = 1
-                })
-                
+                                UIView.animate(
+                                    withDuration: 0.5,
+                                    delay: 0.05 * Double(indexPath.row),
+                                    animations: {
+                                        cell.alpha = 1
+                                })
                 return cell
+
             }
             else{
                 let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
