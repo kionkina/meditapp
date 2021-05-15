@@ -25,6 +25,7 @@ class User : NSObject {
     var following: [String:Bool]
     var followers: [String:Bool]
     var likedGenres: [String:Int]
+    var totalLikes: Int
 
     init(user: User){
         self.uid = user.uid
@@ -40,6 +41,8 @@ class User : NSObject {
         self.followers = user.followers
         self.following = user.following
         self.likedGenres = user.likedGenres
+        self.totalLikes = user.totalLikes
+        
     }
     //Standard User init()
     init(uid: String, username: String, firstName: String, lastName: String, profilePic: String, numFollowing: Int = 0, numfollowers: Int = 0) {
@@ -56,6 +59,7 @@ class User : NSObject {
         self.followers = [String:Bool]()
         self.following = [String:Bool]()
         self.likedGenres = [String:Int]()
+        self.totalLikes = 0
         super.init()
     }
     
@@ -75,6 +79,7 @@ class User : NSObject {
             self.numFollowers = (dict["numFollowers"] as? Int) ?? 0
 //            self.profilePic = ( (dict.keys.contains("profilePic") ) ? dict["profilePic"] as! String : "default.jpeg")
             self.likedGenres = (dict["likedGenres"] as? [String:Int]) ?? [String:Int]()
+            self.totalLikes = (dict["totalLikes"] as? Int) ?? 0
             if dict.keys.contains("profilePic"){
                 self.profilePic = dict["profilePic"] as! String
             }
@@ -103,7 +108,8 @@ class User : NSObject {
             let numFollowers = aDecoder.decodeInteger(forKey: "numFollowers") as? Int,
             let following = aDecoder.decodeObject(forKey: "following") as? [String:Bool],
             let followers = aDecoder.decodeObject(forKey: "followers") as? [String:Bool],
-            let likedGenres = aDecoder.decodeObject(forKey:"likedGenres") as? [String:Int]
+            let likedGenres = aDecoder.decodeObject(forKey:"likedGenres") as? [String:Int],
+            let totalLikes = aDecoder.decodeInteger(forKey: "totalLikes") as? Int
             else {
                 print("cannot decode for some reason")
                 return nil
@@ -123,6 +129,7 @@ class User : NSObject {
         self.followers = followers
         self.profilePic = profilePic
         self.likedGenres = likedGenres
+        self.totalLikes = totalLikes
     }
     
     
@@ -165,5 +172,6 @@ extension User: NSCoding {
         aCoder.encode(following, forKey: "following")
         aCoder.encode(followers, forKey: "followers")
         aCoder.encode(likedGenres, forKey: "likedGenres")
+        aCoder.encode(totalLikes, forKey: "totalLikes")
     }
 }
