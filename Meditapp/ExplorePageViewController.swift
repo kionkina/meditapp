@@ -105,11 +105,9 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
             return cell
         } else {
 //            print("At section \(indexPath.section)")
-            let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+            let cell = tableView.dequeueReusableCell(withIdentifier: RiseTableViewCell.identifier, for: indexPath) as! RiseTableViewCell
             // cell.image?.downloadedfrom("")
-            cell.textLabel?.textAlignment = .right
-            cell.textLabel?.text = topUsers[indexPath.row - 1].username
-            cell.imageView?.sd_setImage(with: pfpRef.child(topUsers[indexPath.row - 1].profilePic))
+            cell.configure(name: topUsers[indexPath.row - 1].username, photo: topUsers[indexPath.row - 1].profilePic, totalLikes: topUsers[indexPath.row - 1].totalLikes)
             cell.selectionStyle = .none
             return cell
         }
@@ -146,6 +144,7 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
         tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         tableView.register(RecommendationsTableViewCell.nib(), forCellReuseIdentifier: RecommendationsTableViewCell.identifier)
         tableView.register(GenresTableViewCell.nib(), forCellReuseIdentifier: GenresTableViewCell.identifier)
+        tableView.register(RiseTableViewCell.nib(), forCellReuseIdentifier: RiseTableViewCell.identifier)
         
         NotificationCenter.default.addObserver(self, selector: #selector(profileClicked), name: Notification.Name("profileClicked"), object: nil)
         

@@ -58,6 +58,8 @@
 		9AEA1D2F25E5DE7200C329C8 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D2D25E5DE7200C329C8 /* UserService.swift */; };
 		9AEA1D3025E5DE7200C329C8 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEA1D2E25E5DE7200C329C8 /* AuthService.swift */; };
 		9AEA1D3625E5DF5100C329C8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9AEA1D3525E5DF5100C329C8 /* GoogleService-Info.plist */; };
+		9AF1ABC126507FC1004BBEA6 /* RiseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1ABBF26507FC1004BBEA6 /* RiseTableViewCell.swift */; };
+		9AF1ABC226507FC1004BBEA6 /* RiseTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AF1ABC026507FC1004BBEA6 /* RiseTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -113,6 +115,8 @@
 		9AEA1D2D25E5DE7200C329C8 /* UserService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		9AEA1D2E25E5DE7200C329C8 /* AuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		9AEA1D3525E5DF5100C329C8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		9AF1ABBF26507FC1004BBEA6 /* RiseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiseTableViewCell.swift; sourceTree = "<group>"; };
+		9AF1ABC026507FC1004BBEA6 /* RiseTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RiseTableViewCell.xib; sourceTree = "<group>"; };
 		B2CD616A923D87988BE08962 /* Pods-Meditapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Meditapp.release.xcconfig"; path = "Target Support Files/Pods-Meditapp/Pods-Meditapp.release.xcconfig"; sourceTree = "<group>"; };
 		BEE27369E814AADE44D03C86 /* Pods-Meditapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Meditapp.debug.xcconfig"; path = "Target Support Files/Pods-Meditapp/Pods-Meditapp.debug.xcconfig"; sourceTree = "<group>"; };
 		FC3A95EE12470508254ED4D5 /* Pods_Meditapp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Meditapp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -176,6 +180,8 @@
 				36B9F7F1262E0A0E0010BFCD /* RecommendationsTableViewCell.xib */,
 				36B9F7F5262E0A280010BFCD /* GenresTableViewCell.swift */,
 				36B9F7F6262E0A280010BFCD /* GenresTableViewCell.xib */,
+				9AF1ABBF26507FC1004BBEA6 /* RiseTableViewCell.swift */,
+				9AF1ABC026507FC1004BBEA6 /* RiseTableViewCell.xib */,
 			);
 			path = "TableView Cell";
 			sourceTree = "<group>";
@@ -326,6 +332,7 @@
 				362B1B81263677EE000EAB6A /* LoadMoreCollectionViewCell.xib in Resources */,
 				9AEA1D1925E5DE3E00C329C8 /* Login.storyboard in Resources */,
 				36B9F802262E0D950010BFCD /* GenresCollectionViewCell.xib in Resources */,
+				9AF1ABC226507FC1004BBEA6 /* RiseTableViewCell.xib in Resources */,
 				9AEA1D1625E5DE3800C329C8 /* Main.storyboard in Resources */,
 				3684D1C02649DC4400B36A73 /* LoadingCell.xib in Resources */,
 				36B9F7F3262E0A0E0010BFCD /* RecommendationsTableViewCell.xib in Resources */,
@@ -396,6 +403,7 @@
 				9AEA1D0025E5DAC000C329C8 /* AppDelegate.swift in Sources */,
 				3626DF992617A1DB005EC4B6 /* profileCell.swift in Sources */,
 				03C63C4425EE295A00AD7815 /* postCellTableViewCell.swift in Sources */,
+				9AF1ABC126507FC1004BBEA6 /* RiseTableViewCell.swift in Sources */,
 				36B9F7F2262E0A0E0010BFCD /* RecommendationsTableViewCell.swift in Sources */,
 				362B1B84263733A0000EAB6A /* ViewMoreViewController.swift in Sources */,
 				9AEA1D3025E5DE7200C329C8 /* AuthService.swift in Sources */,
