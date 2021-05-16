@@ -2,7 +2,7 @@
 
 # Team Info
 ### Team members (format: GitHub username, last name, first name):
-Jacksonishere, Lu, Jackson -- kionkina, Ionkina, Karina
+Jacksonishere, Lu, Jackson -- kionkina, Ionkina, Karina -- gabbya8, Alexis, Gabriella -- noman-ahmad, Ahmad, Noman
 
 ### Getting Started
 
