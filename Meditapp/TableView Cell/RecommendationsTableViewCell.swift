@@ -163,7 +163,8 @@ class RecommendationsTableViewCell: UITableViewCell, UICollectionViewDelegate, U
         for dict in topGenresDicts{
             topGenres.append(dict.key)
         }
-        loadRecordings(forTags: topGenres, success: loadUsers)
+        toplikedGenres = topGenres
+        loadRecordings(forTags: toplikedGenres, success: loadUsers)
     }
     
     func loadRecordings(forTags tags:[String], success: @escaping(() -> Void)) {
