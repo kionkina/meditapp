@@ -73,8 +73,6 @@ class profileCell: UITableViewCell {
         else {
             DBViewController.follow(for: self.uid) { (newNumFollowers) in
                 DispatchQueue.main.async {
-                    print("newnumfolls")
-                    print(newNumFollowers)
                     self.isFollowing = true
                     //pulled from db instead of incrementing in case someone else followed too
                     User.current.numFollowing += 1

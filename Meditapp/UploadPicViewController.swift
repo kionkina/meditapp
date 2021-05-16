@@ -79,13 +79,10 @@ class UploadPicViewController: UIViewController, UIImagePickerControllerDelegate
                         print("Document successfully updated")
                     }
                 }
-                print(User.current.profilePic, "after upload")
                 
                 self.delegate?.UploadedPic(forController: self, forImagePath: self.selectedImage!)
-                print("successfully uploaded image")
                 
                 User.setCurrent(User.current, writeToUserDefaults: true)
-                //changed
                 if (oldPfp != "default.jpeg"){
                     let oldProfilePicRef = self.profilePicReference.child(oldPfp)
                     oldProfilePicRef.delete { error in
@@ -104,15 +101,15 @@ class UploadPicViewController: UIViewController, UIImagePickerControllerDelegate
     
     func checkPermissions() {
        if PHPhotoLibrary.authorizationStatus() != PHAuthorizationStatus.authorized {
-                                PHPhotoLibrary.requestAuthorization({ (status: PHAuthorizationStatus) -> Void in
-                                    ()
-                                })
-                            }
+            PHPhotoLibrary.requestAuthorization({ (status: PHAuthorizationStatus) -> Void in
+                ()
+            })
+        }
 
-                            if PHPhotoLibrary.authorizationStatus() == PHAuthorizationStatus.authorized {
-                            } else {
-                                PHPhotoLibrary.requestAuthorization(requestAuthorizationHandler)
-                            }
+        if PHPhotoLibrary.authorizationStatus() == PHAuthorizationStatus.authorized {
+        } else {
+            PHPhotoLibrary.requestAuthorization(requestAuthorizationHandler)
+        }
     }
     
     func requestAuthorizationHandler(status: PHAuthorizationStatus){
@@ -142,15 +139,4 @@ class UploadPicViewController: UIViewController, UIImagePickerControllerDelegate
         
         imagePickerController.dismiss(animated: true, completion: nil)
     }
-    
-
-    /*
-    // MARK: - Navigation
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

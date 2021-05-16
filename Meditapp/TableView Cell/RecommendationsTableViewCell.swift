@@ -98,13 +98,11 @@ class RecommendationsTableViewCell: UITableViewCell, UICollectionViewDelegate, U
     var recordings = [Post]()
     var users = [String: User?]()
     var toplikedGenres:[String] = {
-        print("user current likegenres", User.current.likedGenres)
         let topGenresDicts = User.current.likedGenres.sorted { $0.value > $1.value }.prefix(3)
         var topGenres = [String]()
         for dict in topGenresDicts{
             topGenres.append(dict.key)
         }
-        print(topGenres, "top genres are")
         return topGenres
     }()
     
@@ -134,7 +132,6 @@ class RecommendationsTableViewCell: UITableViewCell, UICollectionViewDelegate, U
     }
     
     @objc func handleLikes(notification: NSNotification) {
-        print("like fired off handler in recommended cell")
         if let dict = notification.object as? [String:Any] {
             for post in recordings{
                 if post.RecID == dict["updateRecID"] as! String{
@@ -147,7 +144,6 @@ class RecommendationsTableViewCell: UITableViewCell, UICollectionViewDelegate, U
         }
     }
     @objc func handleComment(notification: NSNotification) {
-        print("like fired off comment handler in recommended cell")
         if let dict = notification.object as? [String:Any] {
             for post in recordings{
                 if post.RecID == dict["updateRecID"] as! String{
@@ -162,13 +158,11 @@ class RecommendationsTableViewCell: UITableViewCell, UICollectionViewDelegate, U
     var isFetching = true
     
     func loadRecordingsFromExplorer(){
-        print("LIKEDGENRES \(User.current.likedGenres)")
         let topGenresDicts = User.current.likedGenres.sorted { $0.value > $1.value }.prefix(3)
         var topGenres = [String]()
         for dict in topGenresDicts{
             topGenres.append(dict.key)
         }
-        print(topGenres, "THE TOP GENRES")
         loadRecordings(forTags: topGenres, success: loadUsers)
     }
     
@@ -188,7 +182,6 @@ class RecommendationsTableViewCell: UITableViewCell, UICollectionViewDelegate, U
                 }
             }
             
-            print("num fetched in loadrecordings", numFetched)
             self.recordings.removeAll()
             for doc in docs{
                 self.recordings.append(doc)
@@ -199,29 +192,23 @@ class RecommendationsTableViewCell: UITableViewCell, UICollectionViewDelegate, U
     }
     
     func loadUsers() -> Void {
-        var i = 0
         let mygroup = DispatchGroup()
         for post in recordings {
             if !users.keys.contains(post.OwnerID) {
                 mygroup.enter()
                 
                 DBViewController.getUserById(forUID: post.OwnerID) { (user) in
-                    print("Finished request \(i)")
                     if let user = user {
                         self.users[user.uid] = user
-//                        self.tableView.reloadData()
                     }
-                    i += 1
                     mygroup.leave()
                 }
             }
         }
         mygroup.notify(queue: .main){
             DispatchQueue.main.async {
-                print("finished all request")
                 self.isFetching = false
                 self.collectionView.reloadData()
-                print("called reload table")
             }
         }
     }

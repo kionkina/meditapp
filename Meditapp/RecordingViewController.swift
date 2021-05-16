@@ -52,7 +52,6 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("Current directory", getDirectory())
         loadRecordings()
         navigationItem.largeTitleDisplayMode = .never
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard(_:)))
@@ -68,7 +67,6 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
         //get permission
         AVAudioSession.sharedInstance().requestRecordPermission { (hasPermission) in
             if hasPermission{
-                print("Accepted")
                 do{
                     try self.recordingSession.setCategory(AVAudioSession.Category.playAndRecord)
                     //set session active
@@ -78,7 +76,7 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
                 }
             }
             else{
-                print("not granted")
+                print("Permission not granted")
             }
         }
         
@@ -175,7 +173,8 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
     func requestAuthorizationHandler(status: PHAuthorizationStatus){
         if PHPhotoLibrary.authorizationStatus() == PHAuthorizationStatus.authorized{
             print("WE CAN ACCESS PHOTOS NOW")
-        } else {
+        }
+        else {
             print("PHOTO ACCESS DENIED")
         }
     }
@@ -189,20 +188,6 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
             curSelectedPhotoURL = url
         }
         
-//        let profilePicRef = Storage.storage().reference().child("postphotos")
-//        let photoRef = profilePicRef.child(recID)
-//
-//        //upload image to bucket
-//        let uploadImageTask = photoRef.putFile(from: curSelectedPhotoURL!, metadata: nil) { (metadata, err) in
-//            if let err = err{
-//                print("error uploading pic: ", err.localizedDescription)
-//            }
-//            else{
-//                print("successfully uploaded image")
-//            }
-//        }
-//        uploadImageTask.resume()
-        
         imagePickerController.dismiss(animated: true, completion: nil)
     }
     
@@ -215,7 +200,7 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
             //disable typing once person clicks play
             nameofRecording.isUserInteractionEnabled = false
             //create a new recording
-            var newRecording = Recording(audioFileName, nameofRecording.text!)
+            let newRecording = Recording(audioFileName, nameofRecording.text!)
             //append to array
             recordings.append(newRecording)
             
@@ -231,7 +216,7 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
                 recordButton.setTitle("Stop Recording", for: .normal)
             }
             catch {
-                print("Error failed")
+                print("Error \(error.localizedDescription)")
                 //remove the new recording we expected to have
                 recordings.remove(at: recordings.count)
             }
@@ -270,29 +255,9 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
         let item = recordings[indexPath.row]
         
         cell.nameLabel.text = item.recordingName
-        //  item.checked = false
         configureCheckmark(for: cell, with: item)
         
-//        print(audioPlayer, "my audio player")
-//        cell.audioPlayerRef = RecordingViewController.audioPlayer
         cell.recordingName = item.recordingName
-//        cell.playAudio = { (cell) in
-//            do {
-//                if !self.audioPlayer.isPlaying{
-//                    self.audioPlayer = try AVAudioPlayer(contentsOf: self.getDirectory().appendingPathComponent("\( self.recordings[indexPath.row].recordingName).m4a"))
-//                    self.audioPlayer.play()
-//                    return false
-//                }
-//                else{
-//                    self.audioPlayer.stop()
-//                    return true
-//                }
-//            }
-//            catch {
-//                print(error)
-//            }
-//            return nil
-//        }
         return cell
     }
     
@@ -313,8 +278,6 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
             
             let URLPath = getDirectory().appendingPathComponent("\( recordings[indexPath.row].recordingName).m4a")
             if FileManager.default.fileExists(atPath: URLPath.path){
-                
-                print("FILE AVAILABLE")
                 deleteFile(URLPath)
                 recordings.remove(at: indexPath.row)
                 let indexPaths = [indexPath]
@@ -347,8 +310,6 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
         recordButton.isEnabled = false
         return true
     }
-
-
 
 
     // MARK: -Textview Delegate
@@ -437,10 +398,7 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
                 
                 
                 User.current.recordings.append(dict)
-                print(User.current.recordings, "after appending")
-
                 self.deleteAllFiles()
-                print("Audio Uploaded")
             }
         }
         uploadTask.resume()
@@ -452,66 +410,19 @@ class RecordingViewController: UIViewController, AVAudioRecorderDelegate, UITabl
                 print("error uploading pic: ", err.localizedDescription)
             }
             else{
-                print("successfully uploaded image")
                 self.navigationController?.popViewController(animated: true)
             }
         }
         uploadImageTask.resume()
-        
-//        guard let user = Auth.auth().currentUser else{return}
-        
-//        let stamp = Timestamp(date: Date())
-//        let currTime = converTimetoToInt(date: Date())
-//
-//        let docData: [String: Any] = [
-//            "Name" : filename,
-//            "Timestamp" : stamp,
-//            "RecID" : recID,
-////            "OwnerRef" : db.collection("user2").document(User.current.uid),
-//            "OwnerID" : User.current.uid,
-//            "Tags" : postTags,
-//            "Description" : postDesc.text!,
-//            "numLikes" : 0,
-//            "numComments": 0,
-//            "Image" : recID,
-//            //combine query for filtering and sorting
-//            "IdTime" : String(currTime) + recID
-////            "StorageRef" : audioRef
-//        ]
-//
-//        db.collection("recordings2").document(recID).setData(docData) { err in
-//            if let err = err {
-//                print("Error writing document: \(err)")
-//            } else {
-//                print("Document successfully written!")
-//            }
-//        }
-//
-//        let dbref: DocumentReference = db.collection("recordings2").document(recID)
-//
-//        db.collection("user2").document(User.current.uid).updateData([
-//            "content" : FieldValue.arrayUnion([dbref])
-//        ])
-//
-//        User.current.recordings.append(dbref)
-//        print(User.current.recordings, "after appending")
-
     }
     
     @IBAction func cancel(_ sender: Any) {
-//        dismiss(animated: true, completion: nil)
         navigationController?.popViewController(animated: true)
-//        deleteAllFiles()
     }
     
     //MARK: - Tags delegate protocols
-//    func TagsViewControllerDidCancel(_ controller: TagsViewController) {
-//        navigationController?.popViewController(animated: true)
-//    }
-    
     func TagsViewController(_ controller: TagsViewController, didAddTags tags: [String]) {
         postTags = tags
-        print(postTags)
         
         if checkedIndex != nil && postTags.count > 0{
             postButton.isEnabled = true

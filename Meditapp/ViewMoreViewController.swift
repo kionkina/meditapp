@@ -9,10 +9,6 @@ import UIKit
 import TaggerKit
 class ViewMoreViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    deinit {
-        print("view more controller destroyed")
-    }
-
     @IBOutlet weak var tableView: UITableView!
     
     var viewforTags = [String]()
@@ -29,7 +25,6 @@ class ViewMoreViewController: UIViewController, UITableViewDelegate, UITableView
         if (segue.identifier == "toProfile") {
             let button = sender as! UIButton
             if let cell = button.superview?.superview as? postCellTableViewCell {
-                //print(cell.uid)
                 let vc = segue.destination as! UserProfilePageViewController
                 vc.postUser = cell.postUser
             }
@@ -37,7 +32,6 @@ class ViewMoreViewController: UIViewController, UITableViewDelegate, UITableView
         if (segue.identifier == "toComments") {
             let button = sender as! UIButton
             if let cell = button.superview?.superview as? postCellTableViewCell {
-                    //print(cell.uid)
                     let vc = segue.destination as! CommentViewController
                     vc.postUser = cell.postUser
                     vc.recording = cell.post
@@ -46,7 +40,6 @@ class ViewMoreViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @objc func refreshReload(){
-//        canFetchMore = true
         recordings.removeAll()
         users.removeAll()
         loadRecordings(success: loadUsers)
@@ -100,35 +93,28 @@ class ViewMoreViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @objc func loadUsers() -> Void {
-        var i = 0
         let mygroup = DispatchGroup()
         for post in recordings {
             if !users.keys.contains(post.OwnerID) {
                 mygroup.enter()
                 
                 DBViewController.getUserById(forUID: post.OwnerID) { (user) in
-                    print("Finished request \(i)")
                     if let user = user {
                         self.users[user.uid] = user
-//                        self.tableView.reloadData()
                     }
-                    i += 1
                     mygroup.leave()
                 }
             }
         }
         mygroup.notify(queue: .main){
             DispatchQueue.main.async {
-                print("finished all request")
                 (self.myRefreshControl.isRefreshing) ? self.myRefreshControl.endRefreshing() : print("stopped refreshing already")
                 self.isFetching = false
-//                self.tableView.reloadData()
                 UIView.performWithoutAnimation {
                     self.tableView.reloadData()
                     self.tableView.beginUpdates()
                     self.tableView.endUpdates()
                 }
-                print("called reload table")
             }
         }
     }
@@ -143,7 +129,6 @@ class ViewMoreViewController: UIViewController, UITableViewDelegate, UITableView
     
     override func viewWillDisappear(_ animated: Bool) {
         if HomePageViewController.audioPlayer.isPlaying{
-            print("player needs to stop playing")
             HomePageViewController.playingCell?.stopPlaying()
         }
     }
@@ -163,7 +148,6 @@ class ViewMoreViewController: UIViewController, UITableViewDelegate, UITableView
     }
 
     @objc func handleLikes(notification: NSNotification) {
-//        print("like fired off handler in homepage")
         if let dict = notification.object as? [String:Any] {
             for post in recordings{
                 if post.RecID == dict["updateRecID"] as! String{
@@ -173,7 +157,6 @@ class ViewMoreViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     @objc func handleComment(notification: NSNotification) {
-//        print("like fired off comment handler in homepage")
         if let dict = notification.object as? [String:Any] {
             for post in recordings{
                 if post.RecID == dict["updateRecID"] as! String{
@@ -185,7 +168,6 @@ class ViewMoreViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if isFetching{
-            print("displaying loading cell")
             let cell = tableView.dequeueReusableCell(withIdentifier: "LoadingCell", for: indexPath)
             let spinner = cell.viewWithTag(100) as! UIActivityIndicatorView
             
@@ -198,7 +180,6 @@ class ViewMoreViewController: UIViewController, UITableViewDelegate, UITableView
             let recording = recordings[indexPath.row]
             cell.post = recording
 
-            //set whether the post has already been liked when displaying cells.
             if User.current.likedPosts[recording.RecID] != nil{
                 cell.setLiked(User.current.likedPosts[recording.RecID]!, recording.numLikes)
             }
@@ -217,7 +198,6 @@ class ViewMoreViewController: UIViewController, UITableViewDelegate, UITableView
                 }
             }
             
-            // add separator
             cell.selectionStyle = UITableViewCell.SelectionStyle.none
             return cell
         }
@@ -233,5 +213,4 @@ class ViewMoreViewController: UIViewController, UITableViewDelegate, UITableView
             return recordings.count
         }
     }
-    
 }

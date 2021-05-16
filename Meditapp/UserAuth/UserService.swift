@@ -25,7 +25,6 @@ struct UserService {
                         "numFollowers": 0,
                         "numFollowing" : 0,
                          "likedGenres": [String:Int]()] as [String : Any]
-        print("in create in userservice")
         let ref = Firestore.firestore().collection("user2").document(firUser.uid)
         
         ref.setData(userAttrs) { error in
@@ -41,7 +40,6 @@ struct UserService {
                         }
                     let user = User(snapshot: snapshot)
                     completion(user)
-                    print("new account created")
                 }
             }
         }
@@ -49,18 +47,14 @@ struct UserService {
     
     static func show(forUID uid: String, completion: @escaping (User?) -> Void) {
         
-        print("in show in userservice")
         
         let ref = Firestore.firestore().collection("user2").document(uid)
-        print("uid: " + uid)
         ref.addSnapshotListener { documentSnapshot, error in
             guard let snapshot = documentSnapshot else {
                     print("Error fetching document: \(error!)")
                     return
                 }
             let user = User(snapshot: snapshot)
-            print("showing: ")
-            print(user?.numFollowing)
             completion(user)
         }
     }

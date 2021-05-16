@@ -18,7 +18,6 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
         if (segue.identifier == "toFollowing") {
             let button = sender as! UIButton
             if let cell = button.superview?.superview as? profileCell {
-                    //print(cell.uid)
                     let vc = segue.destination as! followersViewController
                     vc.followers = false
                     vc.userIds = postUser!.following
@@ -28,7 +27,6 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
         else if (segue.identifier == "toFollowers") {
             let button = sender as! UIButton
             if let cell = button.superview?.superview as? profileCell {
-                    //print(cell.uid)
                     let vc = segue.destination as! followersViewController
                     vc.followers = true
                     print("followers in segue")
@@ -40,7 +38,6 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
         else if (segue.identifier == "toComments") {
             let button = sender as! UIButton
             if let cell = button.superview?.superview as? postCellTableViewCell {
-                    //print(cell.uid)
                     let vc = segue.destination as! CommentViewController
                     vc.postUser = self.postUser
                     vc.recording = cell.post
@@ -75,10 +72,7 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
             cell.numFollowers.text = String(postUser!.numFollowers)
             cell.numFollowing.text = String(postUser!.numFollowing)
             cell.uid = postUser!.uid
-            print(User.current.following)
-            print("FOLLOWING")
             if (User.current.following[postUser!.uid] == true) {
-                print("setting set follow to true")
                 cell.setFollow(isFollowing: true)
             } else {
                 cell.setFollow(isFollowing: false)
@@ -94,7 +88,6 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
         }
         else{
             if isFetching{
-                print("displaying loading cell")
                 let cell = tableView.dequeueReusableCell(withIdentifier: "LoadingCell", for: indexPath)
                 let spinner = cell.viewWithTag(100) as! UIActivityIndicatorView
                 
@@ -162,7 +155,6 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
     }
     
     override func viewDidLoad() {
-//        print("loading userprofile vc")
         super.viewDidLoad()
         
         tableView.delegate = self
@@ -172,10 +164,7 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
         tableView.refreshControl = myRefreshControl
         
         navigationItem.title = postUser?.username
-        
-//        print("in profile! uid: " + postUser!.uid, "and his recordings are", postUser!.recordings)
-        
-        //change eventually to user.profileimage
+    
         loadRecordings()
         NotificationCenter.default.addObserver(self, selector: #selector(handleLikes), name: Notification.Name("UpdateLikes"), object: nil)
         
@@ -183,18 +172,12 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
     }
     
     @objc func refreshReload(){
-        print("i have refreshed")
         recordings.removeAll()
         tableView.reloadData()
         loadRecordings()
     }
     
-    deinit {
-        print("destroying userprofile")
-    }
-    
     @objc func handleLikes(notification: NSNotification) {
-        print("like fired off handler in userprofile")
         if let dict = notification.object as? [String:Any] {
             for post in recordings{
                 if post.RecID == dict["updateRecID"] as! String{
@@ -205,7 +188,6 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
     }
     
     @objc func handleComment(notification: NSNotification) {
-        print("like fired off comment handler in userprofile")
         if let dict = notification.object as? [String:Any] {
             for post in recordings{
                 if post.RecID == dict["updateRecID"] as! String{
@@ -224,14 +206,12 @@ class UserProfilePageViewController:  UIViewController, UITableViewDelegate, UIT
         let userRecs = postUser!.recordings.map{ Array($0.values)[0] }
         print(userRecs, "userrecs vs", postUser!.recordings)
         DBViewController.getRecordings(for: userRecs) { (doc: DocumentSnapshot) in
-            if (doc != nil) {
-                self.recordings.append(Post(snapshot: doc)!)
-                self.recordings.sort(by: { $0.Timestamp.dateValue() > $1.Timestamp.dateValue() })
-                
-                DispatchQueue.main.async {
-                    self.isFetching = false
-                    self.tableView.reloadData()
-                }
+            self.recordings.append(Post(snapshot: doc)!)
+            self.recordings.sort(by: { $0.Timestamp.dateValue() > $1.Timestamp.dateValue() })
+            
+            DispatchQueue.main.async {
+                self.isFetching = false
+                self.tableView.reloadData()
             }
         }
     }

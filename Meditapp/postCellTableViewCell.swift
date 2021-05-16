@@ -37,7 +37,6 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
         for view in tags!.subviews{
             view.removeFromSuperview()
         }
-        print("cell deinited")
     }
     
     override func prepareForReuse() {
@@ -47,7 +46,6 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
     
     func playDownloadedAudio(forPath path: URL){
         do{
-            print("about to play audio")
             HomePageViewController.playingCell = self
             
             HomePageViewController.audioPlayer = try AVAudioPlayer(contentsOf: path)
@@ -64,7 +62,6 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
     func downloadThenPlay(){
         let downloadPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(post!.RecID)
         
-        print(downloadPath, "path for file i gonna play")
         if !FileManager.default.fileExists(atPath: downloadPath.path){
             let audioRef = Storage.storage().reference().child("recordings").child(post!.RecID)
             
@@ -73,14 +70,12 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
                     print("Error has occured: ", error.localizedDescription)
                 }
                 else{
-                    print("i have to download")
                     self.playDownloadedAudio(forPath: downloadPath)
                 }
             }
             downloadTask.resume()
         }
         else{
-            print("already downloaded")
             playDownloadedAudio(forPath: downloadPath)
         }
     }
@@ -101,26 +96,14 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
     }
     
     func stopPlaying(){
-        print("stop playing in cell is called")
         HomePageViewController.audioPlayer.stop()
         HomePageViewController.audioPlayer.delegate = nil
         playButton.setImage(UIImage(named: "play.circle"), for: UIControl.State.normal)
     }
     
     func audioPlayerDidFinishPlaying(_: AVAudioPlayer, successfully: Bool){
-        print("finished playing")
         playButton.setImage(UIImage(named: "play.circle"), for: UIControl.State.normal)
         HomePageViewController.audioPlayer.delegate = nil
-    }
-    
-    @IBAction func backwardsButton(_ sender: UIButton) {
-    }
-    
-    @IBAction func forwardsButton(_ sender: UIButton) {
-    }
-    
-    @IBAction func followButton(_ sender: UIButton) {
-        
     }
     
     func setLiked(_ isLiked: Bool, _ numofLikes: Int){
@@ -197,7 +180,6 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
     var postUser: User?
     var post: Post?
     var liked: Bool = false
-//    var tagCollection = TKCollectionView()
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -220,10 +202,6 @@ class postCellTableViewCell: UITableViewCell, AVAudioPlayerDelegate  {
         self.postTitle.text = model.Name
         self.postDescription.text = model.Description
        
-//        if tagView != nil{
-//            self.tags?.addSubview(tagView!.view)
-//        }
-//        print("post tags are \(model.Tags)")
         tagsCollection.tags = model.Tags
         tagsCollection.customFont = UIFont.systemFont(ofSize: 12)
         tagsCollection.customBackgroundColor = UIColor(red: 252.0/255.0, green: 228.0/255.0, blue: 164.0/255, alpha: 1)

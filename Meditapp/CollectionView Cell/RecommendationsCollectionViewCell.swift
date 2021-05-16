@@ -42,7 +42,6 @@ class RecommendationsCollectionViewCell: UICollectionViewCell, AVAudioPlayerDele
         for view in tags!.subviews{
             view.removeFromSuperview()
         }
-        print("cell deinited")
     }
     
     override func prepareForReuse() {
@@ -52,7 +51,6 @@ class RecommendationsCollectionViewCell: UICollectionViewCell, AVAudioPlayerDele
     
     func playDownloadedAudio(forPath path: URL){
         do{
-            print("about to play audio")
             ExplorePageViewController.playingCell = self
             
             ExplorePageViewController.audioPlayer = try AVAudioPlayer(contentsOf: path)
@@ -69,7 +67,6 @@ class RecommendationsCollectionViewCell: UICollectionViewCell, AVAudioPlayerDele
     func downloadThenPlay(){
         let downloadPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(userPost!.RecID)
         
-        print(downloadPath, "path for file i gonna play")
         if !FileManager.default.fileExists(atPath: downloadPath.path){
             let audioRef = Storage.storage().reference().child("recordings").child(userPost!.RecID)
             
@@ -78,14 +75,12 @@ class RecommendationsCollectionViewCell: UICollectionViewCell, AVAudioPlayerDele
                     print("Error has occured: ", error.localizedDescription)
                 }
                 else{
-                    print("i have to download")
                     self.playDownloadedAudio(forPath: downloadPath)
                 }
             }
             downloadTask.resume()
         }
         else{
-            print("already downloaded")
             playDownloadedAudio(forPath: downloadPath)
         }
     }
@@ -106,14 +101,12 @@ class RecommendationsCollectionViewCell: UICollectionViewCell, AVAudioPlayerDele
     }
     
     func stopPlaying(){
-        print("stop playing in cell is called")
         ExplorePageViewController.audioPlayer.stop()
         ExplorePageViewController.audioPlayer.delegate = nil
         playButton.setImage(UIImage(named: "play.circle"), for: UIControl.State.normal)
     }
     
     func audioPlayerDidFinishPlaying(_: AVAudioPlayer, successfully: Bool){
-        print("finished playing")
         playButton.setImage(UIImage(named: "play.circle"), for: UIControl.State.normal)
         ExplorePageViewController.audioPlayer.delegate = nil
     }
@@ -193,7 +186,6 @@ class RecommendationsCollectionViewCell: UICollectionViewCell, AVAudioPlayerDele
         postImage.layer.cornerRadius = 10
         userImage.layer.cornerRadius = userImage.frame.size.height/2
 
-        //tags?.addSubview(tagsCollection.view)
         
         let meditappColor = UIColor(red: 252.0/255.0, green: 228.0/255.0, blue: 164.0/255, alpha: 0.2)
         tags?.addSubview(tagsCollection.view)
@@ -211,10 +203,7 @@ class RecommendationsCollectionViewCell: UICollectionViewCell, AVAudioPlayerDele
         self.postTitle.text = model.Name
         self.postDescription.text = model.Description
        
-//        if tagView != nil{
-//            self.tags?.addSubview(tagView!.view)
-//        }
-//        print("post tags are \(model.Tags)")
+
         tagsCollection.tags = model.Tags
         tagsCollection.customFont = UIFont.systemFont(ofSize: 12)
         tagsCollection.customBackgroundColor = UIColor(red: 252.0/255.0, green: 228.0/255.0, blue: 164.0/255, alpha: 1)
@@ -236,12 +225,10 @@ class RecommendationsCollectionViewCell: UICollectionViewCell, AVAudioPlayerDele
     }
     
     @IBAction func profileClicked(_ sender: Any) {
-        print("about to fire off notification")
         NotificationCenter.default.post(name: Notification.Name("profileClicked"), object: postUser!)
     }
     
     @IBAction func commentsClicked(_ sender: Any) {
-        print("about to fire off notification")
         let dict = [
             "user": postUser,
             "post": userPost

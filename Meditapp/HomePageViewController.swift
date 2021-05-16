@@ -83,30 +83,17 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
             }
         }
         else{
-            print("only fetching top recordings")
             canFetchMoreFollowing = false
             loadTopRecordings(forLimit: 5, success: loadUsers)
         }
     }
 
     func doneLoadingUsers(updateIndex: Bool){
-        print("in done loading users")
-        for user in users{
-            print(user.value!.firstName, user.value!.recordings , "After loading users")
-        }
-       
-        for user in users{
-            print(user.value!.firstName, user.value!.recordings , "After loading users")
-        }
         if (updateIndex) {
             curr_index += 10
             loadTenUsers(success: doneLoadingUsers)
         }
         else {
-            for user in users{
-                print(user.value!.firstName, user.value!.recordings , "After loading users")
-            }
-            print("loaded all da following", self.followings)
             loadRecordings(forLimit: 5)
         }
     }
@@ -116,7 +103,6 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @objc func loadRecordings(forLimit limit:Int) {
-        print("in load recordings")
         queryLimit = limit
         var fetchPosts = [DocumentReference]()
         var recentPost:DocumentReference?
@@ -126,13 +112,10 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         
         while(canFetchMoreFollowing && numPosts < queryLimit){
             for following in followings{
-//                print("following loop", following.recordings)
                 if following.recordings.count > 0{
-//                    print("line 100", following.recordings[0])
                     let userRecordings = following.recordings[following.recordings.count - 1]
                     let currTimestamp = DBViewController.stringToTime(time: Array(userRecordings.keys)[0] )
                     if currTimestamp.dateValue() > maxTimestamp.dateValue(){
-//                        print("found a more recent post")
                         maxTimestamp = currTimestamp
                         recentPost = userRecordings[DBViewController.timeToString(stamp: maxTimestamp)]
                         followingRef = following
@@ -149,12 +132,10 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                 maxTimestamp = Timestamp(seconds: 0, nanoseconds:0)
             }
             else{
-                print("one is nil")
                 canFetchMoreFollowing = false
             }
         }
 
-        print("about to make the dbcalls for followings for num posts \(fetchPosts.count)")
         if fetchPosts.count > 0{
             var numPostsFetchCounter = 0
             DBViewController.getRec(for: fetchPosts) { [self] (snapshot) in
@@ -164,7 +145,6 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                 self.recordings.sort(by: { $0.Timestamp.dateValue() > $1.Timestamp.dateValue() })
                 numPostsFetchCounter += 1
                 if numPostsFetchCounter == numPosts{
-                    print("about to reload table")
                     self.loadTopRecordings(forLimit: 5, success: loadUsers)
                 }
             }
@@ -179,7 +159,6 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
 //        queryLimit += limit
         DBViewController.getTopPosts(forLimit: limit) { (docs, numFetched) in
             if numFetched == 0{
-                print("cant get top posts")
                 DispatchQueue.main.async {
                     self.isFetching = false
                     self.tableView.reloadData()
@@ -190,16 +169,6 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
             for doc in docs{
                 self.topPosts.append(doc)
             }
-//            self.tableView.reloadSections([1], with: UITableView.RowAnimation.fade)
-//            self.separator = numFetched
-            
-//            self.isFetching = false
-//            self.showExploresCell = true
-//            self.myRefreshControl.endRefreshing()
-            
-//            DispatchQueue.main.async {
-//                self.tableView.reloadData()
-//            }
             success()
         }
     }
@@ -207,21 +176,18 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     
     
     @objc func loadUsers() -> Void {
-//        let dispatchQueue = DispatchQueue(label: "background")
         let mygroup = DispatchGroup()
-//        dispatchQueue.async {
-            for post in self.topPosts {
-                if !self.users.keys.contains(post.OwnerID) {
-                    mygroup.enter()
-                    DBViewController.getUserById(forUID: post.OwnerID) { (user) in
-                        if let user = user {
-                            self.users[user.uid] = user
-                        }
-                        mygroup.leave()
+        for post in self.topPosts {
+            if !self.users.keys.contains(post.OwnerID) {
+                mygroup.enter()
+                DBViewController.getUserById(forUID: post.OwnerID) { (user) in
+                    if let user = user {
+                        self.users[user.uid] = user
                     }
+                    mygroup.leave()
                 }
             }
-//        }
+        }
         mygroup.notify(queue: .main){
             DispatchQueue.main.async {
                 (self.myRefreshControl.isRefreshing) ? self.myRefreshControl.endRefreshing() : print("stopped refreshing already")
@@ -239,7 +205,6 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         if (segue.identifier == "toProfile") {
             let button = sender as! UIButton
             if let cell = button.superview?.superview as? postCellTableViewCell {
-                //print(cell.uid)
                 let vc = segue.destination as! UserProfilePageViewController
                 vc.postUser = cell.postUser
             }
@@ -247,7 +212,6 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         if (segue.identifier == "toComments") {
             let button = sender as! UIButton
             if let cell = button.superview?.superview as? postCellTableViewCell {
-                    //print(cell.uid)
                     let vc = segue.destination as! CommentViewController
                     vc.postUser = cell.postUser
                     vc.recording = cell.post
@@ -264,13 +228,11 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        tableView.reloadData()
         NotificationCenter.default.removeObserver(self)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         if HomePageViewController.audioPlayer.isPlaying{
-            print("player needs to stop playing")
             HomePageViewController.playingCell?.stopPlaying()
         }
         NotificationCenter.default.addObserver(self, selector: #selector(handleLikes), name: Notification.Name("UpdateLikes"), object: nil)
@@ -280,9 +242,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("view controller loaded")
         
-//        print("I am following", User.current.following)
         tableView.estimatedRowHeight = 10000 // or your estimate
         tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         myRefreshControl.addTarget(self, action: #selector(refreshReload), for: .valueChanged)
@@ -296,7 +256,6 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
             dispatchGroup.enter()
             docRef.getDocument { (document, error) in
                 if let document = document, document.exists {
-                    print("fetched the user")
                     let loadUser = User(snapshot: document)!
                     User.setCurrent(loadUser, writeToUserDefaults: true)
                 }
@@ -307,20 +266,12 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
             }
         }
         dispatchGroup.notify(queue: DispatchQueue.global()){
-            print("done fetching user")
             self.userIds = User.current.following
             self.loadTenUsers(success: self.doneLoadingUsers)
         }
-//        self.userIds = User.current.following
-//        loadTenUsers(success: doneLoadingUsers)
-//        loadRecordings(forLimit: 10)
-//        NotificationCenter.default.addObserver(self, selector: #selector(handleLikes), name: Notification.Name("UpdateLikes"), object: nil)
-//
-//        NotificationCenter.default.addObserver(self, selector: #selector(handleComment), name: Notification.Name("UpdateComment"), object: nil)
     }
 
     @objc func handleLikes(notification: NSNotification) {
-//        print("like fired off handler in homepage")
         if let dict = notification.object as? [String:Any] {
             for post in recordings{
                 if post.RecID == dict["updateRecID"] as! String{
@@ -333,7 +284,6 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     @objc func handleComment(notification: NSNotification) {
-//        print("like fired off comment handler in homepage")
         if let dict = notification.object as? [String:Any] {
             for post in recordings{
                 if post.RecID == dict["updateRecID"] as! String{
@@ -366,7 +316,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
 
                     let recording = recordings[indexPath.row]
                     cell.post = recording
-                    //set whether the post has already been liked when displaying cells.
+
                     if User.current.likedPosts[recording.RecID] != nil{
                         cell.setLiked(User.current.likedPosts[recording.RecID]!, recording.numLikes)
                     }
@@ -385,8 +335,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                         }
                     }
                     cell.selectionStyle = UITableViewCell.SelectionStyle.none
-    //                cell.backgroundView?.layer.cornerRadius = 5 //set this to whatever constant you need
-    //                cell.backgroundView?.clipsToBounds = true
+
                     cell.layer.borderColor =  CGColor(red: 1, green: 1, blue: 1, alpha: 1)
                     cell.layer.borderWidth = 7
                     
@@ -424,19 +373,18 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                     }
                 }
                 cell.selectionStyle = UITableViewCell.SelectionStyle.none
-                //                cell.backgroundView?.layer.cornerRadius = 5 //set this to whatever constant you need
-                //                cell.backgroundView?.clipsToBounds = true
-                                cell.layer.borderColor =  CGColor(red: 1, green: 1, blue: 1, alpha: 1)
-                                cell.layer.borderWidth = 7
-                                
-                                cell.alpha = 0
 
-                                UIView.animate(
-                                    withDuration: 0.5,
-                                    delay: 0.05 * Double(indexPath.row),
-                                    animations: {
-                                        cell.alpha = 1
-                                })
+                cell.layer.borderColor =  CGColor(red: 1, green: 1, blue: 1, alpha: 1)
+                cell.layer.borderWidth = 7
+                
+                cell.alpha = 0
+
+                UIView.animate(
+                    withDuration: 0.5,
+                    delay: 0.05 * Double(indexPath.row),
+                    animations: {
+                        cell.alpha = 1
+                })
                 return cell
 
             }
@@ -447,8 +395,7 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                 return cell
             }
         }
-        // add separator
-//        cell.sepLine?.isHidden = (Int(indexPath.row) != self.separator - 1)
+
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -467,11 +414,9 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         else{
             return 3
         }
-//        return 3
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         if isFetching{
             return 1
         }
@@ -486,28 +431,6 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
                 return 1
             }
         }
-//        if isFetching{
-//            if section == 0{
-//                return 1
-//            }
-//            else if section == 1{
-//                return 0
-//            }
-//            else{
-//                return 0
-//            }
-//        }
-//        else{
-//            if section == 0{
-//                return recordings.count
-//            }
-//            else if section == 1{
-//                return topPosts.count
-//            }
-//            else{
-//                return 1
-//            }
-//        }
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -525,30 +448,6 @@ class HomePageViewController: UIViewController, UITableViewDelegate, UITableView
         else{
             return sectionTitles[section]
         }
-//        if isFetching{
-//            if section == 0{
-//                return "Recent"
-//            }
-//            return nil
-//        }
-//        else{
-//            return sectionTitles[section]
-//        }
     }
-    
-//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        let labelRect = CGRect(x: 4, y: tableView.sectionHeaderHeight - 14, width: view.frame.width, height: 14)
-//        let label = UILabel(frame: labelRect)
-//        label.font = UIFont.boldSystemFont(ofSize: 13)
-//
-//        label.text = self.tableView(tableView, titleForHeaderInSection: section)
-//
-//        let viewRect = CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: 44)
-//
-//        let view = UIView(frame: viewRect)
-//        view.addSubview(label)
-//
-//        return view
-//    }
 }
 

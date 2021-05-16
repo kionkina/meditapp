@@ -39,15 +39,13 @@ class TagsViewController: UIViewController, TKCollectionViewDelegate {
         allTagsCollection.receiver = productTagsCollection
         allTagsCollection.delegate     = self
         productTagsCollection.delegate     = self
-        // Do any additional setup after loading the view.
     }
     func tagIsBeingAdded(name: String?) {
-        // Example: save testCollection.tags to UserDefault
-        print("added \(name!)")
+        return
     }
 
     func tagIsBeingRemoved(name: String?) {
-        print("removed \(name!)")
+        return
     }
     
     @IBAction func done(_ sender: Any) {

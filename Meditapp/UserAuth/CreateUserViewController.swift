@@ -20,7 +20,6 @@ class CreateUserViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("screen loaded")
         configureView()
     }
 
@@ -50,7 +49,6 @@ class CreateUserViewController: UIViewController {
                 print("Required fields are not all filled!")
                 return
             }
-        print("before creating user and store in db")
         AuthService.createUser(controller: self, email: email, password: password) { (authUser) in
             guard let firUser = authUser else {
                 return
@@ -62,7 +60,6 @@ class CreateUserViewController: UIViewController {
                 }
                 
                 UserDefaults.standard.removeObject(forKey: "UserLikedPosts")
-                print("user: ", user)
                 User.setCurrent(user, writeToUserDefaults: true)
                 self.performSegue(withIdentifier: "selectTags", sender:nil)
             }

@@ -65,10 +65,6 @@ class DBViewController: UIViewController {
         if tags.isEmpty{
             return
         }
-        print("FETCHING BY TAGS", tags)
-        print("about to run query")
-        //let userRef = db.collection("user2").document(User.current.uid)
-        //returns a firquery. using orderby requires creating index
         let queryRef = db.collection("recordings2")
             //.whereField("OwnerID", notIn: [User.current.uid])
             .whereField("Tags", arrayContainsAny: tags)
@@ -83,28 +79,19 @@ class DBViewController: UIViewController {
             else{
                 //querysnapshot can contain multiple documents
                 if querySnapshot!.documents.count <= 0{
-                    print("no documents fetched")
+                    success(fetchedPosts, 0)
                 }
                 else{
                     for snapshot in querySnapshot!.documents{
-                        if (snapshot.data()["IdTime"] is String) {
-                            print("yes")
-                        }
-                        else {
-                            print("no")
-                        }
-                        print(snapshot.data())
                         let curPost = Post(snapshot: snapshot)!
                         fetchedPosts.append(curPost)
                         foundPosts.append(curPost.IdTime)
                     }
                     
                     if limit - fetchedPosts.count <= 0{
-                        print("no need to fetch more posts")
                         success(fetchedPosts, fetchedPosts.count)
                     }
                     else{
-                        print("going to fetch more")
                         let original = fetchedPosts.count
                         let queryRef2 = db.collection("recordings2")
                             .whereField("IdTime", notIn: foundPosts)
@@ -118,12 +105,9 @@ class DBViewController: UIViewController {
                             else{
                                 //querysnapshot can contain multiple documents
                                 if querySnapshot!.documents.count <= 0{
-                                    print("no more content can be fetched!")
-                //                    return nil
                                 }
                                 else{
                                     for snapshot in querySnapshot!.documents{
-                                        print(snapshot.data()["IdTime"], "the ID time of doc")
                                         let curPost = Post(snapshot: snapshot)!
                                         fetchedPosts.append(curPost)
                                     }
@@ -141,7 +125,6 @@ class DBViewController: UIViewController {
         let db = Firestore.firestore()
         var fetchedPosts = [Post]()
         let queryRef = db.collection("recordings2")
-            //.whereField("OwnerID", notIn: [User.current.uid])
             .whereField("Tags", arrayContainsAny: tags)
             .order(by: "Timestamp", descending: true)
             .limit(to: limit)
@@ -156,7 +139,6 @@ class DBViewController: UIViewController {
                     success(fetchedPosts, 0)
                 }
                 else{
-                    print(querySnapshot!.documents.count, "count for explore page docs fetched")
                     for snapshot in querySnapshot!.documents{
                         let curPost = Post(snapshot: snapshot)!
                         if curPost.OwnerID != User.current.uid{
@@ -216,7 +198,6 @@ class DBViewController: UIViewController {
     static func getSingleRec(for reference: DocumentReference, success: @escaping (DocumentSnapshot) -> Void){
         reference.getDocument { (document, error) in
             if let document = document, document.exists {
-                print("successfully fetched")
                 success(document)
             }
             else {
@@ -250,7 +231,6 @@ class DBViewController: UIViewController {
                 return nil
             }
 
-            print("updating num comments")
             transaction.updateData(["numComments": newNumComments], forDocument: recRef)
             return newNumComments
              }) { (object, error) in
@@ -259,7 +239,6 @@ class DBViewController: UIViewController {
             } else {
                 print("Transaction successfully committed!")
                 success(newNumComments)
-                //return newNumComments
             }
         }
     }
@@ -305,7 +284,6 @@ class DBViewController: UIViewController {
             }
 
             transaction.updateData(["numLikes": newLikes], forDocument: postRef)
-            //messed up b4
             transaction.updateData(["likedPosts.\(postID)":true], forDocument: userRef)
             transaction.updateData(["totalLikes": FieldValue.increment(Int64(1))], forDocument: postuserRef)
             
@@ -386,8 +364,6 @@ class DBViewController: UIViewController {
         let currUserRef = db.collection("user2").document(User.current.uid)
         let userRef = db.collection("user2").document(uid)
         
-        let oldNumFollowing = User.current.numFollowing
-        
         db.runTransaction({ (transaction, errorPointer) -> Any? in
             let postDoc: DocumentSnapshot
             do {
@@ -445,8 +421,6 @@ class DBViewController: UIViewController {
         let currUserRef = db.collection("user2").document(User.current.uid)
         let userRef = db.collection("user2").document(uid)
         
-        let oldNumFollowing = User.current.numFollowing
-        
         db.runTransaction({ (transaction, errorPointer) -> Any? in
             let postDoc: DocumentSnapshot
             do {
@@ -503,13 +477,9 @@ class DBViewController: UIViewController {
     }
     
     static func loadTenUsers(for users: [String], success: @escaping ([User]) -> Void) {
-        print("in db")
-        print(users)
 
         let db = Firestore.firestore()
         db.collection("user2").whereField(FieldPath.documentID(), in: users).getDocuments { (qs: QuerySnapshot?, _: Error?) in
-            print("Returning")
-            print(qs)
             var ret: [User] = []
             for doc in qs!.documents {
                 ret.append(User(snapshot: doc)!)
@@ -519,8 +489,6 @@ class DBViewController: UIViewController {
     }
     
     static func getTopFiveUsers(success: @escaping ([User]) -> Void) {
-        print("in db")
-        
         var usersToReturn = [User]()
         
         let db = Firestore.firestore()
@@ -573,7 +541,6 @@ class DBViewController: UIViewController {
                             fetchedPosts.append(curPost)
                         }
                     }
-                    print("finished fetching toppost")
                     success(fetchedPosts, fetchedPosts.count)
                 }
             }

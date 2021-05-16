@@ -52,7 +52,6 @@ class Post : NSObject {
 
     //Post init using Firebase snapshots
     init?(snapshot: DocumentSnapshot!) {
-        print(snapshot.data())
         guard let dict = snapshot.data(),
             let Description = dict["Description"] as? String,
             let IdTime = dict["IdTime"]! as? String,
@@ -65,8 +64,7 @@ class Post : NSObject {
             let numComments = ( (dict.keys.contains("numComments") ) ? dict["numComments"] as? Int : 0),
             let PostImg = dict["Image"] as? String
             else {
-            print ("returning nil")
-            return nil
+                return nil
         }
         self.Description = Description
         self.Name = Name

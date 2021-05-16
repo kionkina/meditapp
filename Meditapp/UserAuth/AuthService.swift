@@ -17,7 +17,6 @@ struct AuthService {
                 loginErrors(error: error, controller: controller)
                 return completion(nil)
             }
-            print("firebase returned a user")
             return completion(user?.user)
         }
     }
@@ -38,7 +37,6 @@ struct AuthService {
     static func passwordReset(email: String){
         Auth.auth().sendPasswordReset(withEmail: email) { error in
             if let error = error {
-                print("email error for: \(email)")
                 print("error: \(error.localizedDescription)")
                 return
             }
@@ -140,7 +138,6 @@ struct AuthService {
     }
     
     static func logUserOut(){
-        print("in logUserOut")
         do {
             try Auth.auth().signOut()
         } catch let error as NSError {

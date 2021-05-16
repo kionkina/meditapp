@@ -53,7 +53,6 @@ class GenresTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollecti
         
         collectionView.dataSource = self
         collectionView.delegate = self
-        print("Genres table view cell generated")
         collectionView.register(GenresCollectionViewCell.nib(), forCellWithReuseIdentifier: GenresCollectionViewCell.identifier)
     }
 

@@ -34,23 +34,16 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        print("IN PREPARE")
         if (segue.identifier == "toProfile1") {
             let button = sender as! UIButton
             if let cell = button.superview?.superview as? commentCellTableViewCell {
-                //print(cell.uid)
-                print("about to pass")
-                print(cell.postUser)
                 let vc = segue.destination as! UserProfilePageViewController
                 vc.postUser = cell.postUser
             }
         }
         else if (segue.identifier == "toProfile2") {
-            print("in segue2")
             let button = sender as! UIButton
             if let cell = button.superview?.superview as? postCellTableViewCell {
-                //print(cell.uid)
-                print(cell.postUser)
                 let vc = segue.destination as! UserProfilePageViewController
                 vc.postUser = self.postUser
             }
@@ -64,25 +57,15 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
             for doc in docs{
                 self.comments.append(Comment(snapshot: doc)!)
             }
-            print(self.comments.count, "how much comments after fetched")
             success()
-//            self.tableView.reloadData()
         }
     }
     
     func loadUsers() -> Void {
-        //check if ID is not already in users
         for comment in self.comments {
-//            print(comment.Content, "is the comment")
             if !users.keys.contains(comment.OwnerID) {
                 DBViewController.getUserById(forUID: comment.OwnerID) { (user) in
                     if let user = user {
-                        if (user.uid == "MDjDMIj87odBpiHi2eihvDuMdj02") {
-                            print("ITS DISLIKE!")
-                            print("pfp2: ")
-                            print(user.profilePic)
-                        }
-
                         self.users[user.uid] = user
                         self.tableView.reloadData()
                     }
@@ -102,16 +85,7 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
 
             cell.post = recording
             
-            //set whether the post has already been liked when displaying cells.
-//            if User.current.likedPosts[self.recording!.RecID] != nil{
-//                cell.setLiked(User.current.likedPosts[self.recording!.RecID]!, self.recording!.numLikes)
-//            }
-//            else{
-//                cell.setLiked(false, self.recording!.numLikes)
-//            }
-            //if user to current post found in dict
             if let user = postUser{
-//                cell.configure(with: self.recording!, for: user, tagger: nil )
                 cell.configure(with: self.recording!, for: user)
                 cell.postUser = user
             }
@@ -119,7 +93,6 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
             return cell
         }
         else if (comments.count > 0) {
-//            print("dequing comments")
             let cell = tableView.dequeueReusableCell(withIdentifier: "sampleComment", for: indexPath) as! commentCellTableViewCell
             
             let comment = comments[indexPath.row - 1]
@@ -154,13 +127,11 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
 //
     override func viewWillDisappear(_ animated: Bool) {
         if HomePageViewController.audioPlayer.isPlaying{
-            print("player needs to stop playing")
             HomePageViewController.playingCell?.stopPlaying()
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print("commentviewcontroller appearing")
         super.viewWillAppear(animated)
         comments.removeAll()
         users.removeAll()
@@ -178,7 +149,6 @@ class CommentViewController:  UIViewController, UITableViewDelegate, UITableView
         //when you pull down on tableview enough, it dismisses keyboard
         tableView.keyboardDismissMode = .interactive
 
-        print(User.current.profilePic, "current profile pic")
         loadComments(success: loadUsers)
     }
     

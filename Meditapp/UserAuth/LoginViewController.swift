@@ -25,11 +25,9 @@ class LoginViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let identifier = segue.identifier {
             if identifier == "createUser" {
-//                dismissKeyboard()
                 print("To Create User Screen!")
             }
             if identifier == "forgotPassword" {
-//                dismissKeyboard()
                 print("To Forget Password Screen!")
             }
         }

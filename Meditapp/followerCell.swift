@@ -30,7 +30,6 @@ class followerCell: UITableViewCell {
         //fix user image when implement profile picture
         let imageRef = Storage.storage().reference().child("profilephotos").child(user!.profilePic)
         //sets the image from the path to the UIImageView
-        print(userImage)
         self.userImage.sd_setImage(with: imageRef)
         self.userImage.layer.cornerRadius = self.userImage.frame.height/2
         self.userImage.clipsToBounds = true

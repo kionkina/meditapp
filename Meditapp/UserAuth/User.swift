@@ -77,14 +77,12 @@ class User : NSObject {
             self.following = (dict["following"] as? [String:Bool]) ?? [String:Bool]()
             self.numFollowing = (dict["numFollowing"] as? Int) ?? 0
             self.numFollowers = (dict["numFollowers"] as? Int) ?? 0
-//            self.profilePic = ( (dict.keys.contains("profilePic") ) ? dict["profilePic"] as! String : "default.jpeg")
             self.likedGenres = (dict["likedGenres"] as? [String:Int]) ?? [String:Int]()
             self.totalLikes = (dict["totalLikes"] as? Int) ?? 0
             if dict.keys.contains("profilePic"){
                 self.profilePic = dict["profilePic"] as! String
             }
             else{
-                print("initiallizing with snapshot")
                 self.profilePic = "default.jpeg"
             }
         }
@@ -165,7 +163,6 @@ extension User: NSCoding {
         aCoder.encode(lastName, forKey: "lastName")
         aCoder.encode(username, forKey: "username")
         aCoder.encode(tags, forKey: "tags")
-//        aCoder.encode(recordings, forKey: "recordings")
         aCoder.encode(likedPosts, forKey: "likedPosts")
         aCoder.encode(profilePic, forKey: "profilePic")
         aCoder.encode(numFollowers, forKey: "numFollowers")

@@ -57,7 +57,6 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
 
     override func viewWillDisappear(_ animated: Bool) {
         if ExplorePageViewController.audioPlayer.isPlaying{
-            print("player needs to stop playing")
             ExplorePageViewController.playingCell?.stopPlaying()
         }
     }
@@ -89,7 +88,6 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
             return cell
         }
         if indexPath.section == 0{
-//            print("At indexpath section 0")
             let cell = tableView.dequeueReusableCell(withIdentifier: RecommendationsTableViewCell.identifier, for: indexPath) as! RecommendationsTableViewCell
             cell.delegate = self
             cell.layer.borderColor =  CGColor(red: 1, green: 1, blue: 1, alpha: 1)
@@ -99,14 +97,11 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
             return cell
         }
         else if indexPath.section == 1{
-//            print("At indexpath \(indexPath.section)")
             let cell = tableView.dequeueReusableCell(withIdentifier: GenresTableViewCell.identifier, for: indexPath) as! GenresTableViewCell
             cell.delegate = self
             return cell
         } else {
-//            print("At section \(indexPath.section)")
             let cell = tableView.dequeueReusableCell(withIdentifier: RiseTableViewCell.identifier, for: indexPath) as! RiseTableViewCell
-            // cell.image?.downloadedfrom("")
             cell.configure(name: topUsers[indexPath.row - 1].username, photo: topUsers[indexPath.row - 1].profilePic, totalLikes: topUsers[indexPath.row - 1].totalLikes)
             cell.selectionStyle = .none
             return cell
@@ -120,8 +115,6 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
         }
     }
     
-    
-    
     //each row height of 250
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0{
@@ -134,7 +127,6 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
         }
     }
     
-    //register the tableview cells
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -165,7 +157,6 @@ class ExplorePageViewController: UIViewController, UITableViewDataSource, UITabl
     
     @objc func refreshReload(){
         if ExplorePageViewController.audioPlayer.isPlaying{
-            print("player needs to stop playing")
             ExplorePageViewController.playingCell?.stopPlaying()
         }
         topUsers.removeAll()

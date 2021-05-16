@@ -78,7 +78,6 @@ class ChecklistViewController: UITableViewController {
         
         User.current.tags = userSelection
         User.current.likedGenres = userGenres
-        print("user liked genres in checklist = \(userGenres)")
         updateData(selectedTags: userSelection)
         updatelikedGenres(forGenres: userGenres)
         //send this to db
@@ -101,7 +100,6 @@ class ChecklistViewController: UITableViewController {
             }
             else {
                 User.setCurrent(User.current, writeToUserDefaults: true)
-                print("Document successfully updated")
             }
         }
     }
@@ -115,7 +113,6 @@ class ChecklistViewController: UITableViewController {
             if let err = err {
                 print("Error updating document: \(err)")
             } else {
-                print("Document successfully updated")
                 User.setCurrent(User.current, writeToUserDefaults: true)
             }
         }
